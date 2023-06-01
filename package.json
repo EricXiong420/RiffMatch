@@ -1,6 +1,7 @@
 {
   "name": "riffmatch",
   "version": "1.0.0",
+  "author": "Cheng-Yu Dong and Eric Xiong",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
