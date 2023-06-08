@@ -26,7 +26,7 @@ const Landing = () => {
                 </Text>
                 <View>
                     <Pressable onPress={() => navigation.navigate("RegisterPortal")} style={styles.registerButton}><Text style={styles.registerButtonText}>Register</Text></Pressable>
-                    <Pressable onPress={() => navigation.navigate("RegisterPortal")} style={styles.loginButton}><Text style={styles.loginButtonText}>Sign In</Text></Pressable>
+                    <Pressable onPress={() => navigation.navigate("Login")} style={styles.loginButton}><Text style={styles.loginButtonText}>Sign In</Text></Pressable>
                  <Text style={styles.policy}>By signing up you accept the Terms of Service and Privacy Policy.</Text>
                 </View>
             </View>
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 2,
         borderColor: '#004cff',
-        padding: 15,
+        padding: 18,
         borderRadius: 100,
         backgroundColor: "#004cff",
         marginTop: 50,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 2,
         borderColor: 'black',
-        padding: 15,
+        padding: 18,
         borderRadius: 100,
         marginTop: 10,
         marginBottom: 10

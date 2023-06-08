@@ -21,24 +21,6 @@ const Login = () => {
     return unsubscribe;
   }, [])
 
-
-  const handleSignup = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        console.log(user.email)
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setInfo(errorMessage)
-        // ..
-      });
-  }
-
-
   const handleLogin = () => {
     if (auth.currentUser) {
       setInfo('')
@@ -90,7 +72,6 @@ const Login = () => {
         />
         <Text status='danger'>{info}</Text>
         <Button onPress={handleLogin} style={styles.loginButton}>Login</Button>
-        <Button onPress={handleSignup} appearance="ghost">Signup</Button>
       </View>
     </KeyboardAvoidingView>
   )

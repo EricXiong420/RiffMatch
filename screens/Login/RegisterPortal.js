@@ -1,14 +1,24 @@
 import { StyleSheet, View, KeyboardAvoidingView, TextInput } from 'react-native'
 import { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import { Input, Button, Text } from '@ui-kitten/components'
-import { auth } from "../../firebase"
+import { Input, Button, Text, Select, SelectItem, IndexPath } from '@ui-kitten/components'
+import { auth, app } from "../../firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { collection, doc, getFirestore, setDoc } from 'firebase/firestore';
 
+const genders = [
+  'male',
+  'female',
+  'other',
+];
 
 const RegisterPortal = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [gender, setGender] = useState(new IndexPath(0));
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [cfmPassword, setCfmPassword] = useState('');
   const [info, setInfo] = useState('');
   const navigation = useNavigation();
 
@@ -23,19 +33,36 @@ const RegisterPortal = () => {
 
 
   const handleSignup = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        console.log(user.email)
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setInfo(errorMessage)
-        // ..
-      });
+    if (password != cfmPassword) {
+      setInfo("Passwords do not match!");
+    } else {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+          // Signed in 
+          const db = getFirestore(app)
+
+          const docRef = await setDoc(doc(db, "users", email.toLowerCase()), {
+            first_name: firstName,
+            last_name: lastName,
+            gender: genders[gender - 1],
+            created: new Date()
+          }).catch(err => {
+            console.error(err)
+          });
+          console.log("Document written with ID: ", docRef.id);
+
+          const user = userCredential.user;
+          console.log(user.email)
+
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setInfo(errorMessage)
+          // ..
+        });
+    }
+
   }
 
   return (
@@ -50,8 +77,57 @@ const RegisterPortal = () => {
           RiffMatch
         </Text>
 
-<Text>Test</Text>
-       
+        <Input
+          label='First Name'
+          placeholder='First Name'
+          value={firstName}
+          style={styles.loginInput}
+          onChangeText={nextValue => setFirstName(nextValue)}
+        />
+        <Input
+          label='Last Name'
+          placeholder='Last Name'
+          value={lastName}
+          style={styles.loginInput}
+          onChangeText={nextValue => setLastName(nextValue)}
+        />
+        <Input
+          label='Email'
+          placeholder='Email'
+          value={email}
+          style={styles.loginInput}
+          onChangeText={nextValue => setEmail(nextValue)}
+        />
+        <Select
+          selectedIndex={gender}
+          onSelect={index => setGender(index)}
+          value={genders[gender - 1]}
+          label="Gender"
+        >
+          <SelectItem title='Male' />
+          <SelectItem title='Female' />
+          <SelectItem title='Other' />
+        </Select>
+
+        <Input
+          placeholder='Password'
+          label='Password'
+          value={password}
+          secureTextEntry={true}
+          style={styles.loginInput}
+          onChangeText={nextValue => setPassword(nextValue)}
+        />
+        <Input
+          placeholder='Confirm Password'
+          label='Confirm Password'
+          value={cfmPassword}
+          secureTextEntry={true}
+          style={styles.loginInput}
+          onChangeText={nextValue => setCfmPassword(nextValue)}
+        />
+        <Text status='danger'>{info}</Text>
+
+        <Button onPress={handleSignup}>Register</Button>
       </View>
     </KeyboardAvoidingView>
   )
