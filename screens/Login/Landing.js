@@ -1,37 +1,57 @@
 import { StyleSheet, View, KeyboardAvoidingView, Image, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
+import { useState, useEffect } from 'react'
 import { Text } from '@ui-kitten/components'
-import { auth } from "../../firebase"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import LandingImage from "../../assets/landing.png"
+import auth from '@react-native-firebase/auth';
 
 const Landing = () => {
     const navigation = useNavigation();
 
-    return (
-        <KeyboardAvoidingView
-            styles={styles.container}
-            behaviour="padding">
-            <View style={styles.mainContainer}>
-                <Text
-                    style={styles.title}
-                    category='h2'
-                >
-                    RiffMatch
-                </Text>
-                <Image source={LandingImage} style={styles.landingImage}></Image>
-                <Text
-                    style={styles.landingText}>
-                    Let's link you up with musicians in the area!
-                </Text>
-                <View>
-                    <Pressable onPress={() => navigation.navigate("RegisterPortal")} style={styles.registerButton}><Text style={styles.registerButtonText}>Register</Text></Pressable>
-                    <Pressable onPress={() => navigation.navigate("Login")} style={styles.loginButton}><Text style={styles.loginButtonText}>Sign In</Text></Pressable>
-                 <Text style={styles.policy}>By signing up you accept the Terms of Service and Privacy Policy.</Text>
+    const [initializing, setInitializing] = useState(true);
+    const [user, setUser] = useState();
+
+    function onAuthStateChanged(user) {
+        setUser(user);
+        if (user) {
+            navigation.navigate("Home")
+        }
+        if (initializing) setInitializing(false);
+    }
+
+    useEffect(() => {
+        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+        return subscriber;
+    }, []);
+
+    if (initializing) return null;
+
+    if (!user) {
+        return (
+            <KeyboardAvoidingView
+                styles={styles.container}
+                behaviour="padding">
+                <View style={styles.mainContainer}>
+                    <Text
+                        style={styles.title}
+                        category='h2'
+                    >
+                        RiffMatch
+                    </Text>
+                    <Image source={LandingImage} style={styles.landingImage}></Image>
+                    <Text
+                        style={styles.landingText}>
+                        Let's link you up with musicians in the area!
+                    </Text>
+                    <View>
+                        <Pressable onPress={() => navigation.navigate("RegisterPortal")} style={styles.registerButton}><Text style={styles.registerButtonText}>Register</Text></Pressable>
+                        <Pressable onPress={() => navigation.navigate("LoginPortal")} style={styles.loginButton}><Text style={styles.loginButtonText}>Sign In</Text></Pressable>
+                        <Text style={styles.policy}>By signing up you accept the Terms of Service and Privacy Policy.</Text>
+                    </View>
                 </View>
-            </View>
-        </KeyboardAvoidingView>
-    )
+            </KeyboardAvoidingView>
+        );
+    }
 }
 
 export default Landing
@@ -61,7 +81,7 @@ const styles = StyleSheet.create({
     loginButtonText: {
         textAlign: 'center',
         fontWeight: 'bold'
-    },  
+    },
     landingImage: {
         marginTop: 50,
         marginBottom: 50,

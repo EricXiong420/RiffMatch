@@ -2,46 +2,40 @@ import { StyleSheet, View, KeyboardAvoidingView, TextInput } from 'react-native'
 import { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { Input, Button, Text } from '@ui-kitten/components'
-import { auth } from "../../firebase"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-
+import auth from '@react-native-firebase/auth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [info, setInfo] = useState('');
   const navigation = useNavigation();
+  const [initializing, setInitializing] = useState(true);
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        navigation.navigate("Home");
-      }
-    })
-    return unsubscribe;
-  }, [])
-
-  const handleLogin = () => {
-    if (auth.currentUser) {
-      setInfo('')
-      navigation.navigate("Home");
-    } else {
-      signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        console.log(user.email)
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setInfo(errorCode);
-        // ..
-      });
+  function onAuthStateChanged(user) {
+    if (user) {
+      navigation.navigate("Home")
     }
+    if (initializing) setInitializing(false);
   }
 
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; 
+  }, []);
+
+  if (initializing) return null;
+
+  const handleLogin = () => {
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        setInfo('');
+        navigation.navigate("Home");
+      })
+      .catch(error => {
+        setInfo(error.message);
+      });
+  }
 
   return (
     <KeyboardAvoidingView

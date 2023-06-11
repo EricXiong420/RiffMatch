@@ -8,6 +8,7 @@ import Home from './screens/Home';
 import Login from './screens/Login/Login';
 import Landing from './screens/Login/Landing';
 import RegisterPortal from './screens/Login/RegisterPortal';
+import LoginPortal from './screens/Login/LoginPortal';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ export default function App() {
           <Stack.Screen name="Landing" component={Landing} options={{headerShown: false}} />
           <Stack.Screen name="Login" component={Login} options={{headerBackVisible: true}} />
           <Stack.Screen name="Home" component={Home} options={{headerBackVisible: false}}/>
+          <Stack.Screen name="LoginPortal" component={LoginPortal} options={{headerBackVisible: true}}/>
           <Stack.Screen name="RegisterPortal" component={RegisterPortal} />
         </Stack.Navigator>
       </NavigationContainer>

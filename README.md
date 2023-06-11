@@ -13,20 +13,18 @@ Install RiffMatch by cloning the repository
   npm install
 ```
 
-Then go ahead and start the Expo app locally
+For IOS: Start RiffMatch
 ``` bash
-    npm start
+    npx expo run:ios
 ```
 
-Please install Expo app on your phones before proceeding to the next step.
-
+For Android: Start RiffMatch
 ``` bash
-    Press c to view QR code.
-    Scan on your phone and it will open up the Expo app
+    npx expo run:android
 ```
     
 ## Authors
 
 
 - [@officialchengyud](https://www.github.com/officialchengyud)
-- [@ericxiong420](https://www.github.com/ericxiong420)
+- [@EricXiong420](https://www.github.com/ericxiong420)

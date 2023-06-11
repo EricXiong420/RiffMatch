@@ -1,10 +1,9 @@
-import { StyleSheet, View, KeyboardAvoidingView, TextInput } from 'react-native'
-import { useState, useEffect } from 'react'
+import { StyleSheet, View, KeyboardAvoidingView, TextInput } from 'react-native';
+import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Input, Button, Text, Select, SelectItem, IndexPath } from '@ui-kitten/components'
-import { auth, app } from "../../firebase"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, doc, getFirestore, setDoc } from 'firebase/firestore';
+import { Input, Button, Text, Select, SelectItem, IndexPath } from '@ui-kitten/components';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const genders = [
   'male',
@@ -20,49 +19,35 @@ const RegisterPortal = () => {
   const [password, setPassword] = useState('');
   const [cfmPassword, setCfmPassword] = useState('');
   const [info, setInfo] = useState('');
+  const [initializing, setInitializing] = useState(true);
   const navigation = useNavigation();
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        navigation.navigate("Home");
-      }
-    })
-    return unsubscribe;
-  }, [])
-
 
   const handleSignup = () => {
     if (password != cfmPassword) {
       setInfo("Passwords do not match!");
     } else {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-          // Signed in 
-          const db = getFirestore(app)
-
-          const docRef = await setDoc(doc(db, "users", email.toLowerCase()), {
-            first_name: firstName,
-            last_name: lastName,
-            gender: genders[gender - 1],
-            created: new Date()
-          }).catch(err => {
-            console.error(err)
-          });
-          console.log("Document written with ID: ", docRef.id);
-
-          const user = userCredential.user;
-          console.log(user.email)
-
+      // Attempt to create account in firebase auth
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          // Write user data to the firestore
+          firestore()
+            .collection('users')
+            .doc(email.toLowerCase())
+            .set({
+              first_name: firstName,
+              last_name: lastName,
+              gender: genders[gender - 1],
+              created: new Date()
+            })
+            .then(() => {
+              console.log('User added!');
+            });
         })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setInfo(errorMessage)
-          // ..
+        .catch(error => {
+          setInfo(error.code);
         });
     }
-
   }
 
   return (

@@ -27,6 +27,10 @@
       },
       "package": "com.riffmatch.riffmatch"
     },
+    "plugins": [
+      "@react-native-google-signin/google-signin",
+      "@react-native-firebase/app"
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     }
