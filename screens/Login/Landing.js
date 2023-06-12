@@ -2,7 +2,8 @@ import { StyleSheet, View, KeyboardAvoidingView, Image, Pressable } from 'react-
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react'
 import { Text } from '@ui-kitten/components'
-import LandingImage from "../../assets/landing.png"
+import LandingImage from "../../assets/login/landing-art.png"
+import Logo from "../../assets/login/logo.png"
 import auth from '@react-native-firebase/auth';
 
 const Landing = () => {
@@ -32,17 +33,9 @@ const Landing = () => {
                 styles={styles.container}
                 behaviour="padding">
                 <View style={styles.mainContainer}>
-                    <Text
-                        style={styles.title}
-                        category='h2'
-                    >
-                        RiffMatch
-                    </Text>
+                    <Image source={Logo} style={styles.logo}></Image>
                     <Image source={LandingImage} style={styles.landingImage}></Image>
-                    <Text
-                        style={styles.landingText}>
-                        Let's link you up with musicians in the area!
-                    </Text>
+
                     <View>
                         <Pressable onPress={() => navigation.navigate("RegisterPortal")} style={styles.registerButton}><Text style={styles.registerButtonText}>Register</Text></Pressable>
                         <Pressable onPress={() => navigation.navigate("LoginPortal")} style={styles.loginButton}><Text style={styles.loginButtonText}>Sign In</Text></Pressable>
@@ -58,15 +51,8 @@ export default Landing
 
 const styles = StyleSheet.create({
     mainContainer: {
-        padding: 15,
         backgroundColor: "white",
         height: "100%"
-    },
-    title: {
-        marginTop: 20,
-        marginBottom: 40,
-        textAlign: "center",
-        marginTop: 100
     },
     landingText: {
         textAlign: "center",
@@ -82,22 +68,31 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold'
     },
-    landingImage: {
-        marginTop: 50,
-        marginBottom: 50,
-        width: 200,
+    logo: {
+        marginTop: 100,
+        marginBottom: 40,
+        width: 280,
         height: 200,
-        marginLeft: 80,
+        marginLeft: 50,
+        resizeMode: 'contain'
+    },
+    landingImage: {
+        marginBottom: 50,
+        width: "115%",
+        marginLeft: -30,
+        height: 200,
         resizeMode: 'contain'
     },
     registerButton: {
         borderStyle: 'solid',
         borderWidth: 2,
-        borderColor: '#004cff',
+        borderColor: '#36383b',
         padding: 18,
         borderRadius: 100,
-        backgroundColor: "#004cff",
+        backgroundColor: "#36383b",
         marginTop: 50,
+        width: "90%",
+        left: "5%"
     },
     loginButton: {
         borderStyle: 'solid',
@@ -106,7 +101,9 @@ const styles = StyleSheet.create({
         padding: 18,
         borderRadius: 100,
         marginTop: 10,
-        marginBottom: 10
+        marginBottom: 10,
+        width: "90%",
+        left: "5%"
     },
     policy: {
         textAlign: "center",
