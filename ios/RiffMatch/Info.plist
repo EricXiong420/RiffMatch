@@ -78,6 +78,8 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>For the profile image and other images for others to see</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>CormorantGaramond-Bold.ttf</string>

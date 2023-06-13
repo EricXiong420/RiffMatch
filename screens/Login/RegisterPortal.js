@@ -1,9 +1,10 @@
-import { StyleSheet, View, KeyboardAvoidingView, TextInput } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView, TextInput, Image, Text, Pressable } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Input, Button, Text, Select, SelectItem, IndexPath } from '@ui-kitten/components';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import ChevronBackButton from '../Misc/ChevronBackButton';
+import Logo from "../../assets/login/logo.png"
 
 const genders = [
   'male',
@@ -12,9 +13,6 @@ const genders = [
 ];
 
 const RegisterPortal = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [gender, setGender] = useState(new IndexPath(0));
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [cfmPassword, setCfmPassword] = useState('');
@@ -35,13 +33,12 @@ const RegisterPortal = () => {
             .collection('users')
             .doc(email.toLowerCase())
             .set({
-              first_name: firstName,
-              last_name: lastName,
-              gender: genders[gender - 1],
+              firstName: "",
               created: new Date()
             })
             .then(() => {
               console.log('User added!');
+              navigation.navigate("CreateProfile")
             });
         })
         .catch(error => {
@@ -55,64 +52,33 @@ const RegisterPortal = () => {
       styles={styles.container}
       behaviour="padding">
       <View style={styles.mainContainer}>
-        <Text
-          style={styles.title}
-          category='h2'
-        >
-          RiffMatch
-        </Text>
+        <ChevronBackButton></ChevronBackButton>
+        <Image source={Logo} style={styles.logo}></Image>
 
-        <Input
-          label='First Name'
-          placeholder='First Name'
-          value={firstName}
-          style={styles.loginInput}
-          onChangeText={nextValue => setFirstName(nextValue)}
-        />
-        <Input
-          label='Last Name'
-          placeholder='Last Name'
-          value={lastName}
-          style={styles.loginInput}
-          onChangeText={nextValue => setLastName(nextValue)}
-        />
-        <Input
-          label='Email'
-          placeholder='Email'
-          value={email}
-          style={styles.loginInput}
-          onChangeText={nextValue => setEmail(nextValue)}
-        />
-        <Select
-          selectedIndex={gender}
-          onSelect={index => setGender(index)}
-          value={genders[gender - 1]}
-          label="Gender"
-        >
-          <SelectItem title='Male' />
-          <SelectItem title='Female' />
-          <SelectItem title='Other' />
-        </Select>
+        <Text style={styles.welcomeText}>Welcome!</Text>
 
-        <Input
-          placeholder='Password'
-          label='Password'
-          value={password}
-          secureTextEntry={true}
-          style={styles.loginInput}
-          onChangeText={nextValue => setPassword(nextValue)}
-        />
-        <Input
-          placeholder='Confirm Password'
-          label='Confirm Password'
-          value={cfmPassword}
-          secureTextEntry={true}
-          style={styles.loginInput}
-          onChangeText={nextValue => setCfmPassword(nextValue)}
-        />
-        <Text status='danger'>{info}</Text>
+        <TextInput value={email} onChangeText={setEmail} placeholder='Email' style={styles.loginInput}></TextInput>
+        <TextInput secureTextEntry={true} value={password} onChangeText={setPassword} placeholder='Password' style={styles.loginInput}></TextInput>
+        <TextInput secureTextEntry={true} value={cfmPassword} onChangeText={setCfmPassword} placeholder='Confirm Password' style={styles.loginInput}></TextInput>
 
-        <Button onPress={handleSignup}>Register</Button>
+        <Pressable onPress={handleSignup} style={styles.loginButton}>
+          <Text style={styles.loginButtonText}>Register</Text>
+        </Pressable>
+        <Text style={styles.info}>{info}</Text>
+        <Text style={styles.otherSignInText}>- OR -</Text>
+        <View style={styles.socialLogins}>
+          <Pressable style={styles.socialButtons} onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}>
+            <Image style={styles.googleSignin} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png' }}></Image>
+          </Pressable>
+          <Pressable style={styles.socialButtons}>
+            <Image style={styles.googleSignin} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/391px-Apple_logo_black.svg.png' }}></Image>
+          </Pressable>
+          <Pressable style={styles.socialButtons}>
+            <Image style={styles.googleSignin} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1200px-Facebook_Logo_%282019%29.png' }}></Image>
+          </Pressable>
+        </View>
+
+
       </View>
     </KeyboardAvoidingView>
   )
@@ -124,14 +90,82 @@ const styles = StyleSheet.create({
   mainContainer: {
     padding: 15
   },
-  title: {
-    marginTop: 20,
-    marginBottom: 40
-  },
   loginInput: {
     marginBottom: 15
   },
   loginButton: {
     marginTop: 20
+  },
+  buttonBack: {
+    fontSize: 40
+  },
+  welcomeText: {
+    textAlign: 'center',
+    fontSize: 30,
+    fontFamily: "Cormorant Garamond",
+    fontWeight: "bold",
+    marginBottom: 40,
+    marginTop: -20
+  },
+  loginInput: {
+    marginBottom: 15,
+    borderWidth: 2,
+    borderColor: "#36383b",
+    fontWeight: "bold",
+    fontSize: 16,
+    height: 50,
+    paddingLeft: 20,
+    borderRadius: 10,
+  },
+  loginButton: {
+    marginTop: 5,
+    textAlign: 'right'
+  },
+  loginButtonText: {
+    textAlign: 'right',
+    fontFamily: "Cormorant Garamond",
+    fontSize: 25,
+    fontWeight: '600',
+    textDecorationLine: 'underline'
+
+  },
+  otherSignInText: {
+    fontFamily: "Cormorant Garamond",
+    textAlign: 'center',
+    fontSize: 20
+  },
+  logo: {
+    marginBottom: 40,
+    width: 280,
+    height: 200,
+    marginLeft: 50,
+    resizeMode: 'contain'
+  },
+  info: {
+    color: "red",
+    marginTop: 20,
+    marginBottom: 20
+  },
+  socialLogins: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  socialButtons: {
+    marginTop: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    padding: 10,
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 52,
+    display: 'flex',
+    flexDirection: 'row',
+    alignSelf: 'center'
+  },
+  googleSignin: {
+    width: 30,
+    height: 30,
   }
 })

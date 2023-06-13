@@ -15,6 +15,9 @@ const Home = () => {
     if (user) {
       console.log("USER", user)
       const data = await firestore().collection('users').doc(user.email).get();
+      if (data._data.firstName == "") {
+        navigation.navigate("CreateProfileBasic")
+      }
       setUserData({ ...data._data, email: user.email })
     } else {
       navigation.navigate("Landing")

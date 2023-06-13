@@ -6,26 +6,14 @@ import auth from '@react-native-firebase/auth';
 import {
     GoogleSignin,
 } from '@react-native-google-signin/google-signin';
+import ChevronBackButton from '../Misc/ChevronBackButton';
 
 const LoginPortal = () => {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [user, setUser] = useState({});
     const [info, setInfo] = useState('');
-    const [initializing, setInitializing] = useState(true);
-
-    function onAuthStateChanged(user) {
-        if (user) {
-            navigation.navigate("Home")
-        }
-        if (initializing) setInitializing(false);
-    }
-
-    useEffect(() => {
-        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-        return subscriber;
-    }, []);
-
 
     const handleLogin = () => {
         auth()
@@ -60,16 +48,12 @@ const LoginPortal = () => {
         return auth().signInWithCredential(googleCredential);
     }
 
-    if (initializing) return null;
-
     return (
         <KeyboardAvoidingView
             styles={styles.container}
             behaviour="padding">
             <View style={styles.mainContainer}>
-                <Pressable onPress={() => navigation.navigate("Landing")} style={styles.backButton}>
-                    <Text style={styles.buttonBack}>‹</Text>
-                </Pressable>
+                <ChevronBackButton></ChevronBackButton>
                 <Image source={Logo} style={styles.logo}></Image>
 
                 <Text style={styles.welcomeText}>Welcome Back!</Text>
@@ -123,6 +107,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: "#36383b",
         fontWeight: "bold",
+        fontSize: 16,
         height: 50,
         paddingLeft: 20,
         borderRadius: 10,

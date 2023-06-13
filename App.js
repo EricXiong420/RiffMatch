@@ -8,6 +8,9 @@ import Home from './screens/Home';
 import Landing from './screens/Login/Landing';
 import RegisterPortal from './screens/Login/RegisterPortal';
 import LoginPortal from './screens/Login/LoginPortal';
+import CreateProfileInstruments from './screens/Login/CreateProfileInstruments';
+import CreateProfileBasic from './screens/Login/CreateProfileBasic';
+import CreateProfileImage from './screens/Login/CreateProfileImage';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +22,10 @@ export default function App() {
           <Stack.Screen name="Landing" component={Landing} options={{headerShown: false}} />
           <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
           <Stack.Screen name="LoginPortal" component={LoginPortal} options={{headerShown: false}}/>
-          <Stack.Screen name="RegisterPortal" component={RegisterPortal} />
+          <Stack.Screen name="RegisterPortal" component={RegisterPortal} options={{headerShown: false}}/>
+          <Stack.Screen name="CreateProfileBasic" component={CreateProfileBasic} options={{headerShown: false}}/>
+          <Stack.Screen name="CreateProfileInstruments" component={CreateProfileInstruments} options={{headerShown: false}}/>
+          <Stack.Screen name="CreateProfileImage" component={CreateProfileImage} options={{headerShown: false}}/>
         </Stack.Navigator>
       </NavigationContainer>
     </ApplicationProvider>
