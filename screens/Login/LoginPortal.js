@@ -20,7 +20,6 @@ const LoginPortal = () => {
             .signInWithEmailAndPassword(email, password)
             .then(() => {
                 setInfo('');
-                navigation.navigate("Home");
             })
             .catch(error => {
                 setInfo(error.message);

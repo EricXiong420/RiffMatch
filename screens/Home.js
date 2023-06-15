@@ -19,8 +19,6 @@ const Home = () => {
         navigation.navigate("CreateProfileBasic")
       }
       setUserData({ ...data._data, email: user.email })
-    } else {
-      navigation.navigate("Landing")
     }
     if (initializing) setInitializing(false);
   }
@@ -33,7 +31,7 @@ const Home = () => {
   const handleSignout = () => {
     auth()
       .signOut()
-      .then(() => navigation.navigate("Landing"));
+      // .then(() => navigation.navigate("Landing"));
   }
 
   return (

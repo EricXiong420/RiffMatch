@@ -38,7 +38,7 @@ const RegisterPortal = () => {
             })
             .then(() => {
               console.log('User added!');
-              navigation.navigate("CreateProfile")
+              navigation.navigate("CreateProfileBasic")
             });
         })
         .catch(error => {

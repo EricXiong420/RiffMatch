@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontFamily: "Cormorant Garamond",
         fontWeight: "bold",
-        marginTop: 60,
+        marginTop: 10,
         marginBottom: 50
     },
     loginInput: {

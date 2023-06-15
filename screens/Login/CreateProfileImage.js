@@ -24,7 +24,7 @@ const CreateProfileImage = () => {
         const reference = storage().ref(`profile-images/${user.email}.png`);
         await reference.putFile(image)
 
-        navigation.navigate("Home")
+        navigation.navigate("HomeScreen")
     }
 
     return (
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontFamily: "Cormorant Garamond",
         fontWeight: "bold",
-        marginTop: 60,
+        marginTop: 10,
         marginBottom: 50
     },
     loginInput: {

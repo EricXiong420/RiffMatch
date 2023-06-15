@@ -8,43 +8,26 @@ import auth from '@react-native-firebase/auth';
 
 const Landing = () => {
     const navigation = useNavigation();
-
-    const [initializing, setInitializing] = useState(true);
     const [user, setUser] = useState();
 
-    function onAuthStateChanged(user) {
-        setUser(user);
-        if (user) {
-            navigation.navigate("Home")
-        }
-        if (initializing) setInitializing(false);
-    }
 
-    useEffect(() => {
-        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-        return subscriber;
-    }, []);
+    return (
+        <KeyboardAvoidingView
+            styles={styles.container}
+            behaviour="padding">
+            <View style={styles.mainContainer}>
+                <Image source={Logo} style={styles.logo}></Image>
+                <Image source={LandingImage} style={styles.landingImage}></Image>
 
-    if (initializing) return null;
-
-    if (!user) {
-        return (
-            <KeyboardAvoidingView
-                styles={styles.container}
-                behaviour="padding">
-                <View style={styles.mainContainer}>
-                    <Image source={Logo} style={styles.logo}></Image>
-                    <Image source={LandingImage} style={styles.landingImage}></Image>
-
-                    <View>
-                        <Pressable onPress={() => navigation.navigate("RegisterPortal")} style={styles.registerButton}><Text style={styles.registerButtonText}>Register</Text></Pressable>
-                        <Pressable onPress={() => navigation.navigate("LoginPortal")} style={styles.loginButton}><Text style={styles.loginButtonText}>Sign In</Text></Pressable>
-                        <Text style={styles.policy}>By signing up you accept the Terms of Service and Privacy Policy.</Text>
-                    </View>
+                <View>
+                    <Pressable onPress={() => navigation.navigate("RegisterPortal")} style={styles.registerButton}><Text style={styles.registerButtonText}>Register</Text></Pressable>
+                    <Pressable onPress={() => navigation.navigate("LoginPortal")} style={styles.loginButton}><Text style={styles.loginButtonText}>Sign In</Text></Pressable>
+                    <Text style={styles.policy}>By signing up you accept the Terms of Service and Privacy Policy.</Text>
                 </View>
-            </KeyboardAvoidingView>
-        );
-    }
+            </View>
+        </KeyboardAvoidingView>
+    );
+
 }
 
 export default Landing
