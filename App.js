@@ -14,10 +14,14 @@ import CreateProfileInstruments from './screens/Login/CreateProfileInstruments';
 import CreateProfileBasic from './screens/Login/CreateProfileBasic';
 import CreateProfileImage from './screens/Login/CreateProfileImage';
 import auth from '@react-native-firebase/auth';
+import ProfileScreen from './screens/Profile/ProfileScreen';
+import ChatScreen from './screens/Chat/ChatScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
+const ChatStack = createNativeStackNavigator();
+const ProfileStack = createNativeStackNavigator();
 
 
 export default function App() {
@@ -44,6 +48,18 @@ export default function App() {
     </HomeStack.Navigator>
   }
 
+  const ChatStackScreen = () => {
+    return <ChatStack.Navigator>
+      <ChatStack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: false }} />
+    </ChatStack.Navigator>
+  }
+
+  const ProfileStackScreen = () => {
+    return <ProfileStack.Navigator>
+      <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }} />
+    </ProfileStack.Navigator>
+  }
+
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
       <NavigationContainer>
@@ -56,6 +72,8 @@ export default function App() {
         </Stack.Navigator> :
           <Tab.Navigator>
             <Tab.Screen name="Home" component={HomeStackScreen} />
+            <Tab.Screen name="Chat" component={ChatStackScreen} />
+            <Tab.Screen name="Profile" component={ProfileStackScreen} />
           </Tab.Navigator>}
       </NavigationContainer>
     </ApplicationProvider >
