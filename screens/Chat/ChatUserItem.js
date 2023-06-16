@@ -18,29 +18,30 @@ const ChatUserItem = ({ user, currentUserEmail }) => {
     }
 
     useEffect(() => {
-        const subscriber = firestore()
-        .collection('messages')
-        .where('from', '==', user)
-        .where('to', '==', currentUserEmail)
-        .orderBy('time')
-        .limit(1)
-        .onSnapshot(documentSnapshot => {
-            if(documentSnapshot) {
-                console.log(documentSnapshot._docs)
-                setLastMessage(documentSnapshot._docs[0]._data)
-            }
-        });
+        // const subscriber = firestore()
+        // .collection('messages')
+        // .where('from', '==', user)
+        // .where('to', '==', currentUserEmail)
+        // .orderBy('time')
+        // .limit(1)
+        // .onSnapshot(documentSnapshot => {
+        //     if(documentSnapshot) {
+        //         console.log(documentSnapshot._docs)
+        //         setLastMessage(documentSnapshot._docs[0]._data)
+        //     }
+        // });
   
       // Stop listening for updates when no longer required
-      return () => subscriber();
+    //   return () => subscriber();
     }, [user]);
 
     useEffect(() => {
         getUserInfo();
     }, [user]);
 
-    return <Pressable onPress={() => navigation.navigate('MessageScreen')} style={styles.chatItemContainer}>
-        <Image source={{ uri: profileImage ? profileImage : null }} style={styles.profile}></Image>
+    return <Pressable onPress={() => navigation.navigate('MessageScreen', {userInfo: {...userInfo, profileImage} })} style={styles.chatItemContainer}>
+        <Image source={{ uri: profileImage ? profileImage : null,
+    cache: 'only-if-cached' }} style={styles.profile}></Image>
         <View>
             <View style={styles.nameAndTime}>
                 <Text style={styles.name}>{userInfo.firstName} {userInfo.lastName}</Text>

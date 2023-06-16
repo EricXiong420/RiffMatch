@@ -94,7 +94,7 @@ export default function App() {
         </Stack.Navigator> :
           <Stack.Navigator>
             <Stack.Screen name="HomeStack" component={HomeItems}  options={{ headerShown: false }}/>
-            <Stack.Screen name="MessageScreen" component={MessageScreen} />
+            <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }}/>
           </Stack.Navigator>
         }
       </NavigationContainer>

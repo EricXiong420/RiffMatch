@@ -43,7 +43,10 @@ const ChatScreen = () => {
 
     return <KeyboardAvoidingView style={styles.chatScreenContainer}>
         <View style={styles.topBar}><Text style={styles.title}>Chat</Text>
-            <Pressable onPress={() => navigation.navigate('Profile')}><Image source={{ uri: profileImage ? profileImage : null }} style={styles.profile}></Image>
+            <Pressable onPress={() => navigation.navigate('Profile')}><Image source={{
+                uri: profileImage ? profileImage : null,
+                cache: 'force-cache'
+            }} style={styles.profile}></Image>
             </Pressable></View>
 
         <View style={styles.chatUsers}>
