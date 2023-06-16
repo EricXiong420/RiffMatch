@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore'; 
 
 const ProfileScreen = () => {
-    const [introduction, setIntroduction] = useState('');
     const [boxHeight, setBoxHeight] = useState(80);
     const [selectedPicture, setSelectedPicture] = useState();
         
     const Introduction = () => {
+        const [introduction, setIntroduction] = useState('');
         return (
             <>
             <Text style={styles.headerText}>my introduction</Text>
