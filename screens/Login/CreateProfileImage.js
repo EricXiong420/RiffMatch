@@ -34,7 +34,7 @@ const CreateProfileImage = () => {
             <View style={styles.mainContainer}>
                 <Text style={styles.pageTitle}>Create Profile: Image</Text>
 
-               <Image style={styles.profileImage} source={{ uri: image }}></Image>
+               <Image style={styles.profileImage} source={{ uri: image ? image : null }}></Image>
 
                 <Button onPress={() => ImagePicker.openPicker({
                     width: 300,

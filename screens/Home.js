@@ -13,7 +13,6 @@ const Home = () => {
 
   const onAuthStateChanged = async (user) => {
     if (user) {
-      console.log("USER", user)
       const data = await firestore().collection('users').doc(user.email).get();
       if (data._data.firstName == "") {
         navigation.navigate("CreateProfileBasic")
