@@ -5,6 +5,7 @@ import { NavigationContainer, Modal } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as eva from '@eva-design/eva';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ApplicationProvider } from '@ui-kitten/components';
 import Home from './screens/Home';
 import Landing from './screens/Login/Landing';
@@ -16,6 +17,7 @@ import CreateProfileImage from './screens/Login/CreateProfileImage';
 import auth from '@react-native-firebase/auth';
 import ProfileScreen from './screens/Profile/ProfileScreen';
 import ChatScreen from './screens/Chat/ChatScreen';
+import MessageScreen from './screens/Chat/MessageScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -60,8 +62,28 @@ export default function App() {
     </ProfileStack.Navigator>
   }
 
+  const HomeItems = () => {
+    return <Tab.Navigator screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+        if (route.name == "Home") {
+          iconName = 'musical-notes-outline';
+        } else if (route.name == "Chat") {
+          iconName = "chatbubbles-outline";
+        } else {
+          iconName = 'person-outline';
+        }
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+    })}>
+      <Tab.Screen name="Home" component={HomeStackScreen} />
+      <Tab.Screen name="Chat" component={ChatStackScreen}  options={{ headerShown: false }}/>
+      <Tab.Screen name="Profile" component={ProfileStackScreen} />
+    </Tab.Navigator>
+  }
+
   return (
-    <ApplicationProvider {...eva} theme={eva.light}>
+    <ApplicationProvider {...eva} theme={eva.light} >
       <NavigationContainer>
         {!loggedIn ? <Stack.Navigator>
           <Stack.Group>
@@ -70,11 +92,11 @@ export default function App() {
             <Stack.Screen name="RegisterPortal" component={RegisterPortal} options={{ headerShown: false }} />
           </Stack.Group>
         </Stack.Navigator> :
-          <Tab.Navigator>
-            <Tab.Screen name="Home" component={HomeStackScreen} />
-            <Tab.Screen name="Chat" component={ChatStackScreen} />
-            <Tab.Screen name="Profile" component={ProfileStackScreen} />
-          </Tab.Navigator>}
+          <Stack.Navigator>
+            <Stack.Screen name="HomeStack" component={HomeItems}  options={{ headerShown: false }}/>
+            <Stack.Screen name="MessageScreen" component={MessageScreen} />
+          </Stack.Navigator>
+        }
       </NavigationContainer>
     </ApplicationProvider >
 
