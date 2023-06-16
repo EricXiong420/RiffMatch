@@ -56,8 +56,8 @@ const LoginPortal = () => {
                 <Image source={Logo} style={styles.logo}></Image>
 
                 <Text style={styles.welcomeText}>Welcome Back!</Text>
-                <TextInput value={email} onChangeText={setEmail} placeholder='Email' style={styles.loginInput}></TextInput>
-                <TextInput secureTextEntry={true} value={password} onChangeText={setPassword} placeholder='Password' style={styles.loginInput}></TextInput>
+                <TextInput autoCapitalize='none' value={email} onChangeText={setEmail} placeholder='Email' textContentType='emailAddress' style={styles.loginInput}></TextInput>
+                <TextInput autoCapitalize='none' secureTextEntry={true} value={password} onChangeText={setPassword} placeholder='Password' textContentType='password' style={styles.loginInput}></TextInput>
 
                 <Pressable onPress={handleLogin} style={styles.loginButton}>
                     <Text style={styles.loginButtonText}>Login</Text>
