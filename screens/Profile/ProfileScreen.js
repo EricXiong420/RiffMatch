@@ -1,6 +1,5 @@
 import { ScrollView, FlatList, StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
 import { useState, useEffect } from 'react';
-import TextSerif from '../../components/TextSerif';
 import firestore from '@react-native-firebase/firestore'; 
 
 const ProfileScreen = () => {
