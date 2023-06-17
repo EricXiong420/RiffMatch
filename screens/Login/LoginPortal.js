@@ -6,6 +6,7 @@ import auth from '@react-native-firebase/auth';
 import {
     GoogleSignin,
 } from '@react-native-google-signin/google-signin';
+import { Settings, LoginManager, AccessToken } from 'react-native-fbsdk-next';
 import ChevronBackButton from '../Misc/ChevronBackButton';
 
 const LoginPortal = () => {
@@ -62,6 +63,29 @@ const LoginPortal = () => {
         return auth().signInWithCredential(googleCredential);
     }
 
+    async function onFacebookButtonPress() {
+        Settings.initializeSDK();
+        console.log("facebook!!!!")
+        // Attempt login with permissions
+        const result = await LoginManager.logInWithPermissions(["public_profile", "email"]);
+        if (result.isCancelled) {
+            throw "User cancelled the login process";
+        }
+
+        // Once signed in, get the users AccessToken
+        const data = await AccessToken.getCurrentAccessToken();
+        if (!data) {
+            throw "Something went wrong obtaining access token";
+        }
+
+        // Create Firebase credential with the AccessToken
+        const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+
+        // Sign-in the user with the credential
+        return auth().signInWithCredential(facebookCredential);
+
+    }
+
     return (
         <KeyboardAvoidingView
             styles={styles.container}
@@ -89,7 +113,7 @@ const LoginPortal = () => {
                     <Pressable style={styles.socialButtons}>
                         <Image style={styles.googleSignin} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/391px-Apple_logo_black.svg.png' }}></Image>
                     </Pressable>
-                    <Pressable style={styles.socialButtons}>
+                    <Pressable style={styles.socialButtons} onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}>
                         <Image style={styles.googleSignin} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1200px-Facebook_Logo_%282019%29.png' }}></Image>
                     </Pressable>
                 </View>

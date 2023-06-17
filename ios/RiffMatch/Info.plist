@@ -34,7 +34,19 @@
 				<string>com.googleusercontent.apps.774297545230-ijmr29li5hla2dochnrgb0a6m397e3vv</string>
 			</array>
 		</dict>
-	</array>
+  		<dict>
+  			<key>CFBundleURLSchemes</key>
+  			<array>
+    			<string>fb594882839302047</string>
+  			</array>
+  		</dict>
+  	</array>
+	<key>FacebookAppID</key>
+	<string>594882839302047</string>
+	<key>FacebookClientToken</key>
+	<string>2cb36c954ba386a2732642ed8e898cb4</string>
+	<key>FacebookDisplayName</key>
+	<string>RiffMatch</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -93,5 +105,6 @@
 		<string>CormorantGaramond-SemiBold.ttf</string>
 		<string>CormorantGaramond-SemiBoldItalic.ttf</string>
 	</array>
+	
 </dict>
 </plist>
