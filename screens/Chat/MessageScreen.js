@@ -1,4 +1,5 @@
 import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from "react"
 import MyMessageItem from './MyMessageItem';
 
@@ -7,12 +8,48 @@ const MessageScreen = ({ route, navigation }) => {
     const [textMessage, setTextMessage] = useState("")
     const { userInfo } = route.params;
 
+    const saveMessage = async () => {
+        try {
+            if (messages.length > 0) {
+                const jsonValue = JSON.stringify(messages)
+                await AsyncStorage.setItem('@messages', jsonValue)
+            }
+
+        } catch (e) {
+            // saving error
+            console.log(e)
+        }
+    }
+
+    useEffect(() => {
+        saveMessage();
+    }, [messages])
+
     const sendMessage = () => {
         if (textMessage !== "") {
-            messages.push({ message: textMessage });
+            setMessages([...messages, { message: textMessage, time: new Date(), to: userInfo.user, from: userInfo.from }]);
             setTextMessage("")
         }
     }
+
+    const getMessages = async () => {
+        // await AsyncStorage.removeItem('@messages')
+        try {
+            const value = await AsyncStorage.getItem('@messages')
+            if (value !== null) {
+                setMessages(JSON.parse(value))
+                console.log(value)
+            } 
+        } catch (e) {
+            // error reading value
+            console.log(e)
+        }
+    }
+
+    // Get the initial messages stored in local storage
+    useEffect(() => {
+        getMessages();
+    }, [])
 
     return <KeyboardAvoidingView behavior={"height"} style={styles.chatItemContainer}>
         <View style={styles.headerBar}>
@@ -28,7 +65,7 @@ const MessageScreen = ({ route, navigation }) => {
             <Text style={styles.name}>{userInfo.firstName} {userInfo.lastName}</Text>
         </View>
 
-        {messages.map(message => {
+        {messages.filter(message => message.to == userInfo.user).map(message => {
             return <MyMessageItem key={message.message} message={message.message}></MyMessageItem>
         })}
 
