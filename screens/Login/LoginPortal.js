@@ -1,4 +1,4 @@
-import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
+import { ActivityIndicator, StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
 import { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Logo from "../../assets/login/logo.png"
@@ -12,18 +12,33 @@ const LoginPortal = () => {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     const [user, setUser] = useState({});
-    const [info, setInfo] = useState('');
+    const [errMsg, setErrMsg] = useState('');
 
-    const handleLogin = () => {
-        auth()
+    const handleLogin = async () => {
+        setLoading(true);
+        await auth()
             .signInWithEmailAndPassword(email, password)
             .then(() => {
-                setInfo('');
+                setErrMsg('');
             })
             .catch(error => {
-                setInfo(error.message);
-            });
+                // Displaying the same message for wrong password and user not found
+                // because we don't want an attacker to be able to figure out what
+                // email has been registered
+                    if (error.code === "auth/invalid-email") {
+                        setErrMsg("Invalid email address: " + email);
+                    } else if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
+                        setErrMsg("Incorrect email or password")
+                    } else {
+                        setErrMsg(error.message);
+                    }
+                }
+            );
+        setLoading(false);
+        setEmail("");
+        setPassword("");
     }
 
     useEffect(() => {
@@ -59,10 +74,13 @@ const LoginPortal = () => {
                 <TextInput autoCapitalize='none' value={email} onChangeText={setEmail} placeholder='Email' textContentType='emailAddress' style={styles.loginInput}></TextInput>
                 <TextInput autoCapitalize='none' secureTextEntry={true} value={password} onChangeText={setPassword} placeholder='Password' textContentType='password' style={styles.loginInput}></TextInput>
 
+                {loading === true ? <ActivityIndicator /> 
+                : (email !== "" && password !== "") ? 
                 <Pressable onPress={handleLogin} style={styles.loginButton}>
                     <Text style={styles.loginButtonText}>Login</Text>
                 </Pressable>
-                <Text style={styles.info}>{info}</Text>
+                : <Text style={[styles.loginButton, styles.invalidLoginButtonText]}>Login</Text>}
+                <Text style={styles.errMsg}>{errMsg}</Text>
                 <Text style={styles.otherSignInText}>- OR -</Text>
                 <View style={styles.socialLogins}>
                     <Pressable style={styles.socialButtons} onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}>
@@ -121,7 +139,14 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: '600',
         textDecorationLine: 'underline'
-
+    },
+    invalidLoginButtonText: {
+        textAlign: 'right',
+        fontFamily: "Cormorant Garamond",
+        fontSize: 25,
+        fontWeight: '600',
+        textDecorationLine: 'underline',
+        color: "#bdbdbd"
     },
     otherSignInText: {
         fontFamily: "Cormorant Garamond",
@@ -135,7 +160,7 @@ const styles = StyleSheet.create({
         marginLeft: 50,
         resizeMode: 'contain'
     },
-    info: {
+    errMsg: {
         color: "red",
         marginTop: 20,
         marginBottom: 20

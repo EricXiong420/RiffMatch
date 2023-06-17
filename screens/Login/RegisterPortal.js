@@ -1,111 +1,176 @@
-import { StyleSheet, View, KeyboardAvoidingView, TextInput, Image, Text, Pressable } from 'react-native';
-import { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
-import ChevronBackButton from '../Misc/ChevronBackButton';
-import Logo from "../../assets/login/logo.png"
+import {
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  TextInput,
+  Image,
+  Text,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
+import { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import ChevronBackButton from "../Misc/ChevronBackButton";
+import Logo from "../../assets/login/logo.png";
 
-const genders = [
-  'male',
-  'female',
-  'other',
-];
+const genders = ["male", "female", "other"];
 
 const RegisterPortal = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [cfmPassword, setCfmPassword] = useState('');
-  const [info, setInfo] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [cfmPassword, setCfmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
   const [initializing, setInitializing] = useState(true);
   const navigation = useNavigation();
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (password != cfmPassword) {
-      setInfo("Passwords do not match!");
+      setErrMsg("Passwords do not match!");
     } else {
+      setLoading(true);
       // Attempt to create account in firebase auth
-      auth()
+      await auth()
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
           // Write user data to the firestore
           firestore()
-            .collection('users')
+            .collection("users")
             .doc(email.toLowerCase())
             .set({
               firstName: "",
-              created: new Date()
+              created: new Date(),
             })
             .then(() => {
-              console.log('User added!');
-              navigation.navigate("CreateProfileBasic")
+              console.log("User added!");
+              navigation.navigate("CreateProfileBasic");
             });
         })
-        .catch(error => {
-          setInfo(error.code);
+        .catch((error) => {
+          if (error.code === "auth/invalid-email") {
+            setErrMsg("Invalid email address: " + email);
+          } else if (error.code === "auth/email-already-in-use") {
+            setErrMsg("Email already in use");
+          } else if (error.code === "auth/weak-password") {
+            setErrMsg("The password is too weak");
+          } else {
+            setErrMsg(error.message);
+          }
         });
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <KeyboardAvoidingView
-      styles={styles.container}
-      behaviour="padding">
+    <KeyboardAvoidingView styles={styles.container} behaviour="padding">
       <View style={styles.mainContainer}>
         <ChevronBackButton></ChevronBackButton>
         <Image source={Logo} style={styles.logo}></Image>
 
         <Text style={styles.welcomeText}>Welcome!</Text>
 
-        <TextInput autoCapitalize='none' value={email} onChangeText={setEmail} placeholder='Email' textContentType='emailAddress' style={styles.loginInput}></TextInput>
-        <TextInput autoCapitalize='none' secureTextEntry={true} value={password} onChangeText={setPassword} placeholder='Password' textContentType='password' style={styles.loginInput}></TextInput>
-        <TextInput autoCapitalize='none' secureTextEntry={true} value={cfmPassword} onChangeText={setCfmPassword} placeholder='Confirm Password' textContentType='password' style={styles.loginInput}></TextInput>
+        <TextInput
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email"
+          textContentType="emailAddress"
+          style={styles.loginInput}
+        ></TextInput>
+        <TextInput
+          autoCapitalize="none"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          textContentType="password"
+          style={styles.loginInput}
+        ></TextInput>
+        <TextInput
+          autoCapitalize="none"
+          secureTextEntry={true}
+          value={cfmPassword}
+          onChangeText={setCfmPassword}
+          placeholder="Confirm Password"
+          textContentType="password"
+          style={styles.loginInput}
+        ></TextInput>
 
-        <Pressable onPress={handleSignup} style={styles.loginButton}>
-          <Text style={styles.loginButtonText}>Register</Text>
-        </Pressable>
-        <Text style={styles.info}>{info}</Text>
+        {loading === true ? ( // logic for greying out Register button, and loading
+          <ActivityIndicator />
+        ) : email !== "" && password !== "" && cfmPassword !== "" ? (
+          <Pressable onPress={handleSignup} style={styles.loginButton}>
+            <Text style={styles.loginButtonText}>Register</Text>
+          </Pressable>
+        ) : (
+          <Text style={[styles.loginButton, styles.invalidLoginButtonText]}>
+            Register
+          </Text>
+        )}
+        <Text style={styles.errMsg}>{errMsg}</Text>
         <Text style={styles.otherSignInText}>- OR -</Text>
         <View style={styles.socialLogins}>
-          <Pressable style={styles.socialButtons} onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}>
-            <Image style={styles.googleSignin} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png' }}></Image>
+          <Pressable
+            style={styles.socialButtons}
+            onPress={() =>
+              onGoogleButtonPress().then(() =>
+                console.log("Signed in with Google!")
+              )
+            }
+          >
+            <Image
+              style={styles.googleSignin}
+              source={{
+                uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png",
+              }}
+            ></Image>
           </Pressable>
           <Pressable style={styles.socialButtons}>
-            <Image style={styles.googleSignin} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/391px-Apple_logo_black.svg.png' }}></Image>
+            <Image
+              style={styles.googleSignin}
+              source={{
+                uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/391px-Apple_logo_black.svg.png",
+              }}
+            ></Image>
           </Pressable>
           <Pressable style={styles.socialButtons}>
-            <Image style={styles.googleSignin} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1200px-Facebook_Logo_%282019%29.png' }}></Image>
+            <Image
+              style={styles.googleSignin}
+              source={{
+                uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1200px-Facebook_Logo_%282019%29.png",
+              }}
+            ></Image>
           </Pressable>
         </View>
-
-
       </View>
     </KeyboardAvoidingView>
-  )
-}
+  );
+};
 
-export default RegisterPortal
+export default RegisterPortal;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    padding: 15
+    padding: 15,
   },
   loginInput: {
-    marginBottom: 15
+    marginBottom: 15,
   },
   loginButton: {
-    marginTop: 20
+    marginTop: 20,
   },
   buttonBack: {
-    fontSize: 40
+    fontSize: 40,
   },
   welcomeText: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 30,
     fontFamily: "Cormorant Garamond",
     fontWeight: "bold",
     marginBottom: 40,
-    marginTop: -20
+    marginTop: -20,
   },
   loginInput: {
     marginBottom: 15,
@@ -119,53 +184,60 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginTop: 5,
-    textAlign: 'right'
+    textAlign: "right",
   },
   loginButtonText: {
-    textAlign: 'right',
+    textAlign: "right",
     fontFamily: "Cormorant Garamond",
     fontSize: 25,
-    fontWeight: '600',
-    textDecorationLine: 'underline'
-
+    fontWeight: "600",
+    textDecorationLine: "underline",
+  },
+  invalidLoginButtonText: {
+    textAlign: "right",
+    fontFamily: "Cormorant Garamond",
+    fontSize: 25,
+    fontWeight: "600",
+    textDecorationLine: "underline",
+    color: "#bdbdbd",
   },
   otherSignInText: {
     fontFamily: "Cormorant Garamond",
-    textAlign: 'center',
-    fontSize: 20
+    textAlign: "center",
+    fontSize: 20,
   },
   logo: {
     marginBottom: 40,
     width: 280,
     height: 200,
     marginLeft: 50,
-    resizeMode: 'contain'
+    resizeMode: "contain",
   },
-  info: {
+  errMsg: {
     color: "red",
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 20,
   },
   socialLogins: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center'
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   socialButtons: {
     marginTop: 20,
     marginLeft: 20,
     marginRight: 20,
     padding: 10,
-    borderColor: 'black',
+    borderColor: "black",
     borderWidth: 1,
     borderRadius: 10,
     width: 52,
-    display: 'flex',
-    flexDirection: 'row',
-    alignSelf: 'center'
+    display: "flex",
+    flexDirection: "row",
+    alignSelf: "center",
   },
   googleSignin: {
     width: 30,
     height: 30,
-  }
-})
+  },
+});
