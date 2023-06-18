@@ -1,15 +1,18 @@
-import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
+import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput, FlatList } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from "react"
 import MyMessageItem from './MyMessageItem';
+import { AuthProvider, useAuth } from "../../contexts/auth"
+import { useMessages } from '../../contexts/messages';
 
 const MessageScreen = ({ route, navigation }) => {
-    const [messages, setMessages] = useState([])
+    const messageContext = useMessages()
     const [textMessage, setTextMessage] = useState("")
     const { userInfo } = route.params;
 
     const sendMessage = () => {
         if (textMessage !== "") {
-            messages.push({ message: textMessage });
+            messageContext.dispatch({ type: 'send-message', newMessage: { message: textMessage, time: new Date(), to: userInfo.user, from: userInfo.from } })
             setTextMessage("")
         }
     }
@@ -28,15 +31,18 @@ const MessageScreen = ({ route, navigation }) => {
             <Text style={styles.name}>{userInfo.firstName} {userInfo.lastName}</Text>
         </View>
 
-        {messages.map(message => {
-            return <MyMessageItem key={message.message} message={message.message}></MyMessageItem>
-        })}
+
+        <FlatList data={messageContext.state.messages.filter(message => message.to == userInfo.user)}
+            keyExtractor={item => item.time}
+            renderItem={({ item }) => <MyMessageItem message={item.message} />}>
+        </FlatList>
 
         <View style={styles.keyboardEntry}>
             <TextInput
                 multiline={true} value={textMessage} style={styles.messageInput} onChangeText={setTextMessage} placeholder="Enter your message here..."></TextInput>
             <Pressable onPress={sendMessage}><Text>Send</Text></Pressable>
         </View>
+
 
     </KeyboardAvoidingView>
 

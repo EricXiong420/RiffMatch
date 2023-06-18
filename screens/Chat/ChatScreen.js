@@ -1,4 +1,4 @@
-import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
+import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, FlatList } from 'react-native'
 import { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
@@ -50,9 +50,10 @@ const ChatScreen = () => {
             </Pressable></View>
 
         <View style={styles.chatUsers}>
-            {usersList?.map(userItem => {
-                return <ChatUserItem key={userItem} user={userItem} currentUserEmail={user.email}></ChatUserItem>
-            })}
+            <FlatList data={usersList}
+                keyExtractor={item => item}
+                renderItem={({ item }) => <ChatUserItem user={item} currentUserEmail={user.email} />}>
+            </FlatList>
         </View>
 
     </KeyboardAvoidingView>
@@ -83,9 +84,9 @@ const styles = StyleSheet.create({
         width: 35,
         height: 35,
         borderRadius: 1000,
-        borderWidth: 1,
+        // borderWidth: 1,
         marginRight: 20,
-        borderColor: "black"
+        // borderColor: "black"
     },
     chatUsers: {
         marginTop: 20

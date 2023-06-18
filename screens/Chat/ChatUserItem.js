@@ -39,7 +39,7 @@ const ChatUserItem = ({ user, currentUserEmail }) => {
         getUserInfo();
     }, [user]);
 
-    return <Pressable onPress={() => navigation.navigate('MessageScreen', {userInfo: {...userInfo, profileImage} })} style={styles.chatItemContainer}>
+    return <Pressable onPress={() => navigation.navigate('MessageScreen', {userInfo: {...userInfo, profileImage, from: currentUserEmail} })} style={styles.chatItemContainer}>
         <Image source={{ uri: profileImage ? profileImage : null,
     cache: 'only-if-cached' }} style={styles.profile}></Image>
         <View>
@@ -71,9 +71,9 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 1000,
-        borderWidth: 1,
+        // borderWidth: 1,
         marginRight: 20,
-        borderColor: "black"
+        // borderColor: "black"
     },
     nameAndTime: {
         display: 'flex',

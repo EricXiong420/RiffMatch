@@ -18,6 +18,7 @@ import auth from '@react-native-firebase/auth';
 import ProfileScreen from './screens/Profile/ProfileScreen';
 import ChatScreen from './screens/Chat/ChatScreen';
 import MessageScreen from './screens/Chat/MessageScreen';
+import { MessagesProvider } from './contexts/messages';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -77,27 +78,30 @@ export default function App() {
       },
     })}>
       <Tab.Screen name="Home" component={HomeStackScreen} />
-      <Tab.Screen name="Chat" component={ChatStackScreen}  options={{ headerShown: false }}/>
+      <Tab.Screen name="Chat" component={ChatStackScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Profile" component={ProfileStackScreen} />
     </Tab.Navigator>
   }
 
   return (
     <ApplicationProvider {...eva} theme={eva.light} >
-      <NavigationContainer>
-        {!loggedIn ? <Stack.Navigator>
-          <Stack.Group>
-            <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
-            <Stack.Screen name="LoginPortal" component={LoginPortal} options={{ headerShown: false }} />
-            <Stack.Screen name="RegisterPortal" component={RegisterPortal} options={{ headerShown: false }} />
-          </Stack.Group>
-        </Stack.Navigator> :
-          <Stack.Navigator>
-            <Stack.Screen name="HomeStack" component={HomeItems}  options={{ headerShown: false }}/>
-            <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }}/>
-          </Stack.Navigator>
-        }
-      </NavigationContainer>
+      <MessagesProvider>
+        <NavigationContainer>
+          {!loggedIn ? <Stack.Navigator>
+            <Stack.Group>
+              <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+              <Stack.Screen name="LoginPortal" component={LoginPortal} options={{ headerShown: false }} />
+              <Stack.Screen name="RegisterPortal" component={RegisterPortal} options={{ headerShown: false }} />
+            </Stack.Group>
+          </Stack.Navigator> :
+            <Stack.Navigator>
+              <Stack.Screen name="HomeStack" component={HomeItems} options={{ headerShown: false }} />
+              <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
+            </Stack.Navigator>
+          }
+
+        </NavigationContainer>
+      </MessagesProvider>
     </ApplicationProvider >
 
   );
