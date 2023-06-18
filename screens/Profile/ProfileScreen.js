@@ -6,6 +6,7 @@ const ProfileScreen = () => {
     const [boxHeight, setBoxHeight] = useState(80);
     const [selectedPicture, setSelectedPicture] = useState();
         
+
     const Introduction = () => {
         const [introduction, setIntroduction] = useState('');
         return (
@@ -78,6 +79,7 @@ const ProfileScreen = () => {
         </ScrollView>
     )
 }
+
 
 export default ProfileScreen
 
