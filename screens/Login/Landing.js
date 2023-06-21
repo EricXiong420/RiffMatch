@@ -8,7 +8,6 @@ import auth from '@react-native-firebase/auth';
 
 const Landing = () => {
     const navigation = useNavigation();
-    const [user, setUser] = useState();
 
 
     return (

@@ -1,30 +1,32 @@
 import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, Button } from 'react-native'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
+import { useAuth } from '../../contexts/AuthContext';
 
-const CreateProfileImage = () => {
+const CreateProfileImage = ({ userInfo }) => {
     const navigation = useNavigation();
     const [image, setImage] = useState('');
-    const [user, setUser] = useState({});
 
-    function onAuthStateChanged(user) {
-        setUser(user);
-    }
-
-    useEffect(() => {
-        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-        return subscriber;
-    }, []);
+    const { user, setFirstTimeUser } = useAuth();
 
     const updateProfile = async () => {
+        firestore()
+            .collection('users')
+            .doc(user.email)
+            .set({
+                firstName: userInfo.firstName,
+                lastName: userInfo.lastName,
+                gender: userInfo.gender.toLowerCase(),
+                instruments: userInfo.instruments,
+                created: new Date()
+            })
         const reference = storage().ref(`profile-images/${user.email}.png`);
         await reference.putFile(image)
 
-        navigation.navigate("HomeScreen")
+        setFirstTimeUser(false);
     }
 
     return (

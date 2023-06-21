@@ -19,6 +19,8 @@ import ProfileScreen from './screens/Profile/ProfileScreen';
 import ChatScreen from './screens/Chat/ChatScreen';
 import MessageScreen from './screens/Chat/MessageScreen';
 import { MessagesProvider } from './contexts/messages';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ActivityIndicator } from 'react-native-web';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,26 +30,19 @@ const ProfileStack = createNativeStackNavigator();
 
 
 export default function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { user, firstTimeUser, loadingInitial } = useAuth();
 
-  function onAuthStateChanged(user) {
-    if (user) { setLoggedIn(true) } else {
-      setLoggedIn(false)
-    }
+  // eventually move userInfo and the Create Profile pages to a new js file
+  const userInfo = {
+    firstName: "",
+    lastName: "",
+    gender: "",
+    instruments: ""
   }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  }, []);
-
 
   const HomeStackScreen = () => {
     return <HomeStack.Navigator>
       <HomeStack.Screen name="HomeScreen" component={Home} options={{ headerShown: false }} />
-      <HomeStack.Screen name="CreateProfileBasic" component={CreateProfileBasic} options={{ headerShown: false }} />
-      <HomeStack.Screen name="CreateProfileInstruments" component={CreateProfileInstruments} options={{ headerShown: false }} />
-      <HomeStack.Screen name="CreateProfileImage" component={CreateProfileImage} options={{ headerShown: false }} />
     </HomeStack.Navigator>
   }
 
@@ -85,23 +80,36 @@ export default function App() {
 
   return (
     <ApplicationProvider {...eva} theme={eva.light} >
+      <AuthProvider>
       <MessagesProvider>
         <NavigationContainer>
-          {!loggedIn ? <Stack.Navigator>
+          {loadingInitial ? <ActivityIndicator />
+          : (user === null)
+          ? <Stack.Navigator>
             <Stack.Group>
               <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
               <Stack.Screen name="LoginPortal" component={LoginPortal} options={{ headerShown: false }} />
               <Stack.Screen name="RegisterPortal" component={RegisterPortal} options={{ headerShown: false }} />
             </Stack.Group>
-          </Stack.Navigator> :
-            <Stack.Navigator>
-              <Stack.Screen name="HomeStack" component={HomeItems} options={{ headerShown: false }} />
-              <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
+          </Stack.Navigator> 
+          : firstTimeUser
+          ? <Stack.Navigator>
+              <Stack.Screen 
+                name="CreateProfileBasic" 
+                component={CreateProfileBasic} 
+                initialParams={{ userInfo }}
+                options={{ headerShown: false }} />
+              <Stack.Screen name="CreateProfileInstruments" component={CreateProfileInstruments} options={{ headerShown: false }} />
+              <Stack.Screen name="CreateProfileImage" component={CreateProfileImage} options={{ headerShown: false }} />
+            </Stack.Navigator>
+          : <Stack.Navigator>
+          <Stack.Screen name="HomeStack" component={HomeItems} options={{ headerShown: false }} />
+          <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
             </Stack.Navigator>
           }
-
         </NavigationContainer>
       </MessagesProvider>
+      </AuthProvider>
     </ApplicationProvider >
 
   );

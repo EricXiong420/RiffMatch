@@ -1,39 +1,20 @@
 import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import { MultipleSelectList } from 'react-native-dropdown-select-list'
+import { MultipleSelectList } from 'react-native-dropdown-select-list';
 
-const CreateProfileInstruments = () => {
+const CreateProfileInstruments = ({ userInfo }) => {
     const navigation = useNavigation();
     const [selected, setSelected] = useState([]);
-    const [user, setUser] = useState({});
-    const genders = ["Male", "Female", "Other"]
-
 
     const data = [{ "key": 1, "value": "accordion" }, { "key": 2, "value": "air horn" }, { "key": 3, "value": "baby grand piano" }, { "key": 4, "value": "bagpipe" }, { "key": 5, "value": "banjo" }, { "key": 6, "value": "bass guitar" }, { "key": 7, "value": "bassoon" }, { "key": 8, "value": "bugle" }, { "key": 9, "value": "calliope" }, { "key": 10, "value": "cello" }, { "key": 11, "value": "clarinet" }, { "key": 12, "value": "clavichord" }, { "key": 13, "value": "concertina" }, { "key": 14, "value": "didgeridoo" }, { "key": 15, "value": "dobro" }, { "key": 16, "value": "dulcimer" }, { "key": 17, "value": "fiddle" }, { "key": 18, "value": "fife" }, { "key": 19, "value": "flugelhorn" }, { "key": 20, "value": "flute" }, { "key": 21, "value": "French horn" }, { "key": 22, "value": "glockenspiel" }, { "key": 23, "value": "grand piano" }, { "key": 24, "value": "guitar" }, { "key": 25, "value": "harmonica" }, { "key": 26, "value": "harp" }, { "key": 27, "value": "harpsichord" }, { "key": 28, "value": "hurdy-gurdy" }, { "key": 29, "value": "kazoo" }, { "key": 30, "value": "kick drum" }, { "key": 31, "value": "lute" }, { "key": 32, "value": "lyre" }, { "key": 33, "value": "mandolin" }, { "key": 34, "value": "marimba" }, { "key": 35, "value": "mellotran" }, { "key": 36, "value": "melodica" }, { "key": 37, "value": "oboe" }, { "key": 38, "value": "pan flute" }, { "key": 39, "value": "piano" }, { "key": 40, "value": "piccolo" }, { "key": 41, "value": "pipe organ" }, { "key": 42, "value": "saxaphone" }, { "key": 43, "value": "sitar" }, { "key": 44, "value": "sousaphone" }, { "key": 45, "value": "tambourine" }, { "key": 46, "value": "theremin" }, { "key": 47, "value": "trombone" }, { "key": 48, "value": "tuba" }, { "key": 49, "value": "ukulele" }, { "key": 50, "value": "viola" }, { "key": 51, "value": "violin" }, { "key": 52, "value": "vuvuzela" }, { "key": 53, "value": "washtub bass" }, { "key": 54, "value": "xylophone" }, { "key": 55, "value": "zither" }]
 
-    // Handle user state changes
-    function onAuthStateChanged(user) {
-        setUser(user);
-    }
-
-    useEffect(() => {
-        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-        return subscriber; // unsubscribe on unmount
-    }, []);
-
     const updateProfile = () => {
-        firestore()
-            .collection('users')
-            .doc(user.email)
-            .update({
-                instruments: selected
-            })
-            .then(() => {
-                navigation.navigate("CreateProfileImage")
-            });
+        const newUserInfo = {
+            ...userInfo,
+            instruments: selected
+        }
+        navigation.navigate("CreateProfileImage", { newUserInfo });
     }
 
     return (

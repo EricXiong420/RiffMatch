@@ -1,89 +1,22 @@
 import { ActivityIndicator, StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Logo from "../../assets/login/logo.png"
-import auth from '@react-native-firebase/auth';
-import {
-    GoogleSignin,
-} from '@react-native-google-signin/google-signin';
-import { Settings, LoginManager, AccessToken } from 'react-native-fbsdk-next';
 import ChevronBackButton from '../Misc/ChevronBackButton';
+import GoogleButton from './GoogleButton';
+import FacebookButton from './FacebookButton';
+import { useAuth } from '../../contexts/AuthContext';
 
 const LoginPortal = () => {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [user, setUser] = useState({});
-    const [errMsg, setErrMsg] = useState('');
 
-    const handleLogin = async () => {
-        setLoading(true);
-        await auth()
-            .signInWithEmailAndPassword(email, password)
-            .then(() => {
-                setErrMsg('');
-            })
-            .catch(error => {
-                // Displaying the same message for wrong password and user not found
-                // because we don't want an attacker to be able to figure out what
-                // email has been registered
-                    if (error.code === "auth/invalid-email") {
-                        setErrMsg("Invalid email address: " + email);
-                    } else if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
-                        setErrMsg("Incorrect email or password")
-                    } else {
-                        setErrMsg(error.message);
-                    }
-                }
-            );
-        setLoading(false);
+    const { handleLogin, errMsg, loading } = useAuth();
+
+    const clearFields = () => {
         setEmail("");
         setPassword("");
-    }
-
-    useEffect(() => {
-        GoogleSignin.configure({
-            webClientId:
-                '774297545230-2ac056bcn210ssqd6n38a3hoafgvurjq.apps.googleusercontent.com',
-            offlineAccess: true,
-        });
-    }, []);
-
-    async function onGoogleButtonPress() {
-        // Check if your device supports Google Play
-        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-        // Get the users ID token
-        const { idToken } = await GoogleSignin.signIn();
-
-        // Create a Google credential with the token
-        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-        // Sign-in the user with the credential
-        return auth().signInWithCredential(googleCredential);
-    }
-
-    async function onFacebookButtonPress() {
-        Settings.initializeSDK();
-        console.log("facebook!!!!")
-        // Attempt login with permissions
-        const result = await LoginManager.logInWithPermissions(["public_profile", "email"]);
-        if (result.isCancelled) {
-            throw "User cancelled the login process";
-        }
-
-        // Once signed in, get the users AccessToken
-        const data = await AccessToken.getCurrentAccessToken();
-        if (!data) {
-            throw "Something went wrong obtaining access token";
-        }
-
-        // Create Firebase credential with the AccessToken
-        const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
-
-        // Sign-in the user with the credential
-        return auth().signInWithCredential(facebookCredential);
-
     }
 
     return (
@@ -98,24 +31,24 @@ const LoginPortal = () => {
                 <TextInput autoCapitalize='none' value={email} onChangeText={setEmail} placeholder='Email' textContentType='emailAddress' style={styles.loginInput}></TextInput>
                 <TextInput autoCapitalize='none' secureTextEntry={true} value={password} onChangeText={setPassword} placeholder='Password' textContentType='password' style={styles.loginInput}></TextInput>
 
-                {loading === true ? <ActivityIndicator /> 
-                : (email !== "" && password !== "") ? 
-                <Pressable onPress={handleLogin} style={styles.loginButton}>
+                {loading === true 
+                ? <ActivityIndicator /> 
+                : (email !== "" && password !== "")
+                ? ( <Pressable onPress={() => {
+                    handleLogin(email, password);
+                    clearFields(); }} style={styles.loginButton}>
                     <Text style={styles.loginButtonText}>Login</Text>
-                </Pressable>
-                : <Text style={[styles.loginButton, styles.invalidLoginButtonText]}>Login</Text>}
+                </Pressable> )
+                : <Text style={[styles.loginButton, styles.invalidLoginButtonText]}>Login</Text>
+                }
                 <Text style={styles.errMsg}>{errMsg}</Text>
                 <Text style={styles.otherSignInText}>- OR -</Text>
                 <View style={styles.socialLogins}>
-                    <Pressable style={styles.socialButtons} onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}>
-                        <Image style={styles.googleSignin} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png' }}></Image>
-                    </Pressable>
+                    <GoogleButton />
                     <Pressable style={styles.socialButtons}>
                         <Image style={styles.googleSignin} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/391px-Apple_logo_black.svg.png' }}></Image>
                     </Pressable>
-                    <Pressable style={styles.socialButtons} onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}>
-                        <Image style={styles.googleSignin} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1200px-Facebook_Logo_%282019%29.png' }}></Image>
-                    </Pressable>
+                    <FacebookButton />
                 </View>
             </View>
         </KeyboardAvoidingView>

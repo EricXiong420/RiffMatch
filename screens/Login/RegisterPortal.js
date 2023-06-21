@@ -10,58 +10,19 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import firestore from "@react-native-firebase/firestore";
-import auth from "@react-native-firebase/auth";
+import { useAuth } from "../../contexts/AuthContext";
 import ChevronBackButton from "../Misc/ChevronBackButton";
 import Logo from "../../assets/login/logo.png";
-
-const genders = ["male", "female", "other"];
+import FacebookButton from "./FacebookButton.js";
+import GoogleButton from "./GoogleButton";
 
 const RegisterPortal = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cfmPassword, setCfmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
-  const [initializing, setInitializing] = useState(true);
   const navigation = useNavigation();
 
-  const handleSignup = async () => {
-    if (password != cfmPassword) {
-      setErrMsg("Passwords do not match!");
-    } else {
-      setLoading(true);
-      // Attempt to create account in firebase auth
-      await auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          // Write user data to the firestore
-          firestore()
-            .collection("users")
-            .doc(email.toLowerCase())
-            .set({
-              firstName: "",
-              created: new Date(),
-            })
-            .then(() => {
-              console.log("User added!");
-              navigation.navigate("CreateProfileBasic");
-            });
-        })
-        .catch((error) => {
-          if (error.code === "auth/invalid-email") {
-            setErrMsg("Invalid email address: " + email);
-          } else if (error.code === "auth/email-already-in-use") {
-            setErrMsg("Email already in use");
-          } else if (error.code === "auth/weak-password") {
-            setErrMsg("The password is too weak");
-          } else {
-            setErrMsg(error.message);
-          }
-        });
-      setLoading(false);
-    }
-  };
+  const { handleSignup, loading, errMsg } = useAuth();
 
   return (
     <KeyboardAvoidingView styles={styles.container} behaviour="padding">
@@ -101,7 +62,7 @@ const RegisterPortal = () => {
         {loading === true ? ( // logic for greying out Register button, and loading
           <ActivityIndicator />
         ) : email !== "" && password !== "" && cfmPassword !== "" ? (
-          <Pressable onPress={handleSignup} style={styles.loginButton}>
+          <Pressable onPress={() => handleSignup(email, password, cfmPassword)} style={styles.loginButton}>
             <Text style={styles.loginButtonText}>Register</Text>
           </Pressable>
         ) : (
@@ -112,21 +73,7 @@ const RegisterPortal = () => {
         <Text style={styles.errMsg}>{errMsg}</Text>
         <Text style={styles.otherSignInText}>- OR -</Text>
         <View style={styles.socialLogins}>
-          <Pressable
-            style={styles.socialButtons}
-            onPress={() =>
-              onGoogleButtonPress().then(() =>
-                console.log("Signed in with Google!")
-              )
-            }
-          >
-            <Image
-              style={styles.googleSignin}
-              source={{
-                uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png",
-              }}
-            ></Image>
-          </Pressable>
+          <GoogleButton />
           <Pressable style={styles.socialButtons}>
             <Image
               style={styles.googleSignin}
@@ -135,14 +82,7 @@ const RegisterPortal = () => {
               }}
             ></Image>
           </Pressable>
-          <Pressable style={styles.socialButtons}>
-            <Image
-              style={styles.googleSignin}
-              source={{
-                uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1200px-Facebook_Logo_%282019%29.png",
-              }}
-            ></Image>
-          </Pressable>
+          <FacebookButton />
         </View>
       </View>
     </KeyboardAvoidingView>

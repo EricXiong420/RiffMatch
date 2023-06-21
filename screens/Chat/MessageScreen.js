@@ -2,7 +2,7 @@ import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInp
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from "react"
 import MyMessageItem from './MyMessageItem';
-import { AuthProvider, useAuth } from "../../contexts/auth"
+import { AuthProvider, useAuth } from "../../contexts/AuthContext"
 import { useMessages } from '../../contexts/messages';
 
 const MessageScreen = ({ route, navigation }) => {

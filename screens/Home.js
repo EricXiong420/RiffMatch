@@ -4,6 +4,7 @@ import { Button } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/core';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { useAuth } from '../contexts/AuthContext';
 
 
 const Home = () => {
@@ -11,21 +12,15 @@ const Home = () => {
   const [userData, setUserData] = useState({});
   const [initializing, setInitializing] = useState(true);
 
+  const { user, firstTimeUser } = useAuth();
+
   const onAuthStateChanged = async (user) => {
     if (user) {
       const data = await firestore().collection('users').doc(user.email).get();
-      if (data._data.firstName == "") {
-        navigation.navigate("CreateProfileBasic")
-      }
-      setUserData({ ...data._data, email: user.email })
+      setUserData({ ...data, email: user.email })
     }
     if (initializing) setInitializing(false);
   }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  }, []);
 
   const handleSignout = () => {
     auth()
@@ -38,6 +33,7 @@ const Home = () => {
       <Text>Welcome: {userData.first_name} {userData.last_name}</Text>
       <Text>Gender: {userData.gender}</Text>
       <Text>Email: {userData.email}</Text>
+      <Text>{String(firstTimeUser === null)} </Text>
       <Button onPress={handleSignout}>Signout</Button>
     </View>
   )
