@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { NavigationContainer, Modal } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -15,12 +15,12 @@ import CreateProfileInstruments from './screens/Login/CreateProfileInstruments';
 import CreateProfileBasic from './screens/Login/CreateProfileBasic';
 import CreateProfileImage from './screens/Login/CreateProfileImage';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import ProfileScreen from './screens/Profile/ProfileScreen';
 import ChatScreen from './screens/Chat/ChatScreen';
 import MessageScreen from './screens/Chat/MessageScreen';
 import { MessagesProvider } from './contexts/messages';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { ActivityIndicator } from 'react-native-web';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,7 +30,17 @@ const ProfileStack = createNativeStackNavigator();
 
 
 export default function App() {
-  const { user, firstTimeUser, loadingInitial } = useAuth();
+  // idk why I can't just get user from useAuth
+  const [user, setUser] = useState(null);
+  const [firstTimeUser, setFirstTimeUser] = useState(false);
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged((user) => {
+        setUser(user);
+        firestore().collection("users").doc(user?.email).get().then(document => setFirstTimeUser(!document.exists));
+    })
+    return subscriber;
+  
+}, [])
 
   // eventually move userInfo and the Create Profile pages to a new js file
   const userInfo = {
@@ -41,7 +51,13 @@ export default function App() {
   }
 
   const HomeStackScreen = () => {
-    return <HomeStack.Navigator>
+    return <HomeStack.Navigator initialRouteName="HomeScreen">
+      <HomeStack.Screen 
+        name="CreateProfileBasic" 
+        component={CreateProfileBasic} 
+        options={{ headerShown: false }} />
+      <HomeStack.Screen name="CreateProfileInstruments" component={CreateProfileInstruments} options={{ headerShown: false }} />
+      <HomeStack.Screen name="CreateProfileImage" component={CreateProfileImage} options={{ headerShown: false }} />
       <HomeStack.Screen name="HomeScreen" component={Home} options={{ headerShown: false }} />
     </HomeStack.Navigator>
   }
@@ -59,6 +75,7 @@ export default function App() {
   }
 
   const HomeItems = () => {
+    
     return <Tab.Navigator screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
@@ -78,13 +95,13 @@ export default function App() {
     </Tab.Navigator>
   }
 
+
   return (
     <ApplicationProvider {...eva} theme={eva.light} >
       <AuthProvider>
       <MessagesProvider>
         <NavigationContainer>
-          {loadingInitial ? <ActivityIndicator />
-          : (user === null)
+          {(user == null)
           ? <Stack.Navigator>
             <Stack.Group>
               <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
@@ -92,16 +109,6 @@ export default function App() {
               <Stack.Screen name="RegisterPortal" component={RegisterPortal} options={{ headerShown: false }} />
             </Stack.Group>
           </Stack.Navigator> 
-          : firstTimeUser
-          ? <Stack.Navigator>
-              <Stack.Screen 
-                name="CreateProfileBasic" 
-                component={CreateProfileBasic} 
-                initialParams={{ userInfo }}
-                options={{ headerShown: false }} />
-              <Stack.Screen name="CreateProfileInstruments" component={CreateProfileInstruments} options={{ headerShown: false }} />
-              <Stack.Screen name="CreateProfileImage" component={CreateProfileImage} options={{ headerShown: false }} />
-            </Stack.Navigator>
           : <Stack.Navigator>
           <Stack.Screen name="HomeStack" component={HomeItems} options={{ headerShown: false }} />
           <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />

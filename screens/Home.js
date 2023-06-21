@@ -14,13 +14,19 @@ const Home = () => {
 
   const { user, firstTimeUser } = useAuth();
 
-  const onAuthStateChanged = async (user) => {
+  useEffect(() => {
     if (user) {
-      const data = await firestore().collection('users').doc(user.email).get();
-      setUserData({ ...data, email: user.email })
+      firestore().collection('users').doc(user.email)
+        .onSnapshot(document => {
+          if (!document.exists) {
+            navigation.navigate("CreateProfileBasic");
+          } else {
+            setUserData({ ...document.data(), email: user.email });
+          }
+        });
     }
     if (initializing) setInitializing(false);
-  }
+  }, []);
 
   const handleSignout = () => {
     auth()
@@ -30,7 +36,7 @@ const Home = () => {
 
   return (
     <View>
-      <Text>Welcome: {userData.first_name} {userData.last_name}</Text>
+      <Text>Welcome: {userData.firstName} {userData.lastName}</Text>
       <Text>Gender: {userData.gender}</Text>
       <Text>Email: {userData.email}</Text>
       <Text>{String(firstTimeUser === null)} </Text>

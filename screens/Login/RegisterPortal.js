@@ -17,12 +17,14 @@ import FacebookButton from "./FacebookButton.js";
 import GoogleButton from "./GoogleButton";
 
 const RegisterPortal = () => {
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cfmPassword, setCfmPassword] = useState("");
   const navigation = useNavigation();
 
-  const { handleSignup, loading, errMsg } = useAuth();
+  const { handleSignup, loading, errMsg, user } = useAuth();
+  console.log(user);
 
   return (
     <KeyboardAvoidingView styles={styles.container} behaviour="padding">

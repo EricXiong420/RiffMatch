@@ -3,7 +3,14 @@ import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import SelectDropdown from 'react-native-select-dropdown'
 
-const CreateProfileBasic = ({ userInfo }) => {
+const CreateProfileBasic = () => {
+    const userInfo = {
+        firstName: "",
+        lastName: "",
+        gender: "",
+        instruments: ""
+      }
+    console.log(userInfo);
     const navigation = useNavigation();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -17,7 +24,8 @@ const CreateProfileBasic = ({ userInfo }) => {
             lastName: lastName,
             gender: gender
         }
-        navigation.navigate("CreateProfileInstruments", { newUserInfo });
+        console.log(newUserInfo)
+        navigation.navigate("CreateProfileInstruments", newUserInfo);
     }
 
     return (

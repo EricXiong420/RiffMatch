@@ -9,7 +9,6 @@ import auth from '@react-native-firebase/auth';
 const Landing = () => {
     const navigation = useNavigation();
 
-
     return (
         <KeyboardAvoidingView
             styles={styles.container}

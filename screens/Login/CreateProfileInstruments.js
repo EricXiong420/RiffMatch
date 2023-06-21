@@ -3,7 +3,9 @@ import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 
-const CreateProfileInstruments = ({ userInfo }) => {
+const CreateProfileInstruments = ({ route }) => {
+    const userInfo = route.params;
+    console.log(userInfo);
     const navigation = useNavigation();
     const [selected, setSelected] = useState([]);
 
@@ -14,7 +16,7 @@ const CreateProfileInstruments = ({ userInfo }) => {
             ...userInfo,
             instruments: selected
         }
-        navigation.navigate("CreateProfileImage", { newUserInfo });
+        navigation.navigate("CreateProfileImage", newUserInfo);
     }
 
     return (

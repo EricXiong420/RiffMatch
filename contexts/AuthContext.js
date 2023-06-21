@@ -15,10 +15,9 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         setLoadingInitial(true);
-        const subscriber = auth().onAuthStateChanged(async (user) => {
+        const subscriber = auth().onAuthStateChanged((user) => {
             setUser(user);
-            await firestore().collection("users").doc(user?.email).get()
-              .then(document => setFirstTimeUser(!document.exists));
+            firestore().collection("users").doc(user?.email).get().then(document => setFirstTimeUser(!document.exists));
             setLoading(false);
             setLoadingInitial(false);
         })

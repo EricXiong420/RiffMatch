@@ -6,11 +6,13 @@ import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useAuth } from '../../contexts/AuthContext';
 
-const CreateProfileImage = ({ userInfo }) => {
+const CreateProfileImage = ({ route }) => {
+    const userInfo = route.params;
+    console.log(userInfo);
     const navigation = useNavigation();
     const [image, setImage] = useState('');
 
-    const { user, setFirstTimeUser } = useAuth();
+    const { user } = useAuth();
 
     const updateProfile = async () => {
         firestore()
@@ -26,7 +28,7 @@ const CreateProfileImage = ({ userInfo }) => {
         const reference = storage().ref(`profile-images/${user.email}.png`);
         await reference.putFile(image)
 
-        setFirstTimeUser(false);
+        navigation.navigate("HomeScreen");
     }
 
     return (
