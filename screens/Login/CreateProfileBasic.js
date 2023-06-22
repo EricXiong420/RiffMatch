@@ -1,41 +1,31 @@
 import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import SelectDropdown from 'react-native-select-dropdown'
 
 const CreateProfileBasic = () => {
+    const userInfo = {
+        firstName: "",
+        lastName: "",
+        gender: "",
+        instruments: ""
+      }
+    console.log(userInfo);
     const navigation = useNavigation();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [gender, setGender] = useState('');
-    const [user, setUser] = useState({});
     const genders = ["Male", "Female", "Other"]
 
-
-    function onAuthStateChanged(user) {
-        setUser(user);
-    }
-
-    useEffect(() => {
-        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-        return subscriber; 
-    }, []);
-
     const updateProfile = () => {
-        firestore()
-            .collection('users')
-            .doc(user.email)
-            .set({
-                firstName,
-                lastName,
-                gender: gender.toLowerCase(),
-                created: new Date()
-            })
-            .then(() => {
-                navigation.navigate("CreateProfileInstruments")
-            });
+        const newUserInfo = {
+            ...userInfo,
+            firstName: firstName,
+            lastName: lastName,
+            gender: gender
+        }
+        console.log(newUserInfo)
+        navigation.navigate("CreateProfileInstruments", newUserInfo);
     }
 
     return (
