@@ -1,18 +1,34 @@
 import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput, FlatList } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import MyMessageItem from './MyMessageItem';
 import { AuthProvider, useAuth } from "../../contexts/auth"
 import { useMessages } from '../../contexts/messages';
+import { sendMessage } from '../../api/messages';
+import TheirMessageItem from './TheirMessageItem';
 
 const MessageScreen = ({ route, navigation }) => {
     const messageContext = useMessages()
+    const messagesRef = useRef(null)
+    const [messages, setMessages] = useState([])
     const [textMessage, setTextMessage] = useState("")
+    const [chatId, setChatId] = useState('')
     const { userInfo } = route.params;
 
-    const sendMessage = () => {
+    // Grab the messages from messageContext
+    useEffect(() => {
+        const currentChatData = messageContext.state.filter(group => group.members.includes(userInfo.user))[0]
+        setMessages(currentChatData.messages)
+        setChatId(currentChatData.chatId)
+    }, [messageContext.state])
+
+    const send = () => {
         if (textMessage !== "") {
-            messageContext.dispatch({ type: 'send-message', newMessage: { message: textMessage, time: new Date(), to: userInfo.user, from: userInfo.from } })
+            sendMessage({
+                updatedMessages: [...messages, { message: textMessage, sentBy: userInfo.from, sentAt: new Date() }],
+                newMessage: { message: textMessage, sentBy: userInfo.from, sentAt: new Date() },
+                chatId
+            })
             setTextMessage("")
         }
     }
@@ -32,15 +48,24 @@ const MessageScreen = ({ route, navigation }) => {
         </View>
 
 
-        <FlatList data={messageContext.state.messages.filter(message => message.to == userInfo.user)}
-            keyExtractor={item => item.time}
-            renderItem={({ item }) => <MyMessageItem message={item.message} />}>
+        <FlatList 
+            style={styles.messagesFlatList}
+            inverted
+            data={[...messages].reverse()}
+            renderItem={({ item }) => {
+                if (item.sentBy == userInfo.user) {
+                    return <TheirMessageItem message={item.message}></TheirMessageItem>
+                } else {
+                    return <MyMessageItem message={item.message} />
+
+                }
+            }}>
         </FlatList>
 
         <View style={styles.keyboardEntry}>
             <TextInput
                 multiline={true} value={textMessage} style={styles.messageInput} onChangeText={setTextMessage} placeholder="Enter your message here..."></TextInput>
-            <Pressable onPress={sendMessage}><Text>Send</Text></Pressable>
+            <Pressable onPress={send}><Text>Send</Text></Pressable>
         </View>
 
 
@@ -100,5 +125,8 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         paddingBottom: 15,
         paddingRight: 20
+    },
+    messagesFlatList: {
+        marginBottom: 100
     }
 })

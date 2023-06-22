@@ -4,7 +4,7 @@ import { Button } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/core';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -12,8 +12,10 @@ const Home = () => {
   const [initializing, setInitializing] = useState(true);
 
   const onAuthStateChanged = async (user) => {
+    
     if (user) {
       const data = await firestore().collection('users').doc(user.email).get();
+      AsyncStorage.setItem('@currentUserEmail', user.email)
       if (data._data.firstName == "") {
         navigation.navigate("CreateProfileBasic")
       }
