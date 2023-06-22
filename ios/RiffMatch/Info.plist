@@ -34,13 +34,13 @@
 				<string>com.googleusercontent.apps.774297545230-ijmr29li5hla2dochnrgb0a6m397e3vv</string>
 			</array>
 		</dict>
-  		<dict>
-  			<key>CFBundleURLSchemes</key>
-  			<array>
-    			<string>fb594882839302047</string>
-  			</array>
-  		</dict>
-  	</array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb594882839302047</string>
+			</array>
+		</dict>
+	</array>
 	<key>FacebookAppID</key>
 	<string>594882839302047</string>
 	<key>FacebookClientToken</key>
@@ -94,6 +94,7 @@
 	<string>For the profile image and other images for others to see</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string></string>
 		<string>CormorantGaramond-Bold.ttf</string>
 		<string>CormorantGaramond-BoldItalic.ttf</string>
 		<string>CormorantGaramond-Italic.ttf</string>
@@ -105,6 +106,5 @@
 		<string>CormorantGaramond-SemiBold.ttf</string>
 		<string>CormorantGaramond-SemiBoldItalic.ttf</string>
 	</array>
-	
 </dict>
 </plist>
