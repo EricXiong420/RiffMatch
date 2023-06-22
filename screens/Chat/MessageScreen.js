@@ -51,8 +51,8 @@ const MessageScreen = ({ route, navigation }) => {
             style={styles.messagesFlatList}
             inverted
             data={[...messages].reverse()}
-            maxToRenderPerBatch={2}
-            initialNumToRender={2}
+            maxToRenderPerBatch={1}
+            initialNumToRender={10}
             renderItem={({ item, index }) => {
                 const isFirstMessage = [...messages].reverse()[index].sentBy !== [...messages].reverse()[index + 1]?.sentBy
                 if (item.sentBy == userInfo.user) {
