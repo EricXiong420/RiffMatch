@@ -1,81 +1,13 @@
 import { ScrollView, FlatList, StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
 import { useState, useEffect } from 'react';
-import firestore from '@react-native-firebase/firestore'; 
+import firestore from '@react-native-firebase/firestore';
 
 const ProfileScreen = () => {
-    const [boxHeight, setBoxHeight] = useState(80);
-    const [selectedPicture, setSelectedPicture] = useState();
-        
-
-    const Introduction = () => {
-        const [introduction, setIntroduction] = useState('');
-        return (
-            <>
-            <Text style={styles.headerText}>my introduction</Text>
-            <TextInput
-                multiline
-                autoCapitalize='none'
-                autoCorrect={false}
-                onChangeText={setIntroduction} 
-                onContentSizeChange={event => setBoxHeight(event.nativeEvent.contentSize.height)}
-                value={introduction} 
-                scrollEnabled={false}
-                placeholder="I'm planning to form a band..."
-                style={[styles.introductionInput, {height: boxHeight + 20}]} // only way i can find to not cutt off text
-            />
-            </>
-        )
-    }
-
-    const Pictures = () => {
-        const pictureData = [
-            {
-                id: 1,
-                source: require('../../assets/profilepic.webp')
-            },
-            {
-                id: 2,
-                source: require('../../assets/gorillaz.jpg')
-            },
-            {
-                id: 3,
-                source: require('../../assets/gorillaz.jpg')
-            }
-        ];
-
-        const renderPicture = ({item}) => {
-            return (
-                <Pressable onPress={() => setSelectedPicture(item.id)}>
-                    <Image style={styles.pictures} source={item.source} />
-                </Pressable>
-            )
-        }
-
-        const handleAddPictures = () => {
-            // navigate to add pages page
-        }
-        return (
-            <>
-            <Text style={styles.headerText}>my pictures</Text>
-            <FlatList
-                horizontal
-                style={styles.picturesContainer}
-                data={pictureData}
-                renderItem={renderPicture}
-                keyExtractor={item => item.id}
-                extraData={selectedPicture}
-            />
-            <Pressable onPress={handleAddPictures} >
-                <Text style={styles.addButton} >add more pictures...</Text>
-            </Pressable>
-            </>
-        )
-    }
 
     return (
-        <ScrollView style={styles.mainContainer}> 
-            <Introduction />
-            <Pictures />
+        <ScrollView style={styles.mainContainer}>
+            <Text>Profile</Text>
+
         </ScrollView>
     )
 }

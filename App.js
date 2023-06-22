@@ -91,7 +91,7 @@ export default function App() {
     })}>
       <Tab.Screen name="Home" component={HomeStackScreen} />
       <Tab.Screen name="Chat" component={ChatStackScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="Profile" component={ProfileStackScreen} />
+      <Tab.Screen name="Profile" component={ProfileStackScreen} options={{ headerShown: false }}/>
     </Tab.Navigator>
   }
 

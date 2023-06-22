@@ -8,11 +8,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import { TextInput } from 'react-native-gesture-handler';
 
 const ChatScreen = () => {
-    const { user } = useAuth()
+    const { user, profileImage } = useAuth()
     const navigation = useNavigation();
     const messageContext = useMessages()
     const [usersList, setUsersList] = useState([]);
-    const [profileImage, setProfileImage] = useState('');
+    // const [profileImage, setProfileImage] = useState('');
     const [search, setSearch] = useState('')
 
     useEffect(() => {
@@ -21,9 +21,6 @@ const ChatScreen = () => {
 
     const updateData = async () => {
         if (user) {
-            const url = await storage().ref(`profile-images/${user.email}.png`).getDownloadURL();
-            setProfileImage(url)
-
             let list = [];
             messageContext.state.forEach(item => {
                 list.push({

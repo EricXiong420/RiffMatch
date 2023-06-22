@@ -22,17 +22,19 @@ function MessagesProvider({ children }) {
     const user = useAuth()
 
     useEffect(() => {
-        const subscriber = firestore()
-            .collection('messages')
-            .where('members', 'array-contains-any', [user.user.email])
-            .onSnapshot(snapshot => {
-                let list = [];
-                snapshot?.docs.forEach(item => list.push(item._data))
-                dispatch({ type: 'set-initial', data: list })
-            });
+        if (user.user) {
+            const subscriber = firestore()
+                .collection('messages')
+                .where('members', 'array-contains-any', [user?.user?.email])
+                .onSnapshot(snapshot => {
+                    let list = [];
+                    snapshot?.docs.forEach(item => list.push(item._data))
+                    dispatch({ type: 'set-initial', data: list })
+                });
 
-        // Stop listening for updates when no longer required
-        return () => subscriber();
+            // Stop listening for updates when no longer required
+            return () => subscriber();
+        }
     }, [user]);
 
     return <MessagesContext.Provider value={value}>{children}</MessagesContext.Provider>
