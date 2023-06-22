@@ -5,27 +5,28 @@ import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import ChatUserItem from './ChatUserItem';
+import { useMessages } from '../../contexts/messages';
 
 const ChatScreen = () => {
     const navigation = useNavigation();
+    const messageContext = useMessages()
     const [usersList, setUsersList] = useState([]);
     const [profileImage, setProfileImage] = useState('');
-    const [user, setUser] = useState({})
+    const [user, setUser] = useState(null)
 
-    // Listens to changes to the users collection and updates
-    // list of users.
     useEffect(() => {
-        const subscriber = firestore()
-            .collection('users')
-            .doc(user.email)
-            .onSnapshot(documentSnapshot => {
-                // Update the messaged users list when change detected
-                setUsersList(documentSnapshot.data().messagedUsers)
-            });
+        if (user) {
+            let list = [];
+            messageContext.state.forEach(item => {
+                list.push({
+                    to: item.members.filter(ite => ite !== user.email)[0],
+                    ...item
+                })
+            })
+            setUsersList(list)
+        }
 
-        // Stop listening for updates when no longer required
-        return () => subscriber();
-    }, [user.email]);
+    }, [user, messageContext])
 
     const onAuthStateChanged = async (user) => {
         if (user) {
@@ -51,8 +52,7 @@ const ChatScreen = () => {
 
         <View style={styles.chatUsers}>
             <FlatList data={usersList}
-                keyExtractor={item => item}
-                renderItem={({ item }) => <ChatUserItem user={item} currentUserEmail={user.email} />}>
+                renderItem={({ item }) => <ChatUserItem key={item.chatId} user={item} currentUserEmail={user.email} />}>
             </FlatList>
         </View>
 

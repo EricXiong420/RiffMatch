@@ -8,12 +8,11 @@ const ChatUserItem = ({ user, currentUserEmail }) => {
     const navigation = useNavigation();
     const [profileImage, setProfileImage] = useState('');
     const [userInfo, setUserInfo] = useState({})
-    const [lastMessage, setLastMessage] = useState({})
 
     const getUserInfo = async () => {
-        const data = await firestore().collection('users').doc(user).get();
-        setUserInfo({ ...data._data, user });
-        const url = await storage().ref(`profile-images/${user}.png`).getDownloadURL();
+        const data = await firestore().collection('users').doc(user.to).get();
+        setUserInfo({ ...data._data, user: user.to });
+        const url = await storage().ref(`profile-images/${user.to}.png`).getDownloadURL();
         setProfileImage(url)
     }
 
@@ -45,9 +44,9 @@ const ChatUserItem = ({ user, currentUserEmail }) => {
         <View>
             <View style={styles.nameAndTime}>
                 <Text style={styles.name}>{userInfo.firstName} {userInfo.lastName}</Text>
-                <Text style={styles.time}>11:52pm</Text>
+                <Text style={styles.time}>{user?.recentMessageSentAt?.toDate().toLocaleTimeString()}</Text>
             </View>
-            <Text style={styles.lastMessage}>{lastMessage?.message}</Text>
+            <Text style={styles.lastMessage}>{user?.recentMessageText}</Text>
         </View>
     </Pressable>
 
