@@ -9,7 +9,6 @@ import TheirMessageItem from './TheirMessageItem';
 
 const MessageScreen = ({ route, navigation }) => {
     const messageContext = useMessages()
-    const messagesRef = useRef(null)
     const [messages, setMessages] = useState([])
     const [textMessage, setTextMessage] = useState("")
     const [chatId, setChatId] = useState('')
@@ -48,15 +47,18 @@ const MessageScreen = ({ route, navigation }) => {
         </View>
 
 
-        <FlatList 
+        <FlatList
             style={styles.messagesFlatList}
             inverted
             data={[...messages].reverse()}
-            renderItem={({ item }) => {
+            maxToRenderPerBatch={1}
+            initialNumToRender={10}
+            renderItem={({ item, index }) => {
+                const isFirstMessage = [...messages].reverse()[index].sentBy !== [...messages].reverse()[index + 1]?.sentBy
                 if (item.sentBy == userInfo.user) {
-                    return <TheirMessageItem message={item.message}></TheirMessageItem>
+                    return <TheirMessageItem isFirstMessage={isFirstMessage} message={item.message} sentAt={item.sentAt}></TheirMessageItem>
                 } else {
-                    return <MyMessageItem message={item.message} />
+                    return <MyMessageItem isFirstMessage={isFirstMessage} message={item.message} sentAt={item.sentAt} />
 
                 }
             }}>
