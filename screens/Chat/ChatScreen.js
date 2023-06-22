@@ -5,6 +5,7 @@ import storage from '@react-native-firebase/storage';
 import ChatUserItem from './ChatUserItem';
 import { useMessages } from '../../contexts/messages';
 import { useAuth } from '../../contexts/AuthContext';
+import { TextInput } from 'react-native-gesture-handler';
 
 const ChatScreen = () => {
     const { user } = useAuth()
@@ -12,6 +13,7 @@ const ChatScreen = () => {
     const messageContext = useMessages()
     const [usersList, setUsersList] = useState([]);
     const [profileImage, setProfileImage] = useState('');
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
         updateData()
@@ -32,6 +34,8 @@ const ChatScreen = () => {
             setUsersList(list)
         }
     }
+
+
 
     return <KeyboardAvoidingView style={styles.chatScreenContainer}>
         <View style={styles.topBar}><Text style={styles.title}>Chat</Text>
@@ -55,7 +59,7 @@ export default ChatScreen
 
 const styles = StyleSheet.create({
     chatScreenContainer: {
-        paddingTop: 50,
+        paddingTop: 60,
         backgroundColor: 'white',
         minHeight: '100%'
     },
@@ -68,16 +72,16 @@ const styles = StyleSheet.create({
         fontFamily: "Cormorant Garamond",
         fontWeight: "bold",
         fontSize: 30,
-        marginLeft: 20,
+        marginLeft: 30,
         flex: 1
     },
     profile: {
         width: 35,
         height: 35,
         borderRadius: 1000,
-        marginRight: 20
+        marginRight: 30
     },
     chatUsers: {
-        marginTop: 20
-    }
+        marginTop: 20,
+    },
 })

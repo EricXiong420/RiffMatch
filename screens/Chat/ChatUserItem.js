@@ -33,7 +33,7 @@ const ChatUserItem = ({ chatData }) => {
                 <Text style={styles.name}>{userInfo.firstName} {userInfo.lastName}</Text>
                 <Text style={styles.time}>{chatData.recentMessageSentAt?.toDate().toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit' })}</Text>
             </View>
-            <Text style={styles.lastMessage}>{chatData.recentMessageText}</Text>
+            <Text style={styles.lastMessage} numberOfLines={1}>{chatData.recentMessageText}</Text>
         </View>
     </Pressable>
 
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         display: 'flex',
         flexDirection: 'row',
-        paddingLeft: 20,
+        paddingLeft: 30,
         marginTop: 20,
         alignItems: 'center',
         width: '100%'
@@ -57,14 +57,12 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 1000,
-        // borderWidth: 1,
-        marginRight: 20,
-        // borderColor: "black"
+        marginRight: 20
     },
     nameAndTime: {
         display: 'flex',
         flexDirection: 'row',
-        width: 270,
+        width: 250,
     },
     name: {
         fontWeight: 'bold',
@@ -73,5 +71,10 @@ const styles = StyleSheet.create({
     time: {
         color: 'grey'
     },
-    lastMessage: { color: 'grey', marginTop: 5 }
+    lastMessage: {
+        color: 'grey', 
+        marginTop: 5,
+        height: 20,
+        width: 200
+    }
 })
