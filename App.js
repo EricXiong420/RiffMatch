@@ -88,9 +88,10 @@ export default function App() {
         }
         return <Ionicons name={iconName} size={size} color={color} />;
       },
+      headerShown: false
     })}>
       <Tab.Screen name="Home" component={HomeStackScreen} />
-      <Tab.Screen name="Chat" component={ChatStackScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Chat" component={ChatStackScreen} />
       <Tab.Screen name="Profile" component={ProfileStackScreen} />
     </Tab.Navigator>
   }

@@ -130,6 +130,11 @@ export function AuthProvider({ children }) {
       }
     }
 
+    const handleSignout = () => {
+      auth()
+        .signOut()
+    }
+
     const memoedValue = useMemo(() => ({
         user,
         loading,
@@ -139,7 +144,8 @@ export function AuthProvider({ children }) {
         handleSignup,
         onFacebookButtonPress,
         onGoogleButtonPress,
-        handleLogin
+        handleLogin,
+        handleSignout
     }), [user, loading, errMsg, firstTimeUser]);
 
     return (

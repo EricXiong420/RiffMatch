@@ -14,10 +14,7 @@ const LoginPortal = () => {
 
     const { handleLogin, errMsg, loading } = useAuth();
 
-    const clearFields = () => {
-        setEmail("");
-        setPassword("");
-    }
+    const incompleteForm = (email === "" || password === "");
 
     return (
         <KeyboardAvoidingView
@@ -33,13 +30,13 @@ const LoginPortal = () => {
 
                 {loading === true 
                 ? <ActivityIndicator /> 
-                : (email !== "" && password !== "")
-                ? ( <Pressable onPress={() => {
-                    handleLogin(email, password);
-                    clearFields(); }} style={styles.loginButton}>
-                    <Text style={styles.loginButtonText}>Login</Text>
-                </Pressable> )
-                : <Text style={[styles.loginButton, styles.invalidLoginButtonText]}>Login</Text>
+                : <Pressable onPress={() => handleLogin(email, password)}
+                    disabled={incompleteForm}
+                    style={({pressed}) => [{
+                        opacity: pressed ? 0.4 : 1
+                    }, styles.loginButton]}>
+                    <Text style={incompleteForm ? styles.invalidLoginButtonText : styles.loginButtonText}>Login</Text>
+                </Pressable>
                 }
                 <Text style={styles.errMsg}>{errMsg}</Text>
                 <Text style={styles.otherSignInText}>- OR -</Text>

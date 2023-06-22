@@ -5,7 +5,11 @@ const FacebookButton = () => {
     const { onFacebookButtonPress } = useAuth();
 
     return (
-    <Pressable style={styles.socialButtons} onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}>
+    <Pressable 
+        style={({pressed}) => [{
+            opacity: pressed ? 0.3 : 1
+        }, styles.socialButtons]} 
+        onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}>
         <Image style={styles.facebookSignin} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1200px-Facebook_Logo_%282019%29.png' }}></Image>
     </Pressable>
     );

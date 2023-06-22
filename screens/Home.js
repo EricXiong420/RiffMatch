@@ -34,7 +34,7 @@ const Home = () => {
     <SafeAreaView>
       {/* Header */}
         <View>
-          <Ionicons name={}
+          <Ionicons></Ionicons>
         </View>
       {/* End of header */}
       <Text>Welcome: {userData.firstName} {userData.lastName}</Text>

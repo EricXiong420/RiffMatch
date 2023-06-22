@@ -23,6 +23,7 @@ const RegisterPortal = () => {
   const [cfmPassword, setCfmPassword] = useState("");
   const navigation = useNavigation();
 
+  const incompleteForm = (email === "" || password === "" || cfmPassword === "")
   const { handleSignup, loading, errMsg, user } = useAuth();
   console.log(user);
 
@@ -63,15 +64,15 @@ const RegisterPortal = () => {
 
         {loading === true ? ( // logic for greying out Register button, and loading
           <ActivityIndicator />
-        ) : email !== "" && password !== "" && cfmPassword !== "" ? (
-          <Pressable onPress={() => handleSignup(email, password, cfmPassword)} style={styles.loginButton}>
-            <Text style={styles.loginButtonText}>Register</Text>
+        ) : <Pressable 
+              onPress={() => handleSignup(email, password, cfmPassword)} 
+              disabled={incompleteForm}
+              style={({pressed}) => [{
+                opacity: pressed ? 0.4 : 1
+              }, styles.loginButton]}>
+            <Text style={incompleteForm ? styles.invalidLoginButtonText : styles.loginButtonText}>Register</Text>
           </Pressable>
-        ) : (
-          <Text style={[styles.loginButton, styles.invalidLoginButtonText]}>
-            Register
-          </Text>
-        )}
+        }
         <Text style={styles.errMsg}>{errMsg}</Text>
         <Text style={styles.otherSignInText}>- OR -</Text>
         <View style={styles.socialLogins}>
