@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as eva from '@eva-design/eva';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ApplicationProvider } from '@ui-kitten/components';
-import Home from './screens/Home';
+import Home from './screens/Home/Home';
 import Landing from './screens/Login/Landing';
 import RegisterPortal from './screens/Login/RegisterPortal';
 import LoginPortal from './screens/Login/LoginPortal';
