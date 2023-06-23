@@ -52,9 +52,28 @@ const Home = () => {
     }
 
     fetchCards();
+    console.log(profiles);
+    console.log("hello");
     return unsub;
   }, [])
-  console.log(profiles);
+
+  const tempProfiles = [{
+    id: 'a@a.com',
+    firstName: 'John',
+    lastName: 'Smith',
+    gender: 'male',
+    instruments: ['violin', 'drums'],
+    introduction: "wassup bitches i'm in da club"
+  },
+  {
+    id: 'b@b.com',
+    firstName: 'Patti',
+    lastName: 'Smith',
+    gender: 'female',
+    instruments: ['men', 'their feelings'],
+    introduction: "don't mess with me"
+  }]
+  
 
   return (
     initializing && (
@@ -74,20 +93,28 @@ const Home = () => {
       {/* Cards */}
         <View style={{ flex: 9 }}>
           <Swiper
-              cardVerticalMargin={30}
-              containerStyle={styles.swiperContainer}
-              cards={profiles}
-              renderCard={(card) => (
-                <View key={card?.id} style={styles.card}>
-                  <Text style={{ fontSize: 300 }}>{card?.firstName} {card?.lastName}</Text>
-                  <Text style={{ fontSize: 30 }}>{card?.gender}</Text>
-                  <Text style={{ fontSize: 20 }}>{card?.introduction}</Text>
-                  <FlatList
-                    horizontal
-                    data={card?.instruments}
-                    renderItem={(item) => (<Chip text={item} />)} />
+            cardVerticalMargin={30}
+            containerStyle={styles.swiperContainer}
+            cards={tempProfiles}
+            renderCard={(card) => (
+              <View key={card?.id} style={[styles.card, styles.cardShadow]}>
+                <View style={styles.header}>
+                  <Text style={styles.textHeader}>{card?.firstName} {card?.lastName}</Text>
+                  <Text style={styles.textSubheader}>{card?.gender}</Text>
                 </View>
-              )}
+                <View style={styles.chips}>
+                  {card?.instruments.map(instrument => (
+                    <Chip text={instrument} />
+                  ))}
+                </View>
+                <View style={styles.introduction}>
+                  <Text style={{ fontSize: 12 }}>{card?.introduction}</Text>
+                </View>
+                <View style={styles.sounds}>
+                  <Text>Sounds go here!</Text>
+                </View>
+              </View>
+            )}
           />
         </View>
 
@@ -122,10 +149,49 @@ const styles = StyleSheet.create({
   swiperContainer: {
     backgroundColor: 'transparent',
   },
+  chips: {
+    flex: 2,
+    flexDirection: 'row',
+    flexWrap: "wrap",
+    columnGap: 10
+  },
   card: {
     height: '60%',
     backgroundColor: '#fff',
-    borderRadius: 50,
-
+    gap: 10,
+    borderRadius: 40,
+    padding: 10,
+  },
+  cardShadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.5,
+    elevation: 2
+  },
+  header: {
+    flex: 5
+  },
+  textHeader: {
+    fontSize: 40, 
+    fontFamily: "Cormorant Garamond",
+    alignSelf: 'center'
+  },
+  textSubheader: {
+    fontSize: 18, 
+    alignSelf: 'center'
+  },
+  introduction: {
+    flex: 8,
+    borderWidth: 1,
+    borderColor: "#404040",
+    borderRadius: 20,
+    padding: 10
+  },
+  sounds: {
+    flex: 10
   }
 })
