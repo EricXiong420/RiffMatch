@@ -13,6 +13,7 @@ import ProfilePhotos from './ProfilePhotos';
 const ProfileScreen = () => {
     const { user, profileImage } = useAuth();
     const [profileData, setProfileData] = useState({});
+    
     const g = async () => {
         getProfileData(user.email, val => {
             setProfileData(val);
@@ -21,7 +22,7 @@ const ProfileScreen = () => {
 
     useEffect(() => {
         g()
-    }, [user])
+    }, [])
 
     return (
         <ScrollView style={styles.mainContainer}>

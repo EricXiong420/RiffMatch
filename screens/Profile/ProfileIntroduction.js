@@ -1,11 +1,14 @@
 import { FlatList, StyleSheet, View, Text, } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileIntroduction = ({ profileData }) => {
+    const navigation = useNavigation();
+
     return <View style={styles.introductionContainer}>
         <View style={styles.section}>
             <Text style={styles.sectionTitle}>My Introduction</Text>
-            <Text style={styles.editButton}><Ionicons name="create-outline"></Ionicons> Edit</Text>
+            <Text style={styles.editButton} onPress={() => navigation.navigate("EditIntroduction", { introduction: profileData.introduction })}><Ionicons name="create-outline"></Ionicons> Edit</Text>
 
         </View>
         <View style={styles.introduction}>

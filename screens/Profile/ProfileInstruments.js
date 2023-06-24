@@ -5,7 +5,7 @@ const ProfileInstruments = ({ profileData }) => {
     return <View>
         <View style={styles.section}>
             <Text style={styles.sectionTitle}>My Instruments</Text>
-            <Text style={styles.editButton}><Ionicons name="create-outline"></Ionicons> Edit</Text>
+            <Text style={styles.editButton} ><Ionicons name="create-outline"></Ionicons> Edit</Text>
         </View>
         <FlatList
             style={styles.instrumentsList}

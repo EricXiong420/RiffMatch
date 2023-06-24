@@ -14,3 +14,15 @@ export const getProfileData = async (email, callback) => {
             callback(document._data)
         });
 }
+
+export const editIntroduction = async (email, introduction, callback) => {
+    firestore()
+        .collection('users')
+        .doc(email)
+        .update({
+            introduction
+        }).then(document => {
+            callback()
+        });
+
+}
