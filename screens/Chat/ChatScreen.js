@@ -38,7 +38,7 @@ const ChatScreen = () => {
         <View style={styles.topBar}><Text style={styles.title}>Chat</Text>
             <Pressable onPress={() => navigation.navigate('Profile')}><Image source={{
                 uri: profileImage ? profileImage : null,
-                cache: 'force-cache'
+                cache: 'only-if-cached'
             }} style={styles.profile}></Image>
             </Pressable></View>
 

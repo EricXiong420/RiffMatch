@@ -15,16 +15,18 @@ export function AuthProvider({ children }) {
   const [firstTimeUser, setFirstTimeUser] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
 
-  const grabProfileImage = async () => {
-    const url = await getProfileImage(user.email);
-    setProfileImage(url);
+  const grabProfileImage = async (email) => {
+    if (email) {
+      const url = await getProfileImage(email);
+      setProfileImage(url);
+    }
   }
 
   useEffect(() => {
     setLoadingInitial(true);
     const subscriber = auth().onAuthStateChanged((user) => {
       setUser(user);
-      grabProfileImage();
+      grabProfileImage(user?.email);
       firestore().collection("users").doc(user?.email).get().then(document => setFirstTimeUser(!document.exists));
       setLoading(false);
       setLoadingInitial(false);
@@ -149,7 +151,7 @@ export function AuthProvider({ children }) {
     onFacebookButtonPress,
     onGoogleButtonPress,
     handleLogin
-  }), [user, loading, errMsg, firstTimeUser]);
+  }), [user, profileImage, loading, errMsg, firstTimeUser]);
 
   return (
     <AuthContext.Provider value={memoedValue}>
