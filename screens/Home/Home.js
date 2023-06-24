@@ -32,30 +32,26 @@ const Home = () => {
           }
         });
     }
-    
+
   }, []);
 
   useEffect(() => {
-    let unsub;
-
-    const fetchCards = async () => {
-      unsub = firestore().collection('users')
-        .onSnapshot(collection => {
-          if (collection.exists) {
-            setInitializing(false);
-            setProfiles(collection.docs.map(doc => ({
-              id: doc.id,
-              ...doc.data()
-            })));
-          }
+    const unsub = firestore().collection('users')
+      .onSnapshot(collection => {
+          setInitializing(false);
+          setProfiles(collection.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          })));
       })
-    }
-
-    fetchCards();
-    console.log(profiles);
-    console.log("hello");
     return unsub;
   }, [])
+
+  // Listen to state changes on profile
+  // Debug purposes only
+  useEffect(() => {
+    console.log('profiles', profiles);
+  }, [profiles])
 
   const tempProfiles = [{
     id: 'a@a.com',
@@ -73,12 +69,12 @@ const Home = () => {
     instruments: ['men', 'their feelings'],
     introduction: "don't mess with me"
   }]
-  
+
 
   return (
-    initializing && (
-    <SafeAreaView style = {{ flex: 1, flexDirection: "column" }}>
-      {/* Header */}
+    !initializing && (
+      <SafeAreaView style={{ flex: 1, flexDirection: "column" }}>
+        {/* Header */}
         <View style={styles.container}>
           <Pressable>
             <FontAwesome name={"sliders"} size={35} color={"black"}></FontAwesome>
@@ -88,14 +84,14 @@ const Home = () => {
             <Ionicons name={"notifications-outline"} size={35} color={"black"}></Ionicons>
           </Pressable>
         </View>
-      {/* End of header */}
+        {/* End of header */}
 
-      {/* Cards */}
+        {/* Cards */}
         <View style={{ flex: 9 }}>
           <Swiper
             cardVerticalMargin={30}
             containerStyle={styles.swiperContainer}
-            cards={tempProfiles}
+            cards={profiles}
             renderCard={(card) => (
               <View key={card?.id} style={[styles.card, styles.cardShadow]}>
                 <View style={styles.header}>
@@ -103,7 +99,7 @@ const Home = () => {
                   <Text style={styles.textSubheader}>{card?.gender}</Text>
                 </View>
                 <View style={styles.chips}>
-                  {card?.instruments.map(instrument => (
+                  {card?.instruments?.map(instrument => (
                     <Chip text={instrument} />
                   ))}
                 </View>
@@ -118,16 +114,16 @@ const Home = () => {
           />
         </View>
 
-      {/* End of cards */}
-      
-      <View style={{ flex: 1 }}>
-        <Text>Welcome: {userData.firstName} {userData.lastName}</Text>
-        <Text>Gender: {userData.gender}</Text>
-        <Text>Email: {userData.email}</Text>
-        <Button onPress={handleSignout}>Signout</Button>
-      </View>
-    </SafeAreaView>
-  ))
+        {/* End of cards */}
+
+        <View style={{ flex: 1 }}>
+          <Text>Welcome: {userData.firstName} {userData.lastName}</Text>
+          <Text>Gender: {userData.gender}</Text>
+          <Text>Email: {userData.email}</Text>
+          <Button onPress={handleSignout}>Signout</Button>
+        </View>
+      </SafeAreaView>
+    ))
 }
 
 export default Home
@@ -176,12 +172,12 @@ const styles = StyleSheet.create({
     flex: 5
   },
   textHeader: {
-    fontSize: 40, 
+    fontSize: 40,
     fontFamily: "Cormorant Garamond",
     alignSelf: 'center'
   },
   textSubheader: {
-    fontSize: 18, 
+    fontSize: 18,
     alignSelf: 'center'
   },
   introduction: {
