@@ -10,6 +10,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Swiper from 'react-native-deck-swiper';
 import Logo from "../../assets/login/logo.png";
+import { Audio } from 'expo-av';
 import Chip from './Chip';
 
 
@@ -18,6 +19,7 @@ const Home = () => {
   const [userData, setUserData] = useState({});
   const [initializing, setInitializing] = useState(true);
   const [profiles, setProfiles] = useState([]);
+  const [sound, setSound] = React.useState();
 
   const { user, handleSignout } = useAuth();
 
