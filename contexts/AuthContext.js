@@ -3,13 +3,14 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { Settings, LoginManager, AccessToken } from 'react-native-fbsdk-next';
 import { GoogleSignin, statusCodes, } from "@react-native-google-signin/google-signin";
-import { getProfileImage } from '../api/profile';
+import { getProfileData, getProfileImage } from '../api/profile';
 
 const AuthContext = createContext({});
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [profileImage, setProfileImage] = useState('')
+  const [profileData, setProfileData] = useState({});
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState('');
   const [firstTimeUser, setFirstTimeUser] = useState(false);
@@ -23,10 +24,25 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
+    if (user) {
+      const subscriber = firestore()
+        .collection('users')
+        .doc(user.email)
+        .onSnapshot(snapshot => {
+          console.log(snapshot._data)
+          setProfileData(snapshot._data)
+        });
+      return () => subscriber();
+    }
+  }, [user]);
+
+
+
+  useEffect(() => {
     setLoadingInitial(true);
     const subscriber = auth().onAuthStateChanged((user) => {
       setUser(user);
-      grabProfileImage(user?.email);
+      grabProfileImage(user?.email)
       firestore().collection("users").doc(user?.email).get().then(document => setFirstTimeUser(!document.exists));
       setLoading(false);
       setLoadingInitial(false);
@@ -146,12 +162,13 @@ export function AuthProvider({ children }) {
     errMsg,
     firstTimeUser,
     profileImage,
+    profileData,
     setFirstTimeUser,
     handleSignup,
     onFacebookButtonPress,
     onGoogleButtonPress,
     handleLogin
-  }), [user, profileImage, loading, errMsg, firstTimeUser]);
+  }), [user, profileImage, profileData, loading, errMsg, firstTimeUser]);
 
   return (
     <AuthContext.Provider value={memoedValue}>
