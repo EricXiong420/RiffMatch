@@ -1,43 +1,47 @@
 import { FlatList, StyleSheet, View, Text, Pressable, Image } from 'react-native'
+import { useState, useEffect } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../contexts/AuthContext';
+import { getUserPhotoLink } from '../../api/profile';
 
-const ProfilePhotos = ({ profileData }) => {
-
-    const pictureData = [
-        {
-            id: 1,
-            source: require('../../assets/profilepic.webp')
-        },
-        {
-            id: 2,
-            source: require('../../assets/gorillaz.jpg')
-        },
-        {
-            id: 3,
-            source: require('../../assets/gorillaz.jpg')
-        }
-    ];
+const ProfilePhotos = () => {
+    const { user, profileData } = useAuth()
+    const navigation = useNavigation();
 
     return <View>
-          <View style={styles.section}>
+        <View style={styles.section}>
             <Text style={styles.sectionTitle}>My Photos</Text>
-            <Text style={styles.editButton}><Ionicons name="create-outline"></Ionicons> Edit</Text>
+            <Text style={styles.editButton} onPress={() => navigation.navigate('EditPhotos')}><Ionicons name="create-outline"></Ionicons> Edit</Text>
 
         </View>
         <FlatList
             horizontal
             nestedScrollEnabled
             style={styles.picturesContainer}
-            data={pictureData}
+            data={profileData.photos}
             renderItem={({ item }) => {
                 return <Pressable>
-                    <Image style={styles.pictures} source={item.source} />
+                    <Photo photoUUID={item}></Photo>
                 </Pressable>
             }}
-            keyExtractor={item => item.id}
-        // extraData={selectedPicture}
+            keyExtractor={item => item}
         />
     </View>
+}
+
+const Photo = ({ photoUUID }) => {
+    const [photoLink, setPhotoLink] = useState(null);
+
+    useEffect(() => {
+        getUserPhotoLink(photoUUID, (url) => setPhotoLink(url))
+    }, [])
+
+    return <Image style={styles.pictures} source={{
+        uri: photoLink ? photoLink : null,
+        cache: 'force-cache'
+    }} />
+
 }
 
 export default ProfilePhotos

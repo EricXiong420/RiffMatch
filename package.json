@@ -26,6 +26,7 @@
     "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
     "firebase": "^9.22.1",
+    "nanoid": "^4.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.8",
@@ -38,6 +39,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-select-dropdown": "^3.3.3",
     "react-native-svg": "13.4.0",
+    "react-native-uuid": "^2.0.1",
     "react-native-web": "~0.18.10",
     "rn-fetch-blob": "^0.12.0",
     "short-uuid": "^4.2.2"
