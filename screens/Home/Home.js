@@ -38,11 +38,11 @@ const Home = () => {
   useEffect(() => {
     const unsub = firestore().collection('users')
       .onSnapshot(collection => {
-          setInitializing(false);
-          setProfiles(collection.docs.filter(doc => doc.id !== user.email).map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          })));
+        setInitializing(false);
+        setProfiles(collection.docs.filter(doc => doc.id !== user.email).map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })));
       })
     return unsub;
   }, [])
@@ -56,7 +56,7 @@ const Home = () => {
   const handleSwipeLeft = () => {
     return;
   }
-  
+
   const handleSwipeRight = () => {
     return;
   }
@@ -109,8 +109,8 @@ const Home = () => {
                   <Ionicons name={"musical-notes-outline"} size={46} color={"#404040"} />
                   <Text style={{ fontWeight: "bold", fontSize: 14 }}>CONNECT</Text></View>,
                 title: ""
-                }
               }
+            }
             }
             onSwipedRight={handleSwipeRight}
             onSwipedLeft={handleSwipeLeft}
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 90,
     height: 90
-  }, 
+  },
   card: {
     height: '60%',
     backgroundColor: '#fff',

@@ -166,13 +166,15 @@ export function AuthProvider({ children }) {
         loading,
         errMsg,
         firstTimeUser,
+        profileImage,
+        profileData,
         setFirstTimeUser,
         handleSignup,
         onFacebookButtonPress,
         onGoogleButtonPress,
         handleLogin,
         handleSignout
-    }), [user, loading, errMsg, firstTimeUser]);
+    }), [user, loading, profileData, profileImage, errMsg, firstTimeUser]);
 
   return (
     <AuthContext.Provider value={memoedValue}>
