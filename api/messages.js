@@ -15,14 +15,3 @@ export const sendMessage = ({ updatedMessages, newMessage, chatId }) => {
             console.log('Message added to firestore!');
         });
 }
-
-export const getChats = (currentUserEmail) => {
-    firestore()
-        .collection('messages')
-        .where('members', 'in', [currentUser])
-        .orderBy('recentMessageSentAt')
-        .get()
-        .then(querySnapshot => {
-            return querySnapshot;
-        });
-}
