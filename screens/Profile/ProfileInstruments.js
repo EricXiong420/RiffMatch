@@ -1,22 +1,21 @@
 import { FlatList, StyleSheet, View, Text, } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileInstruments = ({ profileData }) => {
+    const navigation = useNavigation();
     return <View>
         <View style={styles.section}>
             <Text style={styles.sectionTitle}>My Instruments</Text>
-            <Text style={styles.editButton} ><Ionicons name="create-outline"></Ionicons> Edit</Text>
+            <Text style={styles.editButton} onPress={() => navigation.navigate("EditInstruments")}><Ionicons name="create-outline"></Ionicons> Edit</Text>
         </View>
-        <FlatList
-            style={styles.instrumentsList}
-            data={profileData.instruments}
-            horizontal
-            renderItem={({ item }) => {
-                return <View style={styles.instrumentTag}>
-                    <Text style={styles.instrumentTagText}>{item}</Text>
+        <View style={styles.instrumentsList}>
+            {profileData.instruments.map(instrument => {
+                return <View key={instrument} style={styles.instrumentTag}>
+                    <Text style={styles.instrumentTagText}>{instrument}</Text>
                 </View>
-            }}
-        ></FlatList>
+            })}
+        </View>
     </View>
 }
 

@@ -30,8 +30,25 @@ export const editIntroduction = async (email, introduction, callback) => {
         }).then(document => {
             callback()
         });
-
 }
+
+export const editInstruments = async (email, instruments) => {
+    firestore()
+        .collection('users')
+        .doc(email)
+        .update({
+            instruments
+        })
+}
+export const editGenres = async (email, genres) => {
+    firestore()
+        .collection('users')
+        .doc(email)
+        .update({
+            genres
+        })
+}
+
 
 export const deleteUserPhoto = async (email, photoUUID, callback) => {
     firestore()

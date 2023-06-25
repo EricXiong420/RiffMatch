@@ -20,8 +20,10 @@ import ChatScreen from './screens/Chat/ChatScreen';
 import MessageScreen from './screens/Chat/MessageScreen';
 import { MessagesProvider } from './contexts/messages';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import ProfileEditIntroduction from './screens/Profile/ProfileEditIntroduction';
-import ProfileEditPhotos from './screens/Profile/ProfileEditPhotos';
+import ProfileEditIntroduction from './screens/Profile/Edit/ProfileEditIntroduction';
+import ProfileEditPhotos from './screens/Profile/Edit/ProfileEditPhotos';
+import ProfileEditInstruments from './screens/Profile/Edit/ProfileEditInstruments';
+import ProfileEditGenres from './screens/Profile/Edit/ProfileEditGenres';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -116,6 +118,8 @@ export default function App() {
                   <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
                   <Stack.Screen name="EditIntroduction" component={ProfileEditIntroduction} options={{ headerTitle: 'Edit Introduction' }}></Stack.Screen>
                   <Stack.Screen name="EditPhotos" component={ProfileEditPhotos} options={{ headerTitle: 'Edit Photos' }}></Stack.Screen>
+                  <Stack.Screen name="EditInstruments" component={ProfileEditInstruments} options={{ headerTitle: 'Edit Instruments' }}></Stack.Screen>
+                  <Stack.Screen name="EditGenres" component={ProfileEditGenres} options={{ headerTitle: 'Edit Genres' }}></Stack.Screen>
 
                 </Stack.Navigator>
               }

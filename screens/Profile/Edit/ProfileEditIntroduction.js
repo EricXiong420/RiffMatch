@@ -2,8 +2,8 @@ import { Pressable, StyleSheet, View, Text, } from 'react-native'
 import { useState, useEffect } from 'react'
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { editIntroduction } from '../../api/profile';
-import { useAuth } from '../../contexts/AuthContext';
+import { editIntroduction } from '../../../api/profile';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const ProfileEditIntroduction = ({ route, navigation }) => {
     const { user } = useAuth();

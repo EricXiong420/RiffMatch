@@ -1,30 +1,14 @@
 import { Pressable, StyleSheet, View, Text, FlatList, Image, Button, Alert } from 'react-native'
 import { useState, useEffect } from 'react'
-import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
-import { addPhotoToDB, deleteUserPhoto, editIntroduction, getUserPhotoLink } from '../../api/profile';
-import { useAuth } from '../../contexts/AuthContext';
+import { addPhotoToDB, deleteUserPhoto, getUserPhotoLink } from '../../../api/profile';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const ProfileEditPhotos = ({ route, navigation }) => {
     const { user, profileData } = useAuth();
     const [profilePhotos, setProfilePhotos] = useState([])
     const [image, setImage] = useState(null)
-
-    const pictureData = [
-        {
-            id: 1,
-            source: require('../../assets/profilepic.webp')
-        },
-        {
-            id: 2,
-            source: require('../../assets/gorillaz.jpg')
-        },
-        {
-            id: 3,
-            source: require('../../assets/gorillaz.jpg')
-        }
-    ];
 
     const deletePhoto = (photoUUID) => {
         Alert.alert('Delete Photo', 'Are you sure you want to delete this?', [
