@@ -21,6 +21,7 @@ import ChatScreen from './screens/Chat/ChatScreen';
 import MessageScreen from './screens/Chat/MessageScreen';
 import { MessagesProvider } from './contexts/messages';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import ProfileModalScreen from './screens/Home/ProfileModalScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -40,7 +41,7 @@ export default function App() {
     })
     return subscriber;
   
-}, [])
+  }, [])
 
   // eventually move userInfo and the Create Profile pages to a new js file
   const userInfo = {
@@ -51,14 +52,14 @@ export default function App() {
   }
 
   const HomeStackScreen = () => {
-    return <HomeStack.Navigator initialRouteName="HomeScreen">
+    return <HomeStack.Navigator initialRouteName="HomeScreen" screenOptions={{ headerShown: false }}>
       <HomeStack.Screen 
         name="CreateProfileBasic" 
-        component={CreateProfileBasic} 
-        options={{ headerShown: false }} />
-      <HomeStack.Screen name="CreateProfileInstruments" component={CreateProfileInstruments} options={{ headerShown: false }} />
-      <HomeStack.Screen name="CreateProfileImage" component={CreateProfileImage} options={{ headerShown: false }} />
-      <HomeStack.Screen name="HomeScreen" component={Home} options={{ headerShown: false }} />
+        component={CreateProfileBasic} />
+      <HomeStack.Screen name="CreateProfileInstruments" component={CreateProfileInstruments} />
+      <HomeStack.Screen name="CreateProfileImage" component={CreateProfileImage} />
+      <HomeStack.Screen name="HomeScreen" component={Home} />
+      <HomeStack.Screen name="ProfileModal" component={ProfileModalScreen} options={{ presentation: "modal" }} />
     </HomeStack.Navigator>
   }
 
