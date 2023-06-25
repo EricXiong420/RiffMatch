@@ -12,7 +12,7 @@ const ChatUserItem = ({ chatData }) => {
     const [userInfo, setUserInfo] = useState({})
 
     const getUserInfo = async () => {
-        const messageToEmail = chatData.members.filter(email => email !== user.email)[0];
+        const messageToEmail = chatData.members.filter(email => email !== user?.email)[0];
         const data = await firestore().collection('users').doc(messageToEmail).get();
         setUserInfo({ ...data._data, user: messageToEmail });
         const url = await storage().ref(`profile-images/${messageToEmail}.png`).getDownloadURL();
@@ -23,7 +23,7 @@ const ChatUserItem = ({ chatData }) => {
         getUserInfo();
     }, [user]);
 
-    return <Pressable onPress={() => navigation.navigate('MessageScreen', { userInfo: { ...userInfo, profileImage, from: user.email } })} style={styles.chatItemContainer}>
+    return <Pressable onPress={() => navigation.navigate('MessageScreen', { userInfo: { ...userInfo, profileImage, from: user?.email } })} style={styles.chatItemContainer}>
         <Image source={{
             uri: profileImage ? profileImage : null,
             cache: 'force-cache'

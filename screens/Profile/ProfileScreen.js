@@ -1,82 +1,60 @@
-import { ScrollView, FlatList, StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
+import { ScrollView, SafeAreaView, StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
 import { useState, useEffect } from 'react';
-import firestore from '@react-native-firebase/firestore'; 
+import firestore from '@react-native-firebase/firestore';
+import Logo from "../../assets/login/logo.png"
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useAuth } from '../../contexts/AuthContext';
+import { getProfileData } from '../../api/profile';
+import ProfileInstruments from './ProfileInstruments';
+import ProfileIntroduction from './ProfileIntroduction';
+import ProfilePhotos from './ProfilePhotos';
+import ProfileGenres from './ProfileGenres';
+import ProfileSounds from './ProfileSounds';
 
 const ProfileScreen = () => {
-    const [boxHeight, setBoxHeight] = useState(80);
-    const [selectedPicture, setSelectedPicture] = useState();
-        
-
-    const Introduction = () => {
-        const [introduction, setIntroduction] = useState('');
-        return (
-            <>
-            <Text style={styles.headerText}>my introduction</Text>
-            <TextInput
-                multiline
-                autoCapitalize='none'
-                autoCorrect={false}
-                onChangeText={setIntroduction} 
-                onContentSizeChange={event => setBoxHeight(event.nativeEvent.contentSize.height)}
-                value={introduction} 
-                scrollEnabled={false}
-                placeholder="I'm planning to form a band..."
-                style={[styles.introductionInput, {height: boxHeight + 20}]} // only way i can find to not cutt off text
-            />
-            </>
-        )
-    }
-
-    const Pictures = () => {
-        const pictureData = [
-            {
-                id: 1,
-                source: require('../../assets/profilepic.webp')
-            },
-            {
-                id: 2,
-                source: require('../../assets/gorillaz.jpg')
-            },
-            {
-                id: 3,
-                source: require('../../assets/gorillaz.jpg')
-            }
-        ];
-
-        const renderPicture = ({item}) => {
-            return (
-                <Pressable onPress={() => setSelectedPicture(item.id)}>
-                    <Image style={styles.pictures} source={item.source} />
-                </Pressable>
-            )
-        }
-
-        const handleAddPictures = () => {
-            // navigate to add pages page
-        }
-        return (
-            <>
-            <Text style={styles.headerText}>my pictures</Text>
-            <FlatList
-                horizontal
-                style={styles.picturesContainer}
-                data={pictureData}
-                renderItem={renderPicture}
-                keyExtractor={item => item.id}
-                extraData={selectedPicture}
-            />
-            <Pressable onPress={handleAddPictures} >
-                <Text style={styles.addButton} >add more pictures...</Text>
-            </Pressable>
-            </>
-        )
-    }
+    const { user, profileImage, profileData } = useAuth();
 
     return (
-        <ScrollView style={styles.mainContainer}> 
-            <Introduction />
-            <Pictures />
-        </ScrollView>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
+                <Text style={styles.title}>Profile</Text>
+                <Pressable style={styles.settings}><Ionicons onPre style={styles.settingsText} name="settings-outline"></Ionicons></Pressable>
+            </View>
+
+            <ScrollView style={styles.mainContainer}>
+                <View style={styles.top}>
+
+
+                    {/* Main Profile */}
+                    <View style={styles.mainProfileContainer}>
+                        <Image style={styles.profileImage} source={{ uri: profileImage ? profileImage : null, cache: 'force-cache' }}></Image>
+                        <View>
+                            <Text style={styles.name}>Cheng-Yu Dong</Text>
+                            <Text style={styles.connectionStats}>32 Connections</Text>
+                        </View>
+                    </View>
+                </View>
+
+
+                {/* Introduction and Basic Information */}
+                <ProfileIntroduction profileData={profileData}></ProfileIntroduction>
+
+                {/* My Images */}
+                <ProfilePhotos profileData={profileData}></ProfilePhotos>
+
+                {/* Instruments */}
+                <ProfileInstruments profileData={profileData}></ProfileInstruments>
+
+                {/* Genres */}
+                <ProfileGenres profileData={profileData}></ProfileGenres>
+
+                {/* Sounds */}
+                <ProfileSounds profileData={profileData}></ProfileSounds>
+
+            </ScrollView >
+        </SafeAreaView>
+
     )
 }
 
@@ -85,49 +63,61 @@ export default ProfileScreen
 
 const styles = StyleSheet.create({
     mainContainer: {
-        padding: 20,
-        backgroundColor: "white",
-        height: "100%"
+        backgroundColor: "#fff",
+        paddingLeft: 30,
+        paddingRight: 30,
+        flex: 0
     },
-    headerText: {
-        textAlign: 'left',
-        fontSize: 24,
+    header: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        marginTop: -50,
+        paddingTop: 50,
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 15,
+        borderBottomColor: '#f5f5f5',
+        // borderWidth: 1
+    },
+    title: {
         fontFamily: "Cormorant Garamond",
         fontWeight: "bold",
-        marginTop: 5,
-        marginLeft: 10,
-        marginBottom: 15
+        fontSize: 30,
+        flexGrow: 1
     },
-    introductionInput: {
-        marginBottom: 15,
-        borderWidth: 1.2,
-        borderColor: "#36383b",
-        fontWeight: '500',
-        fontSize: 16,
-        minHeight: 100,
-        paddingLeft: 20,
-        borderRadius: 15,
+    settings: {
+        flexGrow: 1,
     },
-    picturesContainer: {
-        height: 300,
+    settingsText: {
+        textAlign: 'right',
+        fontSize: 25
+    },
+    mainProfileContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 20,
         marginBottom: 10
     },
-    pictures: {
-        height: 240,
-        width: 160,
-        marginRight: 20,
-        borderWidth: 0.6,
-        borderColor: "#36383b",
-        borderRadius: 10,
-        resizeMode: 'cover',
+    profileImage: {
+        width: 90,
+        height: 90,
+        borderRadius: 100
     },
-    addButton: {
-        textAlign: 'right',
-        fontFamily: "Cormorant Garamond",
-        fontSize: 18,
-        fontStyle: "italic",
-        fontWeight: "bold",
-        textDecorationLine: "underline"
-
-    }
+    name: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        marginLeft: 20,
+        marginTop: 30
+    },
+    connectionStats: {
+        marginLeft: 20,
+        color: 'grey',
+        marginTop: 5
+    },
+    introductionContainer: {
+        marginTop: 30
+    },
 })
