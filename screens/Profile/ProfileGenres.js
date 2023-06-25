@@ -1,10 +1,10 @@
 import { FlatList, StyleSheet, View, Text, } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const ProfileInstruments = ({ profileData }) => {
+const ProfileGenres = ({ profileData }) => {
     return <View>
         <View style={styles.section}>
-            <Text style={styles.sectionTitle}>My Instruments</Text>
+            <Text style={styles.sectionTitle}>My Genres</Text>
             <Text style={styles.editButton} ><Ionicons name="create-outline"></Ionicons> Edit</Text>
         </View>
         <FlatList
@@ -20,7 +20,7 @@ const ProfileInstruments = ({ profileData }) => {
     </View>
 }
 
-export default ProfileInstruments
+export default ProfileGenres
 
 const styles = StyleSheet.create({
     sectionTitle: {
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        marginBottom: 30
+        marginBottom: 100
     },
     instrumentTag: {
         backgroundColor: '#fff',

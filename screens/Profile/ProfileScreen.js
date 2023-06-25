@@ -1,4 +1,4 @@
-import { ScrollView, FlatList, StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
+import { ScrollView, SafeAreaView, StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
 import { useState, useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import Logo from "../../assets/login/logo.png"
@@ -9,39 +9,48 @@ import { getProfileData } from '../../api/profile';
 import ProfileInstruments from './ProfileInstruments';
 import ProfileIntroduction from './ProfileIntroduction';
 import ProfilePhotos from './ProfilePhotos';
+import ProfileGenres from './ProfileGenres';
 
 const ProfileScreen = () => {
     const { user, profileImage, profileData } = useAuth();
 
     return (
-        <ScrollView style={styles.mainContainer}>
-            <View style={styles.top}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>Profile</Text>
-                    <Pressable style={styles.settings}><Ionicons onPre style={styles.settingsText} name="settings-outline"></Ionicons></Pressable>
-                </View>
-           
-                {/* Main Profile */}
-                <View style={styles.mainProfileContainer}>
-                    <Image style={styles.profileImage} source={{ uri: profileImage ? profileImage : null, cache: 'force-cache' }}></Image>
-                    <View>
-                        <Text style={styles.name}>Cheng-Yu Dong</Text>
-                        <Text style={styles.connectionStats}>32 Connections</Text>
-                    </View>
-                </View>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
+                <Text style={styles.title}>Profile</Text>
+                <Pressable style={styles.settings}><Ionicons onPre style={styles.settingsText} name="settings-outline"></Ionicons></Pressable>
             </View>
 
+            <ScrollView style={styles.mainContainer}>
+                <View style={styles.top}>
 
-            {/* Introduction and Basic Information */}
-            <ProfileIntroduction profileData={profileData}></ProfileIntroduction>
 
-            {/* My Images */}
-            <ProfilePhotos profileData={profileData}></ProfilePhotos>
+                    {/* Main Profile */}
+                    <View style={styles.mainProfileContainer}>
+                        <Image style={styles.profileImage} source={{ uri: profileImage ? profileImage : null, cache: 'force-cache' }}></Image>
+                        <View>
+                            <Text style={styles.name}>Cheng-Yu Dong</Text>
+                            <Text style={styles.connectionStats}>32 Connections</Text>
+                        </View>
+                    </View>
+                </View>
 
-            {/* Instruments */}
-            <ProfileInstruments profileData={profileData}></ProfileInstruments>
 
-        </ScrollView >
+                {/* Introduction and Basic Information */}
+                <ProfileIntroduction profileData={profileData}></ProfileIntroduction>
+
+                {/* My Images */}
+                <ProfilePhotos profileData={profileData}></ProfilePhotos>
+
+                {/* Instruments */}
+                <ProfileInstruments profileData={profileData}></ProfileInstruments>
+
+                {/* Genres */}
+                <ProfileGenres profileData={profileData}></ProfileGenres>
+
+            </ScrollView >
+        </SafeAreaView>
+
     )
 }
 
@@ -51,15 +60,22 @@ export default ProfileScreen
 const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#fff",
-        height: "100%",
-        paddingTop: 50,
         paddingLeft: 30,
         paddingRight: 30,
+        flex: 0
     },
     header: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+        backgroundColor: 'white',
+        marginTop: -50,
+        paddingTop: 50,
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 15,
+        borderBottomColor: '#f5f5f5',
+        // borderWidth: 1
     },
     title: {
         fontFamily: "Cormorant Garamond",
