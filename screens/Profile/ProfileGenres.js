@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        marginBottom: 100
+        marginBottom: 20
     },
     instrumentTag: {
         backgroundColor: '#fff',

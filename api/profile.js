@@ -74,3 +74,32 @@ export const addPhotoToDB = async (email, image) => {
             photos: firestore.FieldValue.arrayUnion(imageUUID)
         })
 }
+
+export const addSoundToDB = async (email, sound) => {
+    const soundUUID = uuid.v4();
+    const reference = storage().ref(`user-sounds/${soundUUID}.mp3`);
+    await reference.putFile(sound.uri)
+
+    firestore()
+        .collection('users')
+        .doc(email)
+        .update({
+            sounds: firestore.FieldValue.arrayUnion({ name: sound.name, uuid: soundUUID })
+        })
+}
+
+
+export const deleteSoundFromDB = async (email, sound) => {
+
+    firestore()
+        .collection('users')
+        .doc(email)
+        .update({
+            sounds: firestore.FieldValue.arrayRemove(sound)
+        })
+
+    const reference = storage().ref(`user-sounds/${sound.uuid}.mp3`);
+    await reference.delete()
+
+}
+

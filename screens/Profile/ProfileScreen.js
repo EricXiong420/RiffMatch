@@ -10,6 +10,7 @@ import ProfileInstruments from './ProfileInstruments';
 import ProfileIntroduction from './ProfileIntroduction';
 import ProfilePhotos from './ProfilePhotos';
 import ProfileGenres from './ProfileGenres';
+import ProfileSounds from './ProfileSounds';
 
 const ProfileScreen = () => {
     const { user, profileImage, profileData } = useAuth();
@@ -47,6 +48,9 @@ const ProfileScreen = () => {
 
                 {/* Genres */}
                 <ProfileGenres profileData={profileData}></ProfileGenres>
+
+                {/* Sounds */}
+                <ProfileSounds profileData={profileData}></ProfileSounds>
 
             </ScrollView >
         </SafeAreaView>
