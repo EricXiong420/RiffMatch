@@ -34,13 +34,13 @@
 				<string>com.googleusercontent.apps.774297545230-ijmr29li5hla2dochnrgb0a6m397e3vv</string>
 			</array>
 		</dict>
-  		<dict>
-  			<key>CFBundleURLSchemes</key>
-  			<array>
-    			<string>fb594882839302047</string>
-  			</array>
-  		</dict>
-  	</array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb594882839302047</string>
+			</array>
+		</dict>
+	</array>
 	<key>FacebookAppID</key>
 	<string>594882839302047</string>
 	<key>FacebookClientToken</key>
@@ -94,6 +94,22 @@
 	<string>For the profile image and other images for others to see</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>Zocial.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Fontisto.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>Feather.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>AntDesign.ttf</string>
 		<string>CormorantGaramond-Bold.ttf</string>
 		<string>CormorantGaramond-BoldItalic.ttf</string>
 		<string>CormorantGaramond-Italic.ttf</string>
@@ -105,6 +121,5 @@
 		<string>CormorantGaramond-SemiBold.ttf</string>
 		<string>CormorantGaramond-SemiBoldItalic.ttf</string>
 	</array>
-	
 </dict>
 </plist>

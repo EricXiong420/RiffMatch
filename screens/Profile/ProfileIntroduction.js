@@ -8,11 +8,11 @@ const ProfileIntroduction = ({ profileData }) => {
     return <View style={styles.introductionContainer}>
         <View style={styles.section}>
             <Text style={styles.sectionTitle}>My Introduction</Text>
-            <Text style={styles.editButton} onPress={() => navigation.navigate("EditIntroduction", { introduction: profileData.introduction })}><Ionicons name="create-outline"></Ionicons> Edit</Text>
+            <Text style={styles.editButton} onPress={() => navigation.navigate("EditIntroduction", { introduction: profileData?.introduction })}><Ionicons name="create-outline"></Ionicons> Edit</Text>
 
         </View>
         <View style={styles.introduction}>
-            <Text style={styles.introductionText}>{profileData.introduction}</Text>
+            <Text style={styles.introductionText}>{profileData?.introduction}</Text>
         </View>
     </View>
 }

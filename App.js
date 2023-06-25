@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as eva from '@eva-design/eva';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ApplicationProvider } from '@ui-kitten/components';
-import Home from './screens/Home';
+import Home from './screens/Home/Home';
 import Landing from './screens/Login/Landing';
 import RegisterPortal from './screens/Login/RegisterPortal';
 import LoginPortal from './screens/Login/LoginPortal';
@@ -25,6 +25,7 @@ import ProfileEditPhotos from './screens/Profile/Edit/ProfileEditPhotos';
 import ProfileEditInstruments from './screens/Profile/Edit/ProfileEditInstruments';
 import ProfileEditGenres from './screens/Profile/Edit/ProfileEditGenres';
 import ProfileEditSounds from './screens/Profile/Edit/ProfileEditSounds';
+import ProfileModalScreen from './screens/Home/ProfileModalScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -56,14 +57,14 @@ export default function App() {
   }
 
   const HomeStackScreen = () => {
-    return <HomeStack.Navigator initialRouteName="HomeScreen">
+    return <HomeStack.Navigator initialRouteName="HomeScreen" screenOptions={{ headerShown: false }}>
       <HomeStack.Screen
         name="CreateProfileBasic"
-        component={CreateProfileBasic}
-        options={{ headerShown: false }} />
-      <HomeStack.Screen name="CreateProfileInstruments" component={CreateProfileInstruments} options={{ headerShown: false }} />
-      <HomeStack.Screen name="CreateProfileImage" component={CreateProfileImage} options={{ headerShown: false }} />
-      <HomeStack.Screen name="HomeScreen" component={Home} options={{ headerShown: false }} />
+        component={CreateProfileBasic}/>
+      <HomeStack.Screen name="CreateProfileInstruments" component={CreateProfileInstruments} />
+      <HomeStack.Screen name="CreateProfileImage" component={CreateProfileImage} />
+      <HomeStack.Screen name="HomeScreen" component={Home} />
+      <HomeStack.Screen name="ProfileModal" component={ProfileModalScreen} options={{ presentation: "modal" }} />
     </HomeStack.Navigator>
   }
 
@@ -93,9 +94,10 @@ export default function App() {
         }
         return <Ionicons name={iconName} size={size} color={color} />;
       },
+      headerShown: false
     })}>
       <Tab.Screen name="Home" component={HomeStackScreen} />
-      <Tab.Screen name="Chat" component={ChatStackScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Chat" component={ChatStackScreen} />
       <Tab.Screen name="Profile" component={ProfileStackScreen} options={{ headerShown: false }} />
     </Tab.Navigator>
   }

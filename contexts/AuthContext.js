@@ -156,19 +156,25 @@ export function AuthProvider({ children }) {
     }
   }
 
-  const memoedValue = useMemo(() => ({
-    user,
-    loading,
-    errMsg,
-    firstTimeUser,
-    profileImage,
-    profileData,
-    setFirstTimeUser,
-    handleSignup,
-    onFacebookButtonPress,
-    onGoogleButtonPress,
-    handleLogin
-  }), [user, profileImage, profileData, loading, errMsg, firstTimeUser]);
+    const handleSignout = () => {
+      auth()
+        .signOut()
+    }
+
+    const memoedValue = useMemo(() => ({
+        user,
+        loading,
+        errMsg,
+        firstTimeUser,
+        profileImage,
+        profileData,
+        setFirstTimeUser,
+        handleSignup,
+        onFacebookButtonPress,
+        onGoogleButtonPress,
+        handleLogin,
+        handleSignout
+    }), [user, loading, profileData, profileImage, errMsg, firstTimeUser]);
 
   return (
     <AuthContext.Provider value={memoedValue}>
