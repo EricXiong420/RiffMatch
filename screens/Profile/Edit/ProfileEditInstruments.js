@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import { useAuth } from '../../../contexts/AuthContext';
 import { editInstruments } from '../../../api/profile';
+import ProfileEditHeader from './ProfileEditHeader';
 
 const ProfileEditInstruments = () => {
     const navigation = useNavigation();
@@ -23,6 +24,8 @@ const ProfileEditInstruments = () => {
             styles={styles.container}
             behaviour="padding">
             <View style={styles.mainContainer}>
+                <ProfileEditHeader title="Edit Instruments"></ProfileEditHeader>
+
                 <Text style={styles.tip}>Please select the instruments you play</Text>
 
                 <MultipleSelectList
@@ -32,7 +35,7 @@ const ProfileEditInstruments = () => {
                     label="Instruments"
                 />
                 <Pressable style={styles.nextButton} onPress={UpdateInstruments}>
-                    <Text style={styles.nextButtonText}>Done</Text>
+                    <Text style={styles.nextButtonText}>Confirm Changes</Text>
                 </Pressable>
             </View>
         </KeyboardAvoidingView>

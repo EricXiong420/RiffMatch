@@ -9,24 +9,19 @@ const ProfileSounds = () => {
     const { user, profileData } = useAuth()
     const navigation = useNavigation();
 
-    return <View>
+    return <View style={styles.soundsContainer}>
         <View style={styles.section}>
             <Text style={styles.sectionTitle}>My Sounds</Text>
             <Text style={styles.editButton} onPress={() => navigation.navigate('EditSounds')}><Ionicons name="create-outline"></Ionicons> Edit</Text>
 
         </View>
-        <FlatList
-            style={styles.soundsContainer}
-            data={profileData.sounds}
-            renderItem={({ item }) => <Sound sound={item}></Sound>}
-            keyExtractor={item => item}
-        />
+        {profileData?.sounds?.map(sound => <Sound key={sound.uuid} sound={sound}></Sound>)}
     </View>
 }
 
 export default ProfileSounds
 
-const Sound = ({sound}) => {
+const Sound = ({ sound }) => {
     return <Pressable>
         <Text style={styles.soundName}>{sound.name}</Text>
         <Image style={styles.soundImage} source={SoundArt}></Image>
@@ -46,6 +41,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     soundsContainer: {
+        marginTop: 20,
         marginBottom: 100
     },
     soundName: {
@@ -53,12 +49,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginTop: 10,
         fontSize: 15
-
-
     },
     soundImage: {
         height: 50,
-        width: 350,
+        width: 320,
         resizeMode: 'contain'
     },
     editButton: {

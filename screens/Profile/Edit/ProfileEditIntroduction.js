@@ -4,6 +4,8 @@ import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { editIntroduction } from '../../../api/profile';
 import { useAuth } from '../../../contexts/AuthContext';
+import ChevronBackButton from '../../Misc/ChevronBackButton';
+import ProfileEditHeader from './ProfileEditHeader';
 
 const ProfileEditIntroduction = ({ route, navigation }) => {
     const { user } = useAuth();
@@ -14,19 +16,21 @@ const ProfileEditIntroduction = ({ route, navigation }) => {
         setNewIntroduction(introduction);
     }, [])
 
-    const updateIntroduction = () => {
+    const UpdateIntroduction = () => {
         editIntroduction(user.email, newIntroduction, () => {
             navigation.navigate('Profile')
         })
     }
 
     return <View style={styles.introductionContainer}>
+        <ProfileEditHeader title="Edit Introduction"></ProfileEditHeader>
+
         <TextInput value={newIntroduction} multiline onChangeText={setNewIntroduction} style={styles.introTextBox}></TextInput>
 
-        <View style={styles.buttonGroup}>
-            <Pressable style={styles.cancel} onPress={() => navigation.navigate('Profile')}><Text style={styles.cancelText}>Cancel</Text></Pressable>
-            <Pressable style={styles.confirm} onPress={updateIntroduction}><Text style={styles.confirmText}>Confirm</Text></Pressable>
-        </View>
+
+        <Pressable style={styles.nextButton} onPress={UpdateIntroduction}>
+            <Text style={styles.nextButtonText}>Save Changes</Text>
+        </Pressable>
     </View>
 }
 
@@ -48,6 +52,20 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    nextButton: {
+        borderStyle: 'solid',
+        borderWidth: 2,
+        borderColor: '#36383b',
+        padding: 18,
+        borderRadius: 100,
+        backgroundColor: "#36383b",
+        marginTop: 10,
+    },
+    nextButtonText: {
+        textAlign: 'center',
+        color: 'white',
+        fontWeight: 'bold'
     },
     introTextBox: {
         borderWidth: 1.5,

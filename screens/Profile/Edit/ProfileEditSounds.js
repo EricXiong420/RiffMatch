@@ -12,6 +12,7 @@ import DocumentPicker, {
 } from 'react-native-document-picker'
 import { TextInput } from 'react-native-gesture-handler';
 import { addSoundToDB, deleteSoundFromDB } from '../../../api/profile';
+import ProfileEditHeader from './ProfileEditHeader';
 
 
 const ProfileEditSounds = ({ route, navigation }) => {
@@ -28,6 +29,7 @@ const ProfileEditSounds = ({ route, navigation }) => {
 
 
     return <View style={styles.introductionContainer}>
+        <ProfileEditHeader title="Edit Sounds"></ProfileEditHeader>
 
         <FlatList
             style={styles.soundsContainer}
@@ -51,16 +53,12 @@ const ProfileEditSounds = ({ route, navigation }) => {
                 }
             }}
         />
-        {/* 
-        <Pressable style={styles.nextButton} onPress={() => navigation.navigate("Profile")}>
-            <Text style={styles.nextButtonText}>Done</Text>
-        </Pressable> */}
     </View>
 }
 
 const Sound = ({ sound }) => {
-    const { user, profileData } = useAuth();
-    
+    const { user } = useAuth();
+
     const deleteSound = () => {
         Alert.alert('Delete Sound', 'Are you sure you want to delete this?', [
             {
@@ -70,7 +68,7 @@ const Sound = ({ sound }) => {
             {
                 text: 'OK', onPress: () => {
                     deleteSoundFromDB(user.email, sound)
-                    
+
                 }
             },
         ]);
@@ -90,7 +88,7 @@ export default ProfileEditSounds
 const styles = StyleSheet.create({
     introductionContainer: {
         padding: 20,
-        // minHeight: '100%',
+        minHeight: '100%',
         backgroundColor: 'white',
     },
     sectionTitle: {

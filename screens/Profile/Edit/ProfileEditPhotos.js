@@ -4,6 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import { addPhotoToDB, deleteUserPhoto, getUserPhotoLink } from '../../../api/profile';
 import { useAuth } from '../../../contexts/AuthContext';
+import ProfileEditHeader from './ProfileEditHeader';
 
 const ProfileEditPhotos = ({ route, navigation }) => {
     const { user, profileData } = useAuth();
@@ -25,6 +26,8 @@ const ProfileEditPhotos = ({ route, navigation }) => {
     }
 
     return <View style={styles.introductionContainer}>
+        <ProfileEditHeader title="Edit Photos"></ProfileEditHeader>
+
         <FlatList
             horizontal
             nestedScrollEnabled
@@ -64,7 +67,6 @@ const Photo = ({ photoUUID }) => {
         uri: photoLink ? photoLink : null,
         cache: 'force-cache'
     }} />
-
 }
 
 export default ProfileEditPhotos
@@ -72,7 +74,7 @@ export default ProfileEditPhotos
 const styles = StyleSheet.create({
     introductionContainer: {
         padding: 20,
-        // minHeight: '100%',
+        minHeight: '100%',
         backgroundColor: 'white',
     },
     sectionTitle: {

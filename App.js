@@ -103,31 +103,31 @@ export default function App() {
 
   return (
     <ApplicationProvider {...eva} theme={eva.light} >
-        <AuthProvider>
-          <MessagesProvider>
-            <NavigationContainer>
-              {(user == null)
-                ? <Stack.Navigator>
-                  <Stack.Group>
-                    <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
-                    <Stack.Screen name="LoginPortal" component={LoginPortal} options={{ headerShown: false }} />
-                    <Stack.Screen name="RegisterPortal" component={RegisterPortal} options={{ headerShown: false }} />
-                  </Stack.Group>
-                </Stack.Navigator>
-                : <Stack.Navigator>
-                  <Stack.Screen name="HomeStack" component={HomeItems} options={{ headerShown: false }} />
-                  <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
-                  <Stack.Screen name="EditIntroduction" component={ProfileEditIntroduction} options={{ headerTitle: 'Edit Introduction' }}></Stack.Screen>
-                  <Stack.Screen name="EditPhotos" component={ProfileEditPhotos} options={{ headerTitle: 'Edit Photos' }}></Stack.Screen>
-                  <Stack.Screen name="EditInstruments" component={ProfileEditInstruments} options={{ headerTitle: 'Edit Instruments' }}></Stack.Screen>
-                  <Stack.Screen name="EditGenres" component={ProfileEditGenres} options={{ headerTitle: 'Edit Genres' }}></Stack.Screen>
-                  <Stack.Screen name="EditSounds" component={ProfileEditSounds} options={{ headerTitle: 'Edit Sounds' }}></Stack.Screen>
+      <AuthProvider>
+        <MessagesProvider>
+          <NavigationContainer>
+            {(user == null)
+              ? <Stack.Navigator>
+                <Stack.Group>
+                  <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+                  <Stack.Screen name="LoginPortal" component={LoginPortal} options={{ headerShown: false }} />
+                  <Stack.Screen name="RegisterPortal" component={RegisterPortal} options={{ headerShown: false }} />
+                </Stack.Group>
+              </Stack.Navigator>
+              : <Stack.Navigator>
+                <Stack.Screen name="HomeStack" component={HomeItems} options={{ headerShown: false }} />
+                <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="EditIntroduction" component={ProfileEditIntroduction} options={{ headerShown: false }}></Stack.Screen>
+                <Stack.Screen name="EditPhotos" component={ProfileEditPhotos} options={{ headerShown: false }}></Stack.Screen>
+                <Stack.Screen name="EditInstruments" component={ProfileEditInstruments} options={{ headerShown: false }}></Stack.Screen>
+                <Stack.Screen name="EditGenres" component={ProfileEditGenres} options={{ headerShown: false }}></Stack.Screen>
+                <Stack.Screen name="EditSounds" component={ProfileEditSounds} options={{ headerShown: false }}></Stack.Screen>
 
-                </Stack.Navigator>
-              }
-            </NavigationContainer>
-          </MessagesProvider>
-        </AuthProvider>
+              </Stack.Navigator>
+            }
+          </NavigationContainer>
+        </MessagesProvider>
+      </AuthProvider>
     </ApplicationProvider >
   );
 }
