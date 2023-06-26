@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     introduction: {
-        alignSelf: "flex-end",
         padding: 15,
         marginTop: 20,
         marginBottom: 20,
