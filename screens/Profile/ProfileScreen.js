@@ -30,8 +30,8 @@ const ProfileScreen = () => {
                     <View style={styles.mainProfileContainer}>
                         <Image style={styles.profileImage} source={{ uri: profileImage ? profileImage : null, cache: 'force-cache' }}></Image>
                         <View>
-                            <Text style={styles.name}>Cheng-Yu Dong</Text>
-                            <Text style={styles.connectionStats}>32 Connections</Text>
+                            <Text style={styles.name}>{profileData.firstName} {profileData.lastName}</Text>
+                            <Text style={styles.connectionStats}>NA Connections</Text>
                         </View>
                     </View>
                 </View>
