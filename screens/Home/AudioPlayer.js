@@ -6,7 +6,13 @@ import { Slider } from '@rneui/themed';
 
 const AudioPlayer = ({ track }) => {
 
-    TrackPlayer.add(track);
+  useEffect(() => {
+    if (track.title) {
+      console.log("Track " + track.title + "added!")
+      TrackPlayer.add(track);
+    }
+  }, [])  
+  
 
     const [playing, setPlaying] = useState(false);
     const [focused, setFocused] = useState(false);

@@ -26,7 +26,7 @@ const Home = () => {
 
   useEffect(() => {
     if (Object.keys(profileData).length !== 0) {
-      const seenProfiles = profileData.swipedLeft.concat(profileData.swipedRight);
+      const seenProfiles = profileData.swipedLeft.concat(profileData.swipedRight, ["test"]);
       firestore().collection('users')
         .where(firestore.FieldPath.documentId(), 'not-in', seenProfiles)
         .get().then(collection => {

@@ -16,5 +16,5 @@ export default function Sound({ sound, trackIndex }) {
         artist: sound.artist
     }
 
-    return (<AudioPlayer track={track} />)
+    return (<AudioPlayer key={trackIndex} track={track} />)
 }
