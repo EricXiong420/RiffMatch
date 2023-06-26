@@ -17,10 +17,13 @@ const styles = StyleSheet.create({
         paddingTop: 2,
         paddingBottom: 3,
         backgroundColor: '#404040',
+        marginRight: 5,
+        marginBottom: 10,
     },
     text: {
         fontSize: 15,
         color: 'white',
-        textAlign: 'center'
+        textAlign: 'center',
+        textTransform: 'uppercase'
     }
 });

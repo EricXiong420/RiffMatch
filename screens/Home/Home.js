@@ -12,12 +12,14 @@ import Swiper from 'react-native-deck-swiper';
 import Logo from "../../assets/login/logo.png";
 import ProfileCard from './ProfileCard';
 import TrackPlayer from 'react-native-track-player';
+import { useMatches } from '../../contexts/MatchContext';
 
 
 const Home = () => {
   const navigation = useNavigation();
-  const [initializing, setInitializing] = useState(true);
-  const [profiles, setProfiles] = useState([]);
+  const [initializing, setInitializing] = useState(false);
+  // const [profiles, setProfiles] = useState([]);
+  const { profiles, updateMatches } = useMatches();
   const [profileDataLoaded, setProfileDataLoaded] = useState(false);
 
   const { user, profileData, firstTimeUser } = useAuth();
@@ -28,41 +30,67 @@ const Home = () => {
   }, [profileData])
   
 
+  // useEffect(() => {
+  //   if (Object.keys(profileData).length !== 0) {
+  //     const seenProfiles = profileData.swipedLeft.concat(profileData.swipedRight, ["test"]);
+  //     firestore().collection('users')
+  //       .where(firestore.FieldPath.documentId(), 'not-in', seenProfiles)
+  //       .get().then(collection => {
+  //         setInitializing(false);
+  //         setProfiles(collection.docs
+  //           .filter(doc => doc.id !== user.email)
+  //           .map(doc => ({
+  //             id: doc.id,
+  //             ...doc.data()
+  //           })));
+  //       })
+  //   }
+  // }, [profileData])
+
+  // useEffect(() => {
+  //   if (Object.keys(profileData).length !== 0) {
+  //     const seenProfiles = profileData.swipedLeft.concat(profileData.swipedRight, ["test"]);
+  //     firestore().collection('users')
+  //       .where(firestore.FieldPath.documentId(), 'not-in', seenProfiles)
+  //       .get().then(collection => {
+  //         setInitializing(false);
+  //         setProfiles(collection.docs
+  //           .filter(doc => doc.id !== user.email)
+  //           .map(doc => ({
+  //             id: doc.id,
+  //             ...doc.data()
+  //           })));
+  //       })
+  //   }
+  // }, [profileData])
+
   useEffect(() => {
-    if (profileData === {} || profileData === undefined || firstTimeUser === true) {
-      navigation.navigate("CreateProfileBasic");
-    } else if (Object.keys(profileData).length !== 0) {
-      const seenProfiles = profileData.swipedLeft.concat(profileData.swipedRight, ["test"]);
-      firestore().collection('users')
-        .where(firestore.FieldPath.documentId(), 'not-in', seenProfiles)
-        .get().then(collection => {
-          setInitializing(false);
-          setProfiles(collection.docs
-            .filter(doc => doc.id !== user.email)
-            .map(doc => ({
-              id: doc.id,
-              ...doc.data()
-          })));
-        })
-    }
-  }, [profileDataLoaded])
+    // console.log("Profiles Left", profiles.length)
+    // console.log(profiles)
+    // if (profiles.length > 0) {
+
+    //   console.log(profiles[3].id)
+    // }
+  }, [profiles])
 
   const handleSwipeLeft = (cardIndex) => {
-    if (profiles[cardIndex] !== undefined) {
-      firestore().collection('users').doc(user.email)
-        .update({
-          swipedLeft: firestore.FieldValue.arrayUnion(profiles[cardIndex].id)
-        });
-    }
+    // updateMatches({ type: 'swipe-left', removeCardIndex: cardIndex })
+    // if (profiles[cardIndex] !== undefined) {
+    //   firestore().collection('users').doc(user.email)
+    //     .update({
+    //       swipedLeft: firestore.FieldValue.arrayUnion(profiles[cardIndex].id)
+    //     });
+    // }
   }
 
   const handleSwipeRight = (cardIndex) => {
-    if (profiles[cardIndex] !== undefined) {
-      firestore().collection('users').doc(user.email)
-        .update({
-          swipedRight: firestore.FieldValue.arrayUnion(profiles[cardIndex].id)
-        });
-    }
+    // updateMatches({ type: 'swipe-right', removeCardIndex: cardIndex })
+    // if (profiles[cardIndex] !== undefined) {
+    //   firestore().collection('users').doc(user.email)
+    //     .update({
+    //       swipedRight: firestore.FieldValue.arrayUnion(profiles[cardIndex].id)
+    //     });
+    // }
   }
 
   const handleTapCard = (cardIndex) => {
@@ -93,7 +121,6 @@ const Home = () => {
             cards={profiles}
             verticalSwipe={false}
             animateCardOpacity
-            //stackSize={3}
             cardIndex={0}
             overlayLabels={{
               left: {
@@ -118,18 +145,20 @@ const Home = () => {
             onSwipedRight={handleSwipeRight}
             onSwipedLeft={handleSwipeLeft}
             onTapCard={handleTapCard}
-            renderCard={(card) => card ? (<ProfileCard key={card.id} card={card} />)
-              : (<View style={styles.card}>
-                <Text style={{ fontFamily: "Cormorant Garamond", fontSize: 24 }}>No more profiles :/</Text>
-              </View>)}
+            renderCard={(card, index) => {
+              if (card) {
+                return <ProfileCard key={index} card={card} />
+              } else {
+                return (<View key={'test'} style={styles.card}>
+                  <Text style={{ fontFamily: "Cormorant Garamond", fontSize: 24 }}>No more profiles :/</Text>
+                </View>)
+              }
+
+            }}
           />
         </View>
 
         {/* End of cards */}
-
-        <View style={{ flex: 1 }}>
-          
-        </View>
       </SafeAreaView>
     ))
 }
