@@ -27,6 +27,7 @@ import ProfileEditGenres from './screens/Profile/Edit/ProfileEditGenres';
 import ProfileEditSounds from './screens/Profile/Edit/ProfileEditSounds';
 import ProfileModalScreen from './screens/Home/ProfileModalScreen';
 import SettingsScreen from './screens/Settings/SettingsScreen';
+import { MatchesProvider } from './contexts/MatchContext';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -61,7 +62,7 @@ export default function App() {
     return <HomeStack.Navigator initialRouteName="HomeScreen" screenOptions={{ headerShown: false }}>
       <HomeStack.Screen
         name="CreateProfileBasic"
-        component={CreateProfileBasic}/>
+        component={CreateProfileBasic} />
       <HomeStack.Screen name="CreateProfileInstruments" component={CreateProfileInstruments} />
       <HomeStack.Screen name="CreateProfileImage" component={CreateProfileImage} />
       <HomeStack.Screen name="HomeScreen" component={Home} />
@@ -108,28 +109,30 @@ export default function App() {
     <ApplicationProvider {...eva} theme={eva.light} >
       <AuthProvider>
         <MessagesProvider>
-          <NavigationContainer>
-            {(user == null)
-              ? <Stack.Navigator>
-                <Stack.Group>
-                  <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
-                  <Stack.Screen name="LoginPortal" component={LoginPortal} options={{ headerShown: false }} />
-                  <Stack.Screen name="RegisterPortal" component={RegisterPortal} options={{ headerShown: false }} />
-                </Stack.Group>
-              </Stack.Navigator>
-              : <Stack.Navigator>
-                <Stack.Screen name="HomeStack" component={HomeItems} options={{ headerShown: false }} />
-                <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
-                <Stack.Screen name="EditIntroduction" component={ProfileEditIntroduction} options={{ headerShown: false }}></Stack.Screen>
-                <Stack.Screen name="EditPhotos" component={ProfileEditPhotos} options={{ headerShown: false }}></Stack.Screen>
-                <Stack.Screen name="EditInstruments" component={ProfileEditInstruments} options={{ headerShown: false }}></Stack.Screen>
-                <Stack.Screen name="EditGenres" component={ProfileEditGenres} options={{ headerShown: false }}></Stack.Screen>
-                <Stack.Screen name="EditSounds" component={ProfileEditSounds} options={{ headerShown: false }}></Stack.Screen>
-                <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }}></Stack.Screen>
+          <MatchesProvider>
+            <NavigationContainer>
+              {(user == null)
+                ? <Stack.Navigator>
+                  <Stack.Group>
+                    <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+                    <Stack.Screen name="LoginPortal" component={LoginPortal} options={{ headerShown: false }} />
+                    <Stack.Screen name="RegisterPortal" component={RegisterPortal} options={{ headerShown: false }} />
+                  </Stack.Group>
+                </Stack.Navigator>
+                : <Stack.Navigator>
+                  <Stack.Screen name="HomeStack" component={HomeItems} options={{ headerShown: false }} />
+                  <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
+                  <Stack.Screen name="EditIntroduction" component={ProfileEditIntroduction} options={{ headerShown: false }}></Stack.Screen>
+                  <Stack.Screen name="EditPhotos" component={ProfileEditPhotos} options={{ headerShown: false }}></Stack.Screen>
+                  <Stack.Screen name="EditInstruments" component={ProfileEditInstruments} options={{ headerShown: false }}></Stack.Screen>
+                  <Stack.Screen name="EditGenres" component={ProfileEditGenres} options={{ headerShown: false }}></Stack.Screen>
+                  <Stack.Screen name="EditSounds" component={ProfileEditSounds} options={{ headerShown: false }}></Stack.Screen>
+                  <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }}></Stack.Screen>
 
-              </Stack.Navigator>
-            }
-          </NavigationContainer>
+                </Stack.Navigator>
+              }
+            </NavigationContainer>
+          </MatchesProvider>
         </MessagesProvider>
       </AuthProvider>
     </ApplicationProvider >

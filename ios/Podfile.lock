@@ -1235,6 +1235,8 @@ PODS:
   - RNScreens (3.20.0):
     - React-Core
     - React-RCTImage
+  - RNSoundPlayer (0.13.2):
+    - React-Core
   - RNSVG (13.4.0):
     - React-Core
   - SwiftAudioEx (0.15.3)
@@ -1302,6 +1304,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSoundPlayer (from `../node_modules/react-native-sound-player`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -1456,6 +1459,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-crop-picker"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSoundPlayer:
+    :path: "../node_modules/react-native-sound-player"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   Yoga:
@@ -1549,6 +1554,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: ccaa4a81582cf713eea562c5dd9dc1961a715fd0
   RNImageCropPicker: 486e2f7e2b0461ce24321f751410dce1b3b49e6d
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
+  RNSoundPlayer: 369105c565b8fe6ea0a43fc882dc81eba444e842
   RNSVG: 07dbd870b0dcdecc99b3a202fa37c8ca163caec2
   SwiftAudioEx: 83eabba2940924fc1c0d5cb0896049921365229c
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863

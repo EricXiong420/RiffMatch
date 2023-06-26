@@ -37,7 +37,7 @@ const ProfileModalScreen = ({ route }) => {
         ))}
       </View>
       <Divider />
-      {card.sounds?.map((sound, index) => (<AudioPlayer key={index} track={{ id: index }}/>))}
+      {/* {card.sounds?.map((sound, index) => (<AudioPlayer key={index} track={{ id: index }}/>))} */}
     </View>)
   }
 
