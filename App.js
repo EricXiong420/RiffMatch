@@ -27,6 +27,10 @@ import ProfileEditGenres from './screens/Profile/Edit/ProfileEditGenres';
 import ProfileEditSounds from './screens/Profile/Edit/ProfileEditSounds';
 import ProfileModalScreen from './screens/Home/ProfileModalScreen';
 import SettingsScreen from './screens/Settings/SettingsScreen';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import CreateProfileGenres from './screens/Login/CreateProfileGenres';
+import CreateProfileIntroduction from './screens/Login/CreateProfileIntroduction';
+import CreateProfileSounds from './screens/Login/CreateProfileSounds';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -58,15 +62,18 @@ export default function App() {
   }
 
   const HomeStackScreen = () => {
-    return <HomeStack.Navigator initialRouteName="HomeScreen" screenOptions={{ headerShown: false }}>
+    return (<HomeStack.Navigator initialRouteName="HomeScreen" screenOptions={{ headerShown: false }}>
+      <HomeStack.Screen name="HomeScreen" component={Home} />
       <HomeStack.Screen
         name="CreateProfileBasic"
         component={CreateProfileBasic}/>
       <HomeStack.Screen name="CreateProfileInstruments" component={CreateProfileInstruments} />
+      <HomeStack.Screen name="CreateProfileGenres" component={CreateProfileGenres} />
+      <HomeStack.Screen name="CreateProfileIntroduction" component={CreateProfileIntroduction} />
+      <HomeStack.Screen name="CreateProfileSounds" component={CreateProfileSounds} />
       <HomeStack.Screen name="CreateProfileImage" component={CreateProfileImage} />
-      <HomeStack.Screen name="HomeScreen" component={Home} />
       <HomeStack.Screen name="ProfileModal" component={ProfileModalScreen} options={{ presentation: "modal" }} />
-    </HomeStack.Navigator>
+    </HomeStack.Navigator>)
   }
 
   const ChatStackScreen = () => {

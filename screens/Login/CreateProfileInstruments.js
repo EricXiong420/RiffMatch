@@ -2,10 +2,10 @@ import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInp
 import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CreateProfileInstruments = ({ route }) => {
     const userInfo = route.params;
-    console.log(userInfo);
     const navigation = useNavigation();
     const [selected, setSelected] = useState([]);
 
@@ -16,10 +16,11 @@ const CreateProfileInstruments = ({ route }) => {
             ...userInfo,
             instruments: selected
         }
-        navigation.navigate("CreateProfileImage", newUserInfo);
+        navigation.navigate("CreateProfileGenres", newUserInfo);
     }
 
     return (
+        <SafeAreaView>
         <KeyboardAvoidingView
             styles={styles.container}
             behaviour="padding">
@@ -38,6 +39,7 @@ const CreateProfileInstruments = ({ route }) => {
                 </Pressable>
             </View>
         </KeyboardAvoidingView>
+        </SafeAreaView>
     )
 }
 
@@ -99,31 +101,6 @@ const styles = StyleSheet.create({
     loginButton: {
         marginTop: 5,
         textAlign: 'right'
-    },
-    loginButtonText: {
-        textAlign: 'right',
-        fontFamily: "Cormorant Garamond",
-        fontSize: 25,
-        fontWeight: '600',
-        textDecorationLine: 'underline'
-
-    },
-    otherSignInText: {
-        fontFamily: "Cormorant Garamond",
-        textAlign: 'center',
-        fontSize: 20
-    },
-    logo: {
-        marginBottom: 40,
-        width: 280,
-        height: 200,
-        marginLeft: 50,
-        resizeMode: 'contain'
-    },
-    info: {
-        color: "red",
-        marginTop: 20,
-        marginBottom: 20
     },
 
 })

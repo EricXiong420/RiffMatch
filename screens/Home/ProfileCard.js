@@ -9,13 +9,16 @@ import AudioPlayer from './AudioPlayer';
 import Sound from './Sound';
 
 const ProfileCard = ({ card }) => {
+    const [initializing, setInitializing] = useState(true);
 
     // adding tracks to playlist once
     useEffect(() => {
-        async function resetTracks() {
-            await TrackPlayer.reset();
+        async function resetPlayer() {
+          await TrackPlayer.reset();
+          setInitializing(false);
         }
-        resetTracks();
+        resetPlayer();
+        console.log(JSON.stringify(card.sounds))
     }, []);
 
     return (<View style={[styles.card, styles.cardShadow]}>
@@ -45,7 +48,7 @@ const ProfileCard = ({ card }) => {
         ))}
       </View>
       <Divider />
-      {card.sounds?.map((sound, index) => (<Sound key={index} sound={sound} trackIndex={index} />))}
+      {!initializing && card.sounds?.map((sound, index) => (<Sound key={Integer.toString(index)} sound={sound} trackIndex={Integer.toString(index)} />))}
     </View>)
   }
 

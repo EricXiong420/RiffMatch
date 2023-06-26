@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    if (user) {
+    if (user && !firstTimeUser) {
       const subscriber = firestore()
         .collection('users')
         .doc(user.email)
@@ -34,7 +34,7 @@ export function AuthProvider({ children }) {
         });
       return () => subscriber();
     }
-  }, [user]);
+  }, [user, firstTimeUser]);
 
   useEffect(() => {
     setLoadingInitial(true);
@@ -66,7 +66,8 @@ export function AuthProvider({ children }) {
           } else {
             setErrMsg(error.message);
           }
-        });
+        })
+        .then(() => setFirstTimeUser(true));
     }
     setLoading(false);
   };

@@ -1,16 +1,22 @@
 import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
 import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import SelectDropdown from 'react-native-select-dropdown'
+import SelectDropdown from 'react-native-select-dropdown';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CreateProfileBasic = () => {
     const userInfo = {
         firstName: "",
         lastName: "",
         gender: "",
-        instruments: ""
+        instruments: [],
+        genres: [],
+        introduction: "",
+        photos: [],
+        sounds: [],
+        swipedLeft: [],
+        swipedRight: []
       }
-    console.log(userInfo);
     const navigation = useNavigation();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -29,6 +35,7 @@ const CreateProfileBasic = () => {
     }
 
     return (
+        <SafeAreaView>
         <KeyboardAvoidingView
             styles={styles.container}
             behaviour="padding">
@@ -56,6 +63,7 @@ const CreateProfileBasic = () => {
                 </Pressable>
             </View>
         </KeyboardAvoidingView>
+        </SafeAreaView>
     )
 }
 
@@ -114,31 +122,6 @@ const styles = StyleSheet.create({
     loginButton: {
         marginTop: 5,
         textAlign: 'right'
-    },
-    loginButtonText: {
-        textAlign: 'right',
-        fontFamily: "Cormorant Garamond",
-        fontSize: 25,
-        fontWeight: '600',
-        textDecorationLine: 'underline'
-
-    },
-    otherSignInText: {
-        fontFamily: "Cormorant Garamond",
-        textAlign: 'center',
-        fontSize: 20
-    },
-    logo: {
-        marginBottom: 40,
-        width: 280,
-        height: 200,
-        marginLeft: 50,
-        resizeMode: 'contain'
-    },
-    info: {
-        color: "red",
-        marginTop: 20,
-        marginBottom: 20
     },
 
 })

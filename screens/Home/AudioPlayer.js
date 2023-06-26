@@ -7,9 +7,10 @@ import { Slider } from '@rneui/themed';
 const AudioPlayer = ({ track }) => {
 
   useEffect(() => {
-    if (track.title) {
-      console.log("Track " + track.title + "added!")
+    console.log(JSON.stringify(track));
+    if (track.title !== undefined) {
       TrackPlayer.add(track);
+      console.log("Track " + track.title + "added!")
     }
   }, [])  
   
@@ -35,6 +36,7 @@ const AudioPlayer = ({ track }) => {
     useEffect(() => {
         async function setPlayingState() {
             const currentTrack = await TrackPlayer.getCurrentTrack()
+            console.log(currentTrack);
             const state = await TrackPlayer.getState();
             if (currentTrack === track.id) {
                 setFocused(state === State.Playing);
@@ -47,11 +49,11 @@ const AudioPlayer = ({ track }) => {
     }, []);
     
     // Sets a listener for changes in playing state, to update our own state
-    useTrackPlayerEvents([Event.PlaybackState, Event.PlaybackError], async event => {
+    useTrackPlayerEvents([Event.PlaybackState, Event.PlaybackError, Event.PlaybackTrackChanged], async event => {
       if (event.type === Event.PlaybackError) {
         console.warn('An error occured while playing the current track.');
       } else if (event.type === Event.PlaybackState) {
-        const currentTrack = await TrackPlayer.getCurrentTrack()
+        const currentTrack = await TrackPlayer.getCurrentTrack();
         if (currentTrack === track.id) {
             setFocused(true);
             setPlaying(event.state === State.Playing);
@@ -61,11 +63,16 @@ const AudioPlayer = ({ track }) => {
             setFocused(false);
             setPlaying(false);
         }
+      } else if (event.type === Event.PlaybackTrackChanged) {
+        TrackPlayer.skip(0);
+        TrackPlayer.play();
       }
     });
   
     const handlePlaySound = async () => {
-      const currentTrack = await TrackPlayer.getCurrentTrack()
+      const currentTrack = await TrackPlayer.getCurrentTrack();
+      console.log(currentTrack);
+
       const state = await TrackPlayer.getState();
       if (currentTrack === track.id) {
         if (state === State.Playing) {

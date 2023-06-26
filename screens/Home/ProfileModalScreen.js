@@ -8,7 +8,7 @@ import AudioPlayer from './AudioPlayer';
 import Sound from './Sound';
 
 const ProfileModalScreen = ({ route }) => {
-    const { card } = route.params;
+    const { card, preventReloadingSounds } = route.params;
 
     return (<View style={styles.card}>
       <View style={styles.header}>
@@ -32,12 +32,14 @@ const ProfileModalScreen = ({ route }) => {
       <Text style={{ fontSize: 18, fontFamily: 'Cormorant Garamond' }}>Genres</Text>
       <View style={styles.chips}>
         
-        {card?.genres?.map(genre => (
-          <Chip text={genre} />
+        {card?.genres?.map((genre, index) => (
+          <Chip key={index} text={genre} />
         ))}
       </View>
       <Divider />
-      {card.sounds?.map((sound, index) => (<AudioPlayer key={index} track={{ id: index }}/>))}
+      {preventReloadingSounds
+      ? card.sounds?.map((sound, index) => (<AudioPlayer key={index} track={{ id: index }}/>))
+      : card.sounds?.map((sound, index) => (<Sound key={index} sound={sound} trackIndex={index} />))}
     </View>)
   }
 

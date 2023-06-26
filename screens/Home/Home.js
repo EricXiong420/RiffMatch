@@ -18,14 +18,20 @@ const Home = () => {
   const navigation = useNavigation();
   const [initializing, setInitializing] = useState(true);
   const [profiles, setProfiles] = useState([]);
+  const [profileDataLoaded, setProfileDataLoaded] = useState(false);
 
-  const { user, handleSignout, profileData } = useAuth();
-  if (profileData === {}) {
-    navigation.navigate("CreateProfileBasic");
-  }
+  const { user, profileData, firstTimeUser } = useAuth();
+  useEffect(() => {
+    if (profileData !== undefined && !profileDataLoaded) {
+      setProfileDataLoaded(true);
+    }
+  }, [profileData])
+  
 
   useEffect(() => {
-    if (Object.keys(profileData).length !== 0) {
+    if (profileData === {} || profileData === undefined || firstTimeUser === true) {
+      navigation.navigate("CreateProfileBasic");
+    } else if (Object.keys(profileData).length !== 0) {
       const seenProfiles = profileData.swipedLeft.concat(profileData.swipedRight, ["test"]);
       firestore().collection('users')
         .where(firestore.FieldPath.documentId(), 'not-in', seenProfiles)
@@ -39,7 +45,7 @@ const Home = () => {
           })));
         })
     }
-  }, [profileData])
+  }, [profileDataLoaded])
 
   const handleSwipeLeft = (cardIndex) => {
     if (profiles[cardIndex] !== undefined) {
@@ -60,7 +66,7 @@ const Home = () => {
   }
 
   const handleTapCard = (cardIndex) => {
-    navigation.navigate("ProfileModal", { card: profiles[cardIndex] });
+    navigation.navigate("ProfileModal", { card: profiles[cardIndex], preventReloadingSounds: true });
   }
 
 
@@ -122,10 +128,7 @@ const Home = () => {
         {/* End of cards */}
 
         <View style={{ flex: 1 }}>
-          <Text>Welcome: {profileData.firstName} {profileData.lastName}</Text>
-          <Text>Gender: {profileData.gender}</Text>
-          <Text>Email: {user.email}</Text>
-          <Button onPress={handleSignout}>Signout</Button>
+          
         </View>
       </SafeAreaView>
     ))

@@ -1,39 +1,25 @@
 import { StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, Button } from 'react-native'
 import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useAuth } from '../../contexts/AuthContext';
 
-const CreateProfileImage = ({ route }) => {
-    const userInfo = route.params;
-    console.log(userInfo);
+const CreateProfileImage = () => {
     const navigation = useNavigation();
     const [image, setImage] = useState('');
 
     const { user } = useAuth();
 
     const updateProfile = async () => {
-        firestore()
-            .collection('users')
-            .doc(user.email)
-            .set({
-                firstName: userInfo.firstName,
-                lastName: userInfo.lastName,
-                gender: userInfo.gender.toLowerCase(),
-                instruments: userInfo.instruments,
-                created: new Date()
-            })
         const reference = storage().ref(`profile-images/${user.email}.png`);
-        await reference.putFile(image)
+        await reference.putFile(image);
 
         navigation.navigate("HomeScreen");
     }
 
     return (
         <KeyboardAvoidingView
-            styles={styles.container}
             behaviour="padding">
             <View style={styles.mainContainer}>
                 <Text style={styles.pageTitle}>Create Profile: Image</Text>

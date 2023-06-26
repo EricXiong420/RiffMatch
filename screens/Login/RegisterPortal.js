@@ -25,7 +25,6 @@ const RegisterPortal = () => {
 
   const incompleteForm = (email === "" || password === "" || cfmPassword === "")
   const { handleSignup, loading, errMsg, user } = useAuth();
-  console.log(user);
 
   return (
     <KeyboardAvoidingView styles={styles.container} behaviour="padding">

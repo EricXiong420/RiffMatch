@@ -7,6 +7,7 @@ export default function Sound({ sound, trackIndex }) {
 
     useEffect(() => {
         getUserSoundLink(sound.uuid, (url) => setAudioLink(url))
+        console.log(trackIndex)
     }, []);
 
     const track = {
