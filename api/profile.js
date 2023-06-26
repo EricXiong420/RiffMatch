@@ -7,9 +7,15 @@ export const getProfileImage = async (email) => {
     return url;
 }
 
+// any way we can make this not dependent on the photo file type?
 export const getUserPhotoLink = async (photoUUID, cb) => {
     const url = await storage().ref(`user-images/${photoUUID}.png`).getDownloadURL();
     cb(url)
+}
+
+export const getUserSoundLink = async (audioUUID, cb) => {
+    const url = await storage().ref(`user-sounds/${audioUUID}.mp3`).getDownloadURL();
+    cb(url);
 }
 
 export const getProfileData = async (email, callback) => {
@@ -75,7 +81,7 @@ export const addPhotoToDB = async (email, image) => {
         })
 }
 
-export const addSoundToDB = async (email, sound) => {
+export const addSoundToDB = async (email, sound, artist) => {
     const soundUUID = uuid.v4();
     const reference = storage().ref(`user-sounds/${soundUUID}.mp3`);
     await reference.putFile(sound.uri)
@@ -84,7 +90,7 @@ export const addSoundToDB = async (email, sound) => {
         .collection('users')
         .doc(email)
         .update({
-            sounds: firestore.FieldValue.arrayUnion({ name: sound.name, uuid: soundUUID })
+            sounds: firestore.FieldValue.arrayUnion({ name: sound.name, uuid: soundUUID, artist: artist })
         })
 }
 

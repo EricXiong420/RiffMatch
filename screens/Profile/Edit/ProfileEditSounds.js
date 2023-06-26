@@ -19,9 +19,10 @@ const ProfileEditSounds = ({ route, navigation }) => {
     const { user, profileData } = useAuth();
     const [result, setResult] = useState([])
 
+    const name = profileData.firstName + ' ' + profileData.lastName;
     useEffect(() => {
         if (result.length > 0) {
-            addSoundToDB(user.email, result[0])
+            addSoundToDB(user.email, result[0], name)
             setResult([])
         }
     }, [result])

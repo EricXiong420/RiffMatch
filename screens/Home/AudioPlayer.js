@@ -6,6 +6,8 @@ import { Slider } from '@rneui/themed';
 
 const AudioPlayer = ({ track }) => {
 
+    TrackPlayer.add(track);
+
     const [playing, setPlaying] = useState(false);
     const [focused, setFocused] = useState(false);
     const [position, setPosition] = useState(0);
@@ -19,6 +21,10 @@ const AudioPlayer = ({ track }) => {
         }
     }, [progress])
     
+    const formatSecondsToTime = (seconds) => {
+      return new Date(seconds * 1000).toISOString().substring(14, 19);
+    }
+
     // Sets playing state based on if music is already playing
     useEffect(() => {
         async function setPlayingState() {
@@ -76,7 +82,9 @@ const AudioPlayer = ({ track }) => {
         <Pressable onPress={handlePlaySound}>
           <Ionicons name={playing ? 'pause-circle-outline' : 'play-circle-outline'} size={35} color={'#404040'} />
         </Pressable>
-        {focused && <Slider
+        {focused && (<>
+        <Text style={[styles.playtime, { marginHorizontal: 3 }]}>{formatSecondsToTime(position)}</Text>
+        <Slider
         animateTransitions
         animationConfig={{ useNativeDriver: false }}
         animationType="timing"
@@ -92,7 +100,7 @@ const AudioPlayer = ({ track }) => {
         onValueChange={setPosition}
         orientation="horizontal"
         step={1}
-        style={{ width: '80%', height: 35 }}
+        style={styles.slider}
         thumbStyle={{ height: 10, width: 10 }}
         thumbProps={{}}
         thumbTintColor="#404040"
@@ -100,6 +108,7 @@ const AudioPlayer = ({ track }) => {
         trackStyle={{ height: 2, borderRadius: 20 }}
         value={position}
         />
+        <Text style={[styles.playtime, { marginHorizontal: 8 }]}>{formatSecondsToTime(progress.duration)}</Text></>)
     }
       </View>
       )
@@ -110,6 +119,15 @@ const AudioPlayer = ({ track }) => {
   const styles = StyleSheet.create({
     sounds: {
         width: '100%',
-        flexDirection: "row"
+        flexDirection: "row",
+        alignItems: 'center',
+    },
+    slider: {
+      width: '60%', 
+      height: 35
+    },
+    playtime: {
+      width: '8%',
+      fontSize: 9,
     }
   })

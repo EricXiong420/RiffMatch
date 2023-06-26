@@ -6,27 +6,16 @@ import Divider from '../Misc/Divider';
 import TrackPlayer, { useProgress, useTrackPlayerEvents, State, Event } from 'react-native-track-player';
 import { Slider } from '@rneui/themed';
 import AudioPlayer from './AudioPlayer';
+import Sound from './Sound';
 
 const ProfileCard = ({ card }) => {
 
-    const tracklist = [{
-      id: 0,
-      url: require('../../assets/audio1.mp3'),
-      title: 'Upbeat song',
-      artist: 'Eric'
-    }, {
-      id: 1,
-      url: require('../../assets/audio1.mp3'),
-      title: 'Something else',
-      artist: 'Look at me!'
-    }]
     // adding tracks to playlist once
     useEffect(() => {
-        async function setTracks() {
+        async function resetTracks() {
             await TrackPlayer.reset();
-            await TrackPlayer.add(tracklist);
         }
-        setTracks();
+        resetTracks();
     }, []);
 
     return (<View style={[styles.card, styles.cardShadow]}>
@@ -56,7 +45,7 @@ const ProfileCard = ({ card }) => {
         ))}
       </View>
       <Divider />
-      {tracklist.map(track => (<AudioPlayer track={track}/>))}
+      {card.sounds?.map((sound, index) => (<Sound key={index} sound={sound} trackIndex={index} />))}
     </View>)
   }
 
@@ -72,6 +61,7 @@ const ProfileCard = ({ card }) => {
     },
     card: {
       height: '60%',
+      flexShrink: 1,
       backgroundColor: '#fff',
       gap: 10,
       borderRadius: 40,

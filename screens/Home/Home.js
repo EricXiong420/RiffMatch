@@ -11,54 +11,52 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Swiper from 'react-native-deck-swiper';
 import Logo from "../../assets/login/logo.png";
 import ProfileCard from './ProfileCard';
+import TrackPlayer from 'react-native-track-player';
 
 
 const Home = () => {
   const navigation = useNavigation();
-  const [userData, setUserData] = useState({});
   const [initializing, setInitializing] = useState(true);
   const [profiles, setProfiles] = useState([]);
 
-  const { user, handleSignout } = useAuth();
-
-  useEffect(() => {
-    if (user) {
-      firestore().collection('users').doc(user.email)
-        .onSnapshot(document => {
-          if (!document.exists) {
-            navigation.navigate("CreateProfileBasic");
-          } else {
-            setUserData({ ...document.data(), email: user.email });
-          }
-        });
-    }
-
-  }, []);
-
-  useEffect(() => {
-    const unsub = firestore().collection('users')
-      .onSnapshot(collection => {
-        setInitializing(false);
-        setProfiles(collection.docs.filter(doc => doc.id !== user.email).map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })));
-      })
-    return unsub;
-  }, [])
-
-  // Listen to state changes on profile
-  // Debug purposes only
-  useEffect(() => {
-    console.log('profiles', profiles);
-  }, [profiles])
-
-  const handleSwipeLeft = () => {
-    return;
+  const { user, handleSignout, profileData } = useAuth();
+  if (profileData === {}) {
+    navigation.navigate("CreateProfileBasic");
   }
 
-  const handleSwipeRight = () => {
-    return;
+  useEffect(() => {
+    if (Object.keys(profileData).length !== 0) {
+      const seenProfiles = profileData.swipedLeft.concat(profileData.swipedRight);
+      firestore().collection('users')
+        .where(firestore.FieldPath.documentId(), 'not-in', seenProfiles)
+        .get().then(collection => {
+          setInitializing(false);
+          setProfiles(collection.docs
+            .filter(doc => doc.id !== user.email)
+            .map(doc => ({
+              id: doc.id,
+              ...doc.data()
+          })));
+        })
+    }
+  }, [profileData])
+
+  const handleSwipeLeft = (cardIndex) => {
+    if (profiles[cardIndex] !== undefined) {
+      firestore().collection('users').doc(user.email)
+        .update({
+          swipedLeft: firestore.FieldValue.arrayUnion(profiles[cardIndex].id)
+        });
+    }
+  }
+
+  const handleSwipeRight = (cardIndex) => {
+    if (profiles[cardIndex] !== undefined) {
+      firestore().collection('users').doc(user.email)
+        .update({
+          swipedRight: firestore.FieldValue.arrayUnion(profiles[cardIndex].id)
+        });
+    }
   }
 
   const handleTapCard = (cardIndex) => {
@@ -70,7 +68,7 @@ const Home = () => {
     !initializing && (
       <SafeAreaView style={{ flex: 1, flexDirection: "column" }}>
         {/* Header */}
-        <View style={styles.container}>
+        <View style={styles.headerContainer}>
           <Pressable>
             <FontAwesome name={"sliders"} size={35} color={"black"}></FontAwesome>
           </Pressable>
@@ -89,8 +87,7 @@ const Home = () => {
             cards={profiles}
             verticalSwipe={false}
             animateCardOpacity
-            infinite
-            stackSize={3}
+            //stackSize={3}
             cardIndex={0}
             overlayLabels={{
               left: {
@@ -115,7 +112,7 @@ const Home = () => {
             onSwipedRight={handleSwipeRight}
             onSwipedLeft={handleSwipeLeft}
             onTapCard={handleTapCard}
-            renderCard={(card) => card ? (<ProfileCard id={card?.id} card={card} />)
+            renderCard={(card) => card ? (<ProfileCard key={card.id} card={card} />)
               : (<View style={styles.card}>
                 <Text style={{ fontFamily: "Cormorant Garamond", fontSize: 24 }}>No more profiles :/</Text>
               </View>)}
@@ -125,9 +122,9 @@ const Home = () => {
         {/* End of cards */}
 
         <View style={{ flex: 1 }}>
-          <Text>Welcome: {userData.firstName} {userData.lastName}</Text>
-          <Text>Gender: {userData.gender}</Text>
-          <Text>Email: {userData.email}</Text>
+          <Text>Welcome: {profileData.firstName} {profileData.lastName}</Text>
+          <Text>Gender: {profileData.gender}</Text>
+          <Text>Email: {user.email}</Text>
           <Button onPress={handleSignout}>Signout</Button>
         </View>
       </SafeAreaView>
@@ -137,7 +134,7 @@ const Home = () => {
 export default Home
 
 const styles = StyleSheet.create({
-  container: {
+  headerContainer: {
     flexDirection: "row",
     flex: 1,
     justifyContent: 'space-around',
@@ -151,7 +148,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   swiperContainer: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
   },
   swipeRight: {
     backgroundColor: "#9fff80",

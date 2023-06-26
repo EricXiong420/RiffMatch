@@ -5,52 +5,10 @@ import Chip from '../Misc/Chip';
 import Divider from '../Misc/Divider';
 import TrackPlayer, { usePlaybackState, useTrackPlayerEvents, State, Event } from 'react-native-track-player';
 import AudioPlayer from './AudioPlayer';
+import Sound from './Sound';
 
 const ProfileModalScreen = ({ route }) => {
     const { card } = route.params;
-    const [playing, setPlaying] = useState(false);
-
-    // test params
-    const tracklist = [{
-        id: 0,
-        url: require('../../assets/audio1.mp3'),
-        title: 'Upbeat song',
-        artist: 'Eric'
-      }, {
-        id: 1,
-        url: require('../../assets/audio1.mp3'),
-        title: 'Something else',
-        artist: 'Look at me!'
-      }]
-
-    // Sets playing state based on if music is already playing
-    useEffect(() => {
-        async function setPlayingState() {
-            const state = await TrackPlayer.getState();
-            setPlaying(state === State.Playing);
-        }
-        setPlayingState();
-    }, []);
-    
-    // Sets a listener for changes in playing state, to update our own state
-    useTrackPlayerEvents([Event.PlaybackState, Event.PlaybackError], async event => {
-      if (event.type === Event.PlaybackError) {
-        console.warn('An error occured while playing the current track.');
-      } else if (event.type === Event.PlaybackState) {
-        console.log('help');
-        setPlaying(event.state === State.Playing);
-      }
-    });
-  
-    const handlePlaySound = async () => {
-      const state = await TrackPlayer.getState();
-      if (state === State.Playing) {
-        TrackPlayer.pause();
-      } else {
-        TrackPlayer.play();
-      }
-    }
-
 
     return (<View style={styles.card}>
       <View style={styles.header}>
@@ -79,7 +37,7 @@ const ProfileModalScreen = ({ route }) => {
         ))}
       </View>
       <Divider />
-      {tracklist.map(track => (<AudioPlayer track={track}/>))}
+      {card.sounds?.map((sound, index) => (<Sound key={index} sound={sound} trackIndex={index} />))}
     </View>)
   }
 

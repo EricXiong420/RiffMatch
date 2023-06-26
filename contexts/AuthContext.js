@@ -9,7 +9,7 @@ const AuthContext = createContext({});
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [profileImage, setProfileImage] = useState('')
+  const [profileImage, setProfileImage] = useState('');
   const [profileData, setProfileData] = useState({});
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState('');
@@ -29,14 +29,12 @@ export function AuthProvider({ children }) {
         .collection('users')
         .doc(user.email)
         .onSnapshot(snapshot => {
-          console.log(snapshot._data)
-          setProfileData(snapshot._data)
+          console.log(snapshot._data);
+          setProfileData(snapshot._data);
         });
       return () => subscriber();
     }
   }, [user]);
-
-
 
   useEffect(() => {
     setLoadingInitial(true);
