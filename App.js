@@ -26,6 +26,7 @@ import ProfileEditInstruments from './screens/Profile/Edit/ProfileEditInstrument
 import ProfileEditGenres from './screens/Profile/Edit/ProfileEditGenres';
 import ProfileEditSounds from './screens/Profile/Edit/ProfileEditSounds';
 import ProfileModalScreen from './screens/Home/ProfileModalScreen';
+import SettingsScreen from './screens/Settings/SettingsScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -124,6 +125,7 @@ export default function App() {
                 <Stack.Screen name="EditInstruments" component={ProfileEditInstruments} options={{ headerShown: false }}></Stack.Screen>
                 <Stack.Screen name="EditGenres" component={ProfileEditGenres} options={{ headerShown: false }}></Stack.Screen>
                 <Stack.Screen name="EditSounds" component={ProfileEditSounds} options={{ headerShown: false }}></Stack.Screen>
+                <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }}></Stack.Screen>
 
               </Stack.Navigator>
             }
