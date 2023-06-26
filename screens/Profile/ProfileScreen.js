@@ -11,15 +11,17 @@ import ProfileIntroduction from './ProfileIntroduction';
 import ProfilePhotos from './ProfilePhotos';
 import ProfileGenres from './ProfileGenres';
 import ProfileSounds from './ProfileSounds';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileScreen = () => {
     const { user, profileImage, profileData } = useAuth();
+    const navigation = useNavigation()
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>Profile</Text>
-                <Pressable style={styles.settings}><Ionicons onPre style={styles.settingsText} name="settings-outline"></Ionicons></Pressable>
+                <Pressable style={styles.settings} onPress={() => navigation.navigate('Settings')}><Ionicons style={styles.settingsText} name="settings-outline"></Ionicons></Pressable>
             </View>
 
             <ScrollView style={styles.mainContainer}>
