@@ -19,10 +19,15 @@ For IOS: Start RiffMatch (Make sure you have XCode installed!)
     npx expo run:ios
 ```
 
-For Android: Start RiffMatch (Make sure you have Android Studio installed!)
+(Android Option 1) APK Installation for testing puurposes 
+Download on Android Phone and install.
+
+https://github.com/EricXiong420/RiffMatch/releases/tag/Beta
+
+(Android Option 2) For Android: Start RiffMatch (Make sure you have Android Studio installed!)
 
 To test the app on your Android Phone:
-1. Turn on developer options using the link below
+1. Turn on developer options (can refer to guide below)
 https://www.samsung.com/uk/support/mobile-devices/how-do-i-turn-on-the-developer-options-menu-on-my-samsung-galaxy-device/
 2. Turn on USB Debugging option in developer options
 3. Run the command below.
