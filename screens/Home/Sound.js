@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getUserSoundLink } from "../../api/profile";
 import AudioPlayer from "./AudioPlayer";
 
-export default function Sound({ sound, trackIndex }) {
+export default function Sound({ sound, trackIndex, theme }) {
     const [audioLink, setAudioLink] = useState(null);
 
     useEffect(() => {
@@ -17,5 +17,5 @@ export default function Sound({ sound, trackIndex }) {
         artist: sound.artist
     }
 
-    return (<AudioPlayer key={trackIndex} track={track} />)
+    return (<AudioPlayer key={trackIndex} track={track} theme={theme} />)
 }

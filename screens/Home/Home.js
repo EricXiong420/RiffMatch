@@ -28,9 +28,12 @@ const Home = () => {
       setProfileDataLoaded(true);
     }
   }, [profileData])
-  
 
-  // useEffect(() => {
+  useEffect(() => {
+    console.log(profileData);
+    if (profileData === undefined || Object.keys(profileData).length === 0) {
+      navigation.navigate("CreateProfileBasic");
+    }
   //   if (Object.keys(profileData).length !== 0) {
   //     const seenProfiles = profileData.swipedLeft.concat(profileData.swipedRight, ["test"]);
   //     firestore().collection('users')
@@ -45,7 +48,7 @@ const Home = () => {
   //           })));
   //       })
   //   }
-  // }, [profileData])
+  }, [profileDataLoaded])
 
   // useEffect(() => {
   //   if (Object.keys(profileData).length !== 0) {

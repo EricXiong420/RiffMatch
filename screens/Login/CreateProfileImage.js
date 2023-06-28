@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useAuth } from '../../contexts/AuthContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CreateProfileImage = () => {
     const navigation = useNavigation();
@@ -19,6 +20,7 @@ const CreateProfileImage = () => {
     }
 
     return (
+        <SafeAreaView>
         <KeyboardAvoidingView
             behaviour="padding">
             <View style={styles.mainContainer}>
@@ -40,6 +42,7 @@ const CreateProfileImage = () => {
                 </Pressable>
             </View>
         </KeyboardAvoidingView >
+        </SafeAreaView>
     )
 }
 

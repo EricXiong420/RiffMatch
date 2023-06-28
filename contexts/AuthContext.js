@@ -156,6 +156,8 @@ export function AuthProvider({ children }) {
   }
 
     const handleSignout = () => {
+      setProfileData({});
+      setUser(null);
       auth()
         .signOut()
     }

@@ -116,7 +116,7 @@ export default function App() {
     <ApplicationProvider {...eva} theme={eva.light} >
       <AuthProvider>
         <MessagesProvider>
-          <MatchesProvider>
+
             <NavigationContainer>
               {(user == null)
                 ? <Stack.Navigator>
@@ -126,7 +126,8 @@ export default function App() {
                     <Stack.Screen name="RegisterPortal" component={RegisterPortal} options={{ headerShown: false }} />
                   </Stack.Group>
                 </Stack.Navigator>
-                : <Stack.Navigator>
+                : <MatchesProvider>
+                  <Stack.Navigator>
                   <Stack.Screen name="HomeStack" component={HomeItems} options={{ headerShown: false }} />
                   <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
                   <Stack.Screen name="EditIntroduction" component={ProfileEditIntroduction} options={{ headerShown: false }}></Stack.Screen>
@@ -137,9 +138,9 @@ export default function App() {
                   <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }}></Stack.Screen>
 
                 </Stack.Navigator>
+                </MatchesProvider>
               }
             </NavigationContainer>
-          </MatchesProvider>
         </MessagesProvider>
       </AuthProvider>
     </ApplicationProvider >

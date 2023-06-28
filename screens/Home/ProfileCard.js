@@ -49,7 +49,7 @@ const ProfileCard = ({ card }) => {
           <Chip key={index} text={genre} />
         ))}
       </View>
-      {card.sounds?.map((sound, index) => (<Sound key={index} sound={sound} trackIndex={index} />))}
+      {card.sounds?.map((sound, index) => (<Sound key={index} sound={sound} trackIndex={index} theme={'dark'} />))}
     </ImageBackground>
 
   </View>)

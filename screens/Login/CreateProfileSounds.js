@@ -85,7 +85,7 @@ const DeletableSound = ({ sound, trackIndex }) => {
     return <Pressable>
         <Text style={styles.soundName}>{sound.name}</Text>
         <View style={styles.soundItem}>
-            <Sound sound={sound} trackIndex={trackIndex} />
+            <Sound sound={sound} trackIndex={trackIndex} theme={'light'} />
             <Ionicons onPress={() => deleteSound()} style={styles.deleteButton} name="trash-outline"></Ionicons>
         </View>
     </Pressable>

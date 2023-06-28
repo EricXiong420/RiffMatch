@@ -10,7 +10,7 @@ const ProfileInstruments = ({ profileData }) => {
             <Text style={styles.editButton} onPress={() => navigation.navigate("EditInstruments")}><Ionicons name="create-outline"></Ionicons> Edit</Text>
         </View>
         <View style={styles.instrumentsList}>
-            {profileData.instruments.map(instrument => {
+            {profileData.instruments?.map(instrument => {
                 return <View key={instrument} style={styles.instrumentTag}>
                     <Text style={styles.instrumentTagText}>{instrument}</Text>
                 </View>

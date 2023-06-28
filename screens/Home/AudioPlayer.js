@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Slider } from '@rneui/themed';
 import SoundPlayer from 'react-native-sound-player'
 
-const AudioPlayer = ({ track }) => {
+const AudioPlayer = ({ track, theme }) => {
   const [playing, setPlaying] = useState(false);
   const [focused, setFocused] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -65,10 +65,12 @@ const AudioPlayer = ({ track }) => {
   }, [])
 
 
+
+
   return (
     <View style={styles.sounds}>
       <Pressable onPress={handlePlaySound}>
-        <Ionicons name={playing ? 'pause-circle-outline' : 'play-circle-outline'} size={35} color={'#fff'} />
+        <Ionicons name={playing ? 'pause-circle-outline' : 'play-circle-outline'} size={35} color={theme && theme === 'light' ? '#000' : '#fff'} />
       </Pressable>
       {!focused && <Text style={styles.trackName}>{track.title}</Text>}
       {focused && (<>
