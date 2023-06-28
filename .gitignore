@@ -3,3 +3,5 @@ node_modules
 .expo/prebuild/cached-packages.json
 .expo/xcodebuild-error.log
 .expo/xcodebuild.log
+android/gradle.properties
+android/app/my-upload-key.keystore

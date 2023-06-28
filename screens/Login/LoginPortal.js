@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput } from 'react-native'
+import { ActivityIndicator, StyleSheet, View, KeyboardAvoidingView, Pressable, Text, Image, TextInput, ScrollView } from 'react-native'
 import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Logo from "../../assets/login/logo.png"
@@ -17,7 +17,7 @@ const LoginPortal = () => {
     const incompleteForm = (email === "" || password === "");
 
     return (
-        <KeyboardAvoidingView
+        <ScrollView
             styles={styles.container}
             behaviour="padding">
             <View style={styles.mainContainer}>
@@ -48,7 +48,7 @@ const LoginPortal = () => {
                     <FacebookButton />
                 </View>
             </View>
-        </KeyboardAvoidingView>
+        </ScrollView>
     )
 }
 
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         height: "100%"
     },
     backButton: {
-        marginTop: 50
+        marginTop: 10
     },
     buttonBack: {
         fontSize: 40
@@ -69,8 +69,7 @@ const styles = StyleSheet.create({
     welcomeText: {
         textAlign: 'center',
         fontSize: 30,
-        fontFamily: "Cormorant Garamond",
-        fontWeight: "bold",
+        fontFamily: "CormorantGaramond-Bold",
         marginBottom: 40
     },
     loginInput: {
@@ -89,29 +88,27 @@ const styles = StyleSheet.create({
     },
     loginButtonText: {
         textAlign: 'right',
-        fontFamily: "Cormorant Garamond",
+        fontFamily: "CormorantGaramond-Bold",
         fontSize: 25,
-        fontWeight: '600',
         textDecorationLine: 'underline'
     },
     invalidLoginButtonText: {
         textAlign: 'right',
-        fontFamily: "Cormorant Garamond",
+        fontFamily: "CormorantGaramond-Bold",
         fontSize: 25,
-        fontWeight: '600',
         textDecorationLine: 'underline',
         color: "#bdbdbd"
     },
     otherSignInText: {
-        fontFamily: "Cormorant Garamond",
+        fontFamily: "CormorantGaramond-Regular",
         textAlign: 'center',
         fontSize: 20
     },
     logo: {
         marginBottom: 40,
-        width: 280,
-        height: 200,
-        marginLeft: 50,
+        width: 240,
+        height: 160,
+        alignSelf: 'center',
         resizeMode: 'contain'
     },
     errMsg: {
