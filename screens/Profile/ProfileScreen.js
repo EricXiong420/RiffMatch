@@ -84,8 +84,7 @@ const styles = StyleSheet.create({
         // borderWidth: 1
     },
     title: {
-        fontFamily: "Cormorant Garamond",
-        fontWeight: "bold",
+        fontFamily: "CormorantGaramond-Bold",
         fontSize: 30,
         flexGrow: 1
     },

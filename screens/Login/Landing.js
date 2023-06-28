@@ -17,7 +17,7 @@ const Landing = () => {
                 <Image source={Logo} style={styles.logo}></Image>
                 <Image source={LandingImage} style={styles.landingImage}></Image>
 
-                <View>
+                <View style={styles.buttons}>
                     <Pressable onPress={() => navigation.navigate("RegisterPortal")} style={styles.registerButton}><Text style={styles.registerButtonText}>Register</Text></Pressable>
                     <Pressable onPress={() => navigation.navigate("LoginPortal")} style={styles.loginButton}><Text style={styles.loginButtonText}>Sign In</Text></Pressable>
                     <Text style={styles.policy}>By signing up you accept the Terms of Service and Privacy Policy.</Text>
@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     logo: {
-        marginTop: 100,
+        marginTop: '20%',
         marginBottom: 40,
         width: 280,
         height: 200,
-        marginLeft: 50,
+        alignSelf: 'center',
         resizeMode: 'contain'
     },
     landingImage: {
@@ -72,8 +72,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         backgroundColor: "#36383b",
         marginTop: 50,
-        width: "90%",
-        left: "5%"
+        width: "95%",
     },
     loginButton: {
         borderStyle: 'solid',
@@ -83,8 +82,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         marginTop: 10,
         marginBottom: 10,
-        width: "90%",
-        left: "5%"
+        width: "95%",
     },
     policy: {
         textAlign: "center",
@@ -94,4 +92,9 @@ const styles = StyleSheet.create({
     loginInput: {
         marginBottom: 15
     },
+    buttons: {
+        position: 'absolute',
+        bottom: '5%',
+        alignSelf: 'center'
+    }
 })
