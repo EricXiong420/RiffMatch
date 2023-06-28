@@ -6,7 +6,8 @@ import {
   Image,
   Text,
   Pressable,
-  ActivityIndicator,
+  ActivityIndicator, 
+  ScrollView
 } from "react-native";
 import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -17,7 +18,7 @@ import FacebookButton from "./FacebookButton.js";
 import GoogleButton from "./GoogleButton";
 
 const RegisterPortal = () => {
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cfmPassword, setCfmPassword] = useState("");
@@ -27,7 +28,7 @@ const RegisterPortal = () => {
   const { handleSignup, loading, errMsg, user } = useAuth();
 
   return (
-    <KeyboardAvoidingView styles={styles.container} behaviour="padding">
+    <ScrollView styles={styles.container} behaviour="padding">
       <View style={styles.mainContainer}>
         <ChevronBackButton></ChevronBackButton>
         <Image source={Logo} style={styles.logo}></Image>
@@ -63,14 +64,14 @@ const RegisterPortal = () => {
 
         {loading === true ? ( // logic for greying out Register button, and loading
           <ActivityIndicator />
-        ) : <Pressable 
-              onPress={() => handleSignup(email, password, cfmPassword)} 
-              disabled={incompleteForm}
-              style={({pressed}) => [{
-                opacity: pressed ? 0.4 : 1
-              }, styles.loginButton]}>
-            <Text style={incompleteForm ? styles.invalidLoginButtonText : styles.loginButtonText}>Register</Text>
-          </Pressable>
+        ) : <Pressable
+          onPress={() => handleSignup(email, password, cfmPassword)}
+          disabled={incompleteForm}
+          style={({ pressed }) => [{
+            opacity: pressed ? 0.4 : 1
+          }, styles.loginButton]}>
+          <Text style={incompleteForm ? styles.invalidLoginButtonText : styles.loginButtonText}>Register</Text>
+        </Pressable>
         }
         <Text style={styles.errMsg}>{errMsg}</Text>
         <Text style={styles.otherSignInText}>- OR -</Text>
@@ -87,7 +88,7 @@ const RegisterPortal = () => {
           <FacebookButton />
         </View>
       </View>
-    </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
@@ -96,6 +97,8 @@ export default RegisterPortal;
 const styles = StyleSheet.create({
   mainContainer: {
     padding: 15,
+    backgroundColor: "white",
+    // height: "100%"
   },
   loginInput: {
     marginBottom: 15,
@@ -109,8 +112,7 @@ const styles = StyleSheet.create({
   welcomeText: {
     textAlign: "center",
     fontSize: 30,
-    fontFamily: "Cormorant Garamond",
-    fontWeight: "bold",
+    fontFamily: "CormorantGaramond-Bold",
     marginBottom: 40,
     marginTop: -20,
   },
@@ -130,29 +132,27 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     textAlign: "right",
-    fontFamily: "Cormorant Garamond",
+    fontFamily: "CormorantGaramond-Bold",
     fontSize: 25,
-    fontWeight: "600",
     textDecorationLine: "underline",
   },
   invalidLoginButtonText: {
     textAlign: "right",
-    fontFamily: "Cormorant Garamond",
+    fontFamily: "CormorantGaramond-Bold",
     fontSize: 25,
-    fontWeight: "600",
     textDecorationLine: "underline",
     color: "#bdbdbd",
   },
   otherSignInText: {
-    fontFamily: "Cormorant Garamond",
+    fontFamily: "CormorantGaramond-Medium",
     textAlign: "center",
     fontSize: 20,
   },
   logo: {
     marginBottom: 40,
-    width: 280,
-    height: 200,
-    marginLeft: 50,
+    width: 240,
+    height: 160,
+    alignSelf: 'center',
     resizeMode: "contain",
   },
   errMsg: {

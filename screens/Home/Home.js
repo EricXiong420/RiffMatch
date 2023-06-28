@@ -22,7 +22,7 @@ const Home = () => {
   const { profiles, updateMatches } = useMatches();
   const [profileDataLoaded, setProfileDataLoaded] = useState(false);
 
-  const { user, profileData, firstTimeUser } = useAuth();
+  const { user, profileData, firstTimeUser, handleSignout } = useAuth();
   useEffect(() => {
     if (profileData !== undefined && !profileDataLoaded) {
       setProfileDataLoaded(true);
