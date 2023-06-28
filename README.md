@@ -11,14 +11,22 @@ Install RiffMatch by cloning the repository
   git clone https://github.com/EricXiong420/RiffMatch
   cd RiffMatch
   npm install
+  cd ios && pod install
 ```
 
-For IOS: Start RiffMatch
+For IOS: Start RiffMatch (Make sure you have XCode installed!)
 ``` bash
     npx expo run:ios
 ```
 
-For Android: Start RiffMatch
+For Android: Start RiffMatch (Make sure you have Android Studio installed!)
+
+To test the app on your Android Phone:
+1. Turn on developer options using the link below
+https://www.samsung.com/uk/support/mobile-devices/how-do-i-turn-on-the-developer-options-menu-on-my-samsung-galaxy-device/
+2. Turn on USB Debugging option in developer options
+3. Run the command below.
+
 ``` bash
     npx expo run:android
 ```
