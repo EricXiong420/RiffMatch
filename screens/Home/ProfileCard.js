@@ -25,15 +25,22 @@ const ProfileCard = ({ card }) => {
     // // resetTracks();
   }, []);
   useEffect(() => {
-    getUserPhotoLink('342deaa8-e1dd-4ef8-9128-ca7977d4d867', (url) => {
-      setImage(url)
-    })
+    if (card.photos?.length > 0) {
+      getUserPhotoLink(card.photos[0], (url) => {
+        setImage(url)
+      })
+    } else {
+      getUserPhotoLink('342deaa8-e1dd-4ef8-9128-ca7977d4d867', (url) => {
+        setImage(url)
+      })
+    }
+   
   }, [])
 
   const { firstName, lastName, gender, introduction } = card;
 
   return (<View style={[styles.card, styles.cardShadow]}>
-    <ImageBackground source={{ uri: image, cache: 'force-cache' }} blurRadius={50} style={styles.backgroundImage}>
+    <ImageBackground source={{ uri: image, cache: 'force-cache' }} blurRadius={10} style={styles.backgroundImage}>
       <View>
         <Text style={styles.cardName}>{firstName} {lastName}</Text>
         <Text style={styles.gender}>{gender}</Text>
