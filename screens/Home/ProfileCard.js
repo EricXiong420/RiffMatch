@@ -38,8 +38,8 @@ const ProfileCard = ({ card }) => {
         <Text style={styles.cardName}>{firstName} {lastName}</Text>
         <Text style={styles.gender}>{gender}</Text>
         <View style={styles.chips}>
-          {card?.instruments?.map(instrument => (
-            <Chip text={instrument} />
+          {card?.instruments?.map((instrument, index) => (
+            <Chip key={index} text={instrument} />
           ))}
         </View>
         <Text numberOfLines={4} style={styles.introduction}>{introduction}</Text>

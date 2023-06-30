@@ -19,8 +19,8 @@ const ProfileModalScreen = ({ route }) => {
         <Text style={styles.textSubheader}>{card?.gender}</Text>
       </View>
       <View style={styles.chips}>
-        {card?.instruments?.map(instrument => (
-          <Chip text={instrument} />
+        {card?.instruments?.map((instrument, index) => (
+          <Chip key={index} text={instrument} />
         ))}
       </View>
       <Divider />
