@@ -79,7 +79,25 @@ const ProfileModalScreen = ({ route }) => {
         <ProfileGenres showHeader={false} profileData={card}></ProfileGenres>
       </View>
 
-      {/* {card.sounds?.map((sound, index) => (<AudioPlayer key={index} track={{ id: index }}/>))} */}
+      {/* Sounds */}
+      <View style={styles.sounds}>
+        <Text style={styles.soundsTitle}>Sounds</Text>
+        {card.sounds?.map((sound, index) => {
+          return (
+            <Sound
+              key={index}
+              sound={sound}
+              trackIndex={index}
+              theme={"dark"}
+            />
+          );
+        })}
+        {card.sounds.length === 0 && (
+          <Text style={styles.noSoundsText}>
+            Profile has no sounds uploaded...
+          </Text>
+        )}
+      </View>
     </ScrollView>
   );
 };
@@ -145,12 +163,35 @@ const styles = StyleSheet.create({
     fontFamily: "CormorantGaramond-Bold",
     fontSize: 30,
   },
+  sounds: {
+    padding: 30,
+    borderColor: "#d1d1d1",
+    borderRadius: 20,
+    borderWidth: 1,
+    backgroundColor: "black",
+    marginTop: 10,
+    marginBottom: 50,
+  },
+  soundsTitle: {
+    fontFamily: "CormorantGaramond-Bold",
+    fontSize: 30,
+    color: "white",
+    marginBottom: 20,
+  },
   chips: {
     flexDirection: "row",
     flexWrap: "wrap",
     columnGap: 10,
     rowGap: 5,
     margin: 5,
+  },
+  noSoundsText: {
+    fontFamily: "CormorantGaramond-Regular",
+    textAlign: "center",
+    color: "white",
+    fontSize: 20,
+    marginTop: 20,
+    marginBottom: 20,
   },
   card: {
     height: "100%",
@@ -167,5 +208,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     alignSelf: "center",
   },
-  sounds: {},
 });

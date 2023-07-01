@@ -34,20 +34,28 @@ const ProfilePhotos = ({ isOwn, photosData, showHeader }) => {
           </Text>
         </View>
       ) : null}
-      <FlatList
-        horizontal
-        nestedScrollEnabled
-        style={styles.picturesContainer}
-        data={photos}
-        renderItem={({ item }) => {
-          return (
-            <Pressable>
-              <Photo photoUUID={item}></Photo>
-            </Pressable>
-          );
-        }}
-        keyExtractor={(item) => item}
-      />
+      {photos?.length > 0 ? (
+        <FlatList
+          horizontal
+          nestedScrollEnabled
+          style={styles.picturesContainer}
+          data={photos}
+          renderItem={({ item }) => {
+            return (
+              <Pressable>
+                <Photo photoUUID={item}></Photo>
+              </Pressable>
+            );
+          }}
+          keyExtractor={(item) => item}
+        />
+      ) : (
+        <Text
+          style={{ ...styles.noPhotosText, color: isOwn ? "black" : "white" }}
+        >
+          Profile has no photos...
+        </Text>
+      )}
     </View>
   );
 };
@@ -75,8 +83,7 @@ export default ProfilePhotos;
 const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
-    fontFamily: "Cormorant Garamond",
-    fontWeight: "bold",
+    fontFamily: "CormorantGaramond-Bold",
     flex: 1,
   },
   section: {
@@ -100,8 +107,14 @@ const styles = StyleSheet.create({
   editButton: {
     marginTop: 10,
     fontSize: 17,
-    fontFamily: "Cormorant Garamond",
-    fontStyle: "italic",
+    fontFamily: "CormorantGaramond-Italic",
     textAlign: "right",
+  },
+  noPhotosText: {
+    fontFamily: "CormorantGaramond-Regular",
+    textAlign: "center",
+    fontSize: 20,
+    marginTop: 50,
+    marginBottom: 50,
   },
 });
