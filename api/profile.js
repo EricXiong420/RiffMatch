@@ -2,11 +2,22 @@ import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
 import uuid from "react-native-uuid";
 
+// For those users without a profile image, default image will be used.
+export const getDefaultProfileImage = async (callback) => {
+  const url = await storage()
+    .ref(`profile-images/default.png`)
+    .getDownloadURL();
+  return url;
+};
+
 export const getProfileImage = async (email, callback) => {
   const url = await storage()
     .ref(`profile-images/${email}.png`)
     .getDownloadURL()
-    .catch((err) => console.log(err));
+    .catch(async (err) => {
+      console.log("[Warning] No Profile Image exists for this user. Using default.");
+      return await getDefaultProfileImage();
+    });
   return url;
 };
 
