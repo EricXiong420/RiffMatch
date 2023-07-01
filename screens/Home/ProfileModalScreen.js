@@ -1,76 +1,171 @@
-import { StyleSheet, Text, View, Image, Pressable, FlatList } from 'react-native'
-import { useState, useEffect } from 'react'
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Chip from '../Misc/Chip';
-import Divider from '../Misc/Divider';
-import TrackPlayer, { usePlaybackState, useTrackPlayerEvents, State, Event } from 'react-native-track-player';
-import AudioPlayer from './AudioPlayer';
-import Sound from './Sound';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  FlatList,
+  ScrollView,
+} from "react-native";
+import { useState, useEffect } from "react";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import Chip from "../Misc/Chip";
+import Divider from "../Misc/Divider";
+import TrackPlayer, {
+  usePlaybackState,
+  useTrackPlayerEvents,
+  State,
+  Event,
+} from "react-native-track-player";
+import AudioPlayer from "./AudioPlayer";
+import Sound from "./Sound";
+import { getProfileImage } from "../../api/profile";
+import ProfileInstruments from "../Profile/ProfileInstruments";
+import ProfilePhotos from "../Profile/ProfilePhotos";
+import ProfileGenres from "../Profile/ProfileGenres";
 
 const ProfileModalScreen = ({ route }) => {
-    const { card, preventReloadingSounds } = route.params;
+  const { card } = route.params;
+  const { firstName, lastName, id, introduction } = card;
+  const [profileImage, setProfileImage] = useState(null);
 
-    return (<View style={styles.card}>
-      <View style={styles.header}>
-        <Text
-          adjustsFontSizeToFit
-          numberOfLines={1} 
-          style={styles.textHeader}>{card?.firstName} {card?.lastName}</Text>
-        <Text style={styles.textSubheader}>{card?.gender}</Text>
+  const GetProfileIMG = async () => {
+    setProfileImage(await getProfileImage(id));
+  };
+
+  useEffect(() => {
+    GetProfileIMG();
+  }, []);
+
+  return (
+    <ScrollView style={styles.card}>
+      {/* Main Introduction */}
+      <View style={styles.introduction}>
+        <Image
+          source={{
+            uri: profileImage ? profileImage : null,
+            cache: "force-cache",
+          }}
+          style={styles.profileImage}
+        ></Image>
+        <Text style={styles.introductionText}>{introduction}</Text>
+        <Text style={styles.fullName}>
+          {firstName} {lastName}
+        </Text>
       </View>
-      <View style={styles.chips}>
-        {card?.instruments?.map((instrument, index) => (
-          <Chip key={index} text={instrument} />
-        ))}
+
+      {/* Photos */}
+      <View style={styles.photos}>
+        <Text style={styles.photosTitle}>Photos</Text>
+        <ProfilePhotos
+          isOwn={false}
+          showHeader={false}
+          photosData={card?.photos}
+        ></ProfilePhotos>
       </View>
-      <Divider />
-      {card?.introduction !== '' && card?.introduction !== undefined
-      && (<><Text style={{ fontSize: 18, fontFamily: 'Cormorant Garamond' }}>Introduction</Text>
-        <View style={styles.introduction}>
-        <Text style={{ fontSize: 15 }}>{card?.introduction}</Text>
-      </View></>)}
-      <Text style={{ fontSize: 18, fontFamily: 'Cormorant Garamond' }}>Genres</Text>
-      <View style={styles.chips}>
-        
-        {card?.genres?.map((genre, index) => (
-          <Chip key={index} text={genre} />
-        ))}
+
+      {/* Instruments */}
+      <View style={styles.instruments}>
+        <Text style={styles.instrumentsTitle}>Instruments</Text>
+        <ProfileInstruments
+          showHeader={false}
+          profileData={card}
+        ></ProfileInstruments>
       </View>
-      <Divider />
+
+      {/* Genres */}
+      <View style={styles.instruments}>
+        <Text style={styles.instrumentsTitle}>Genres</Text>
+        <ProfileGenres showHeader={false} profileData={card}></ProfileGenres>
+      </View>
+
       {/* {card.sounds?.map((sound, index) => (<AudioPlayer key={index} track={{ id: index }}/>))} */}
-    </View>)
-  }
+    </ScrollView>
+  );
+};
 
-  export default ProfileModalScreen;
+export default ProfileModalScreen;
 
-  const styles = StyleSheet.create({
-    chips: {
-      flexDirection: 'row',
-      flexWrap: "wrap",
-      columnGap: 10,
-      rowGap: 5,
-      margin: 5
-    },
-    card: {
-      height: '100%',
-      backgroundColor: '#fff',
-      gap: 10,
-      padding: 10,
-    },
-    header: {
-    },
-    textHeader: {
-      fontSize: 40,
-      fontFamily: "Cormorant Garamond",
-      alignSelf: 'center'
-    },
-    textSubheader: {
-      fontSize: 18,
-      alignSelf: 'center'
-    },
-    introduction: {
-      padding: 10
-    },
-    sounds: {
-    }
-  })
+const styles = StyleSheet.create({
+  introduction: {
+    padding: 30,
+    marginTop: 20,
+    alignSelf: "center",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    borderColor: "#d1d1d1",
+    borderRadius: 20,
+    borderWidth: 1,
+    width: "100%",
+  },
+  profileImage: {
+    height: 60,
+    width: 60,
+    borderRadius: 100,
+    borderColor: "black",
+    borderWidth: 1,
+  },
+  introductionText: {
+    color: "grey",
+    fontSize: 13,
+    marginTop: 15,
+    marginBottom: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
+    textAlign: "center",
+  },
+  fullName: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  photos: {
+    padding: 30,
+    borderColor: "#d1d1d1",
+    borderRadius: 20,
+    borderWidth: 1,
+    backgroundColor: "black",
+    marginTop: 10,
+    paddingBottom: -40,
+  },
+  photosTitle: {
+    color: "white",
+    fontFamily: "CormorantGaramond-Bold",
+    fontSize: 30,
+  },
+  instruments: {
+    marginTop: 10,
+    padding: 30,
+    borderColor: "#d1d1d1",
+    borderRadius: 20,
+    borderWidth: 1,
+    paddingBottom: -40,
+  },
+  instrumentsTitle: {
+    fontFamily: "CormorantGaramond-Bold",
+    fontSize: 30,
+  },
+  chips: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    columnGap: 10,
+    rowGap: 5,
+    margin: 5,
+  },
+  card: {
+    height: "100%",
+    backgroundColor: "#fff",
+    gap: 10,
+    padding: 10,
+  },
+  header: {},
+  textHeader: {
+    fontSize: 40,
+    fontFamily: "CormorantGaramond-Bold",
+  },
+  textSubheader: {
+    fontSize: 18,
+    alignSelf: "center",
+  },
+  sounds: {},
+});
