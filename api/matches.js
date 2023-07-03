@@ -22,6 +22,14 @@ export const GetUserMatches = async (userUUID, callback) => {
     });
 };
 
+export const GetUserMatchesProfiles = async (userUUID, callback) => {
+  GetUserMatches(userUUID, (data) => {
+    GetUserProfilesFromUUIDs(data?.pending, (profiles) => {
+      callback(profiles);
+    });
+  });
+};
+
 export const GetUserProfilesFromUUIDs = async (uuids, callback) => {
   if (!uuids || !uuids.length) return [];
   const batches = [];
@@ -38,7 +46,8 @@ export const GetUserProfilesFromUUIDs = async (uuids, callback) => {
         .get()
         .then((results) =>
           results.docs.map((result) => ({
-            /* id: result.id, */ ...result.data(),
+            id: result.id,
+            ...result.data(),
           }))
         )
     );
@@ -78,6 +87,44 @@ export const SwipedLeft = (myUserUUID, theirUserUUID) => {
     .doc(theirUserUUID)
     .update({
       passed: firestore.FieldValue.arrayUnion(myUserUUID),
+    })
+    .then(() => {});
+};
+
+export const RejectConnection = (myUserUUID, theirUserUUID) => {
+  firestore()
+    .collection("matches")
+    .doc(myUserUUID)
+    .update({
+      pending: firestore.FieldValue.arrayRemove(theirUserUUID),
+      passed: firestore.FieldValue.arrayUnion(theirUserUUID),
+    })
+    .then(() => {});
+  firestore()
+    .collection("matches")
+    .doc(theirUserUUID)
+    .update({
+      awaiting: firestore.FieldValue.arrayRemove(myUserUUID),
+      passed: firestore.FieldValue.arrayUnion(myUserUUID),
+    })
+    .then(() => {});
+};
+
+export const AcceptConnection = (myUserUUID, theirUserUUID) => {
+  firestore()
+    .collection("matches")
+    .doc(myUserUUID)
+    .update({
+      pending: firestore.FieldValue.arrayRemove(theirUserUUID),
+      connections: firestore.FieldValue.arrayUnion(theirUserUUID),
+    })
+    .then(() => {});
+  firestore()
+    .collection("matches")
+    .doc(theirUserUUID)
+    .update({
+      awaiting: firestore.FieldValue.arrayRemove(myUserUUID),
+      connections: firestore.FieldValue.arrayUnion(myUserUUID),
     })
     .then(() => {});
 };

@@ -29,7 +29,6 @@ export function AuthProvider({ children }) {
         .collection('users')
         .doc(user.email)
         .onSnapshot(snapshot => {
-          console.log(snapshot._data);
           setProfileData(snapshot._data);
         });
       return () => subscriber();

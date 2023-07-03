@@ -15,7 +15,9 @@ export const getProfileImage = async (email, callback) => {
     .ref(`profile-images/${email}.png`)
     .getDownloadURL()
     .catch(async (err) => {
-      console.log("[Warning] No Profile Image exists for this user. Using default.");
+      console.log(
+        "[Warning] No Profile Image exists for this user. Using default."
+      );
       return await getDefaultProfileImage();
     });
   return url;
@@ -25,7 +27,7 @@ export const getProfileImage = async (email, callback) => {
 export const getUserPhotoLink = async (photoUUID, cb) => {
   const url = await storage()
     .ref(`user-images/${photoUUID}.png`)
-    .getDownloadURL();
+    .getDownloadURL()
   cb(url);
 };
 

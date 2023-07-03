@@ -23,10 +23,14 @@ import { getProfileImage } from "../../api/profile";
 import ProfileInstruments from "../Profile/ProfileInstruments";
 import ProfilePhotos from "../Profile/ProfilePhotos";
 import ProfileGenres from "../Profile/ProfileGenres";
+import { AcceptConnection, RejectConnection } from "../../api/matches";
+import { useAuth } from "../../contexts/AuthContext";
+import { createChatroom } from "../../api/messages";
 
-const ProfileModalScreen = ({ route }) => {
-  const { card } = route.params;
+const ProfileModalScreen = ({ route, navigation }) => {
+  const { card, acceptReject } = route.params;
   const { firstName, lastName, id, introduction } = card;
+  const { user, profileData, setProfileData } = useAuth();
   const [profileImage, setProfileImage] = useState(null);
 
   const GetProfileIMG = async () => {
@@ -36,6 +40,17 @@ const ProfileModalScreen = ({ route }) => {
   useEffect(() => {
     GetProfileIMG();
   }, []);
+
+  const Accept = () => {
+    AcceptConnection(profileData.uuid, card.uuid);
+    createChatroom([user.email, card.id]);
+    navigation.goBack();
+  };
+
+  const Reject = () => {
+    RejectConnection(profileData.uuid, card.uuid);
+    navigation.goBack();
+  };
 
   return (
     <ScrollView style={styles.card}>
@@ -52,6 +67,16 @@ const ProfileModalScreen = ({ route }) => {
         <Text style={styles.fullName}>
           {firstName} {lastName}
         </Text>
+        {acceptReject ? (
+          <View style={styles.acceptRejectButtons}>
+            <Pressable onPress={Reject} style={styles.rejectButton}>
+              <Ionicons style={styles.buttonIcon} name="close"></Ionicons>
+            </Pressable>
+            <Pressable onPress={Accept} style={styles.acceptButton}>
+              <Ionicons style={styles.buttonIcon} name="heart"></Ionicons>
+            </Pressable>
+          </View>
+        ) : null}
       </View>
 
       {/* Photos */}
@@ -207,5 +232,28 @@ const styles = StyleSheet.create({
   textSubheader: {
     fontSize: 18,
     alignSelf: "center",
+  },
+  acceptRejectButtons: {
+    flexDirection: "row",
+    marginTop: 40,
+  },
+  rejectButton: {
+    backgroundColor: "black",
+    borderRadius: 10,
+    height: 40,
+    width: "50%",
+    marginRight: 5,
+  },
+  acceptButton: {
+    backgroundColor: "#f3691c",
+    borderRadius: 10,
+    height: 40,
+    width: "50%",
+  },
+  buttonIcon: {
+    textAlign: "center",
+    lineHeight: 40,
+    color: "white",
+    fontSize: 20,
   },
 });

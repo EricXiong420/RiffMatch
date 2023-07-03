@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import ChatUserItem from "./ChatUserItem";
 import { useMessages } from "../../contexts/messages";
 import { useAuth } from "../../contexts/AuthContext";
+import Connections from "./Connections/Connections";
 
 const ChatScreen = () => {
   const { user, profileImage } = useAuth();
@@ -54,7 +55,10 @@ const ChatScreen = () => {
       </View>
 
       <KeyboardAvoidingView style={styles.chatScreenContainer}>
+        <Connections></Connections>
+
         <View style={styles.chatUsers}>
+          <Text style={styles.subHeader}>Recent Conversations</Text>
           <FlatList
             data={usersList}
             renderItem={({ item }) => (
@@ -88,6 +92,11 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     borderBottomColor: "#f5f5f5",
     // borderWidth: 1
+  },
+  subHeader: {
+    fontSize: 15,
+    marginLeft: 30,
+    marginTop: 20,
   },
   title: {
     fontFamily: "CormorantGaramond-Bold",
