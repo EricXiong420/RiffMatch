@@ -17,8 +17,10 @@ export const addUserToDB = async (userData, email) => {
     .then(() => {
       // Create user document in matches collection
       firestore().collection("matches").doc(userUUID).set({
-        swipedLeft: [],
-        swipedRight: [],
+        pending: [],
+        awaiting: [],
+        connections: [],
+        passed: []
       });
       // Add new user UUID into mastersheet in matches collection
       firestore()

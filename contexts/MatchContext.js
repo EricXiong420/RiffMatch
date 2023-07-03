@@ -24,18 +24,6 @@ function matchReducer(state, action) {
     case "set-cards": {
       return { ...state, cards: action.cards };
     }
-    // case "swipe-left": {
-    //   let cards = state;
-    //   cards.splice(action.removeCardId, 1);
-    //   // return [...cards];
-    //   return state;
-    // }
-    // case "swipe-right": {
-    //   let cards = state;
-    //   cards.splice(action.removeCardId, 1);
-    //   // return [...cards];
-    //   return state;
-    // }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -43,7 +31,10 @@ function matchReducer(state, action) {
 }
 
 function MatchesProvider({ children }) {
-  const [profiles, updateMatches] = useReducer(matchReducer, {uuids: [], cards: []});
+  const [profiles, updateMatches] = useReducer(matchReducer, {
+    uuids: [],
+    cards: [],
+  });
   const [retrieved, setRetrieved] = useState(false);
   const value = { profiles, updateMatches };
   const { user, profileData } = useAuth();
@@ -62,6 +53,7 @@ function MatchesProvider({ children }) {
     GetAllUsersUUID((usersUUID) => {
       GetUserMatches(profileData.uuid, (matches) => {
         const filteredUsers = usersUUID
+          .filter((uuid) => uuid !== profileData.uuid)
           .filter((uuid) => !matches.pending.includes(uuid))
           .filter((uuid) => !matches.awaiting.includes(uuid))
           .filter((uuid) => !matches.connections.includes(uuid))
@@ -72,29 +64,13 @@ function MatchesProvider({ children }) {
   };
 
   const getRandomProfiles = (number) => {
-    const DEFAULT_CARDS = 20;
+    const DEFAULT_CARDS = 50;
     const shuffled = profiles.uuids?.sort(() => 0.5 - Math.random());
     let selected = shuffled?.slice(0, number ? number : DEFAULT_CARDS);
     GetUserProfilesFromUUIDs(selected, (data) => {
       updateMatches({ type: "set-cards", cards: data });
     });
   };
-
-  // useEffect(() => {
-  //     if (Object.keys(profileData).length > 0 && !retrieved) {
-  //         const seenProfiles = [...profileData.swipedLeft, ...profileData.swipedRight, user.email]
-  //         firestore().collection('users')
-  //             .where(firestore.FieldPath.documentId(), '!=', user.email)
-  //             .get().then(collection => {
-  //                 const dataToStore = collection.docs.map(doc => ({
-  //                     id: doc.id,
-  //                     ...doc.data()
-  //                 }));
-  //                 updateMatches({ type: 'set-initial', data: dataToStore })
-  //                 setRetrieved(true);
-  //             })
-  //     }
-  // }, [profileData])
 
   return (
     <MatchesContext.Provider value={value}>{children}</MatchesContext.Provider>

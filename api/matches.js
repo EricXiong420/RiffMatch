@@ -49,7 +49,6 @@ export const GetUserProfilesFromUUIDs = async (uuids, callback) => {
 };
 
 export const SwipedRight = (myUserUUID, theirUserUUID) => {
-  console.log(myUserUUID, theirUserUUID);
   firestore()
     .collection("matches")
     .doc(myUserUUID)
@@ -62,6 +61,23 @@ export const SwipedRight = (myUserUUID, theirUserUUID) => {
     .doc(theirUserUUID)
     .update({
       pending: firestore.FieldValue.arrayUnion(myUserUUID),
+    })
+    .then(() => {});
+};
+
+export const SwipedLeft = (myUserUUID, theirUserUUID) => {
+  firestore()
+    .collection("matches")
+    .doc(myUserUUID)
+    .update({
+      passed: firestore.FieldValue.arrayUnion(theirUserUUID),
+    })
+    .then(() => {});
+  firestore()
+    .collection("matches")
+    .doc(theirUserUUID)
+    .update({
+      passed: firestore.FieldValue.arrayUnion(myUserUUID),
     })
     .then(() => {});
 };

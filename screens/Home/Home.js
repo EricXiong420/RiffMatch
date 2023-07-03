@@ -20,7 +20,7 @@ import Logo from "../../assets/login/logo.png";
 import ProfileCard from "./ProfileCard";
 import TrackPlayer from "react-native-track-player";
 import { useMatches } from "../../contexts/MatchContext";
-import { SwipedRight } from "../../api/matches";
+import { SwipedLeft, SwipedRight } from "../../api/matches";
 
 const Home = () => {
   const navigation = useNavigation();
@@ -35,66 +35,15 @@ const Home = () => {
       setProfileDataLoaded(true);
     }
   }, [profileData]);
-
+  
   useEffect(() => {
-    console.log("home", profiles);
-  }, [profiles]);
-
-  useEffect(() => {
-    console.log(profileData);
     if (profileData === undefined || Object.keys(profileData).length === 0) {
       navigation.navigate("CreateProfileBasic");
     }
-    //   if (Object.keys(profileData).length !== 0) {
-    //     const seenProfiles = profileData.swipedLeft.concat(profileData.swipedRight, ["test"]);
-    //     firestore().collection('users')
-    //       .where(firestore.FieldPath.documentId(), 'not-in', seenProfiles)
-    //       .get().then(collection => {
-    //         setInitializing(false);
-    //         setProfiles(collection.docs
-    //           .filter(doc => doc.id !== user.email)
-    //           .map(doc => ({
-    //             id: doc.id,
-    //             ...doc.data()
-    //           })));
-    //       })
-    //   }
   }, [profileDataLoaded]);
 
-  // useEffect(() => {
-  //   if (Object.keys(profileData).length !== 0) {
-  //     const seenProfiles = profileData.swipedLeft.concat(profileData.swipedRight, ["test"]);
-  //     firestore().collection('users')
-  //       .where(firestore.FieldPath.documentId(), 'not-in', seenProfiles)
-  //       .get().then(collection => {
-  //         setInitializing(false);
-  //         setProfiles(collection.docs
-  //           .filter(doc => doc.id !== user.email)
-  //           .map(doc => ({
-  //             id: doc.id,
-  //             ...doc.data()
-  //           })));
-  //       })
-  //   }
-  // }, [profileData])
-
-  useEffect(() => {
-    console.log(profiles.cards);
-    // if (profiles.cards.length === 0) {
-    //   setInitializing(true);
-    // } else {
-    //   setInitializing(false);
-    // }
-  }, [profiles]);
-
   const handleSwipeLeft = (cardIndex) => {
-    // updateMatches({ type: 'swipe-left', removeCardIndex: cardIndex })
-    // if (profiles[cardIndex] !== undefined) {
-    //   firestore().collection('users').doc(user.email)
-    //     .update({
-    //       swipedLeft: firestore.FieldValue.arrayUnion(profiles[cardIndex].id)
-    //     });
-    // }
+    SwipedLeft(profileData.uuid, profiles.cards[cardIndex].uuid);
   };
 
   const handleSwipeRight = (cardIndex) => {
