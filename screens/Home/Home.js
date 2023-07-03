@@ -20,6 +20,7 @@ import Logo from "../../assets/login/logo.png";
 import ProfileCard from "./ProfileCard";
 import TrackPlayer from "react-native-track-player";
 import { useMatches } from "../../contexts/MatchContext";
+import { SwipedRight } from "../../api/matches";
 
 const Home = () => {
   const navigation = useNavigation();
@@ -34,6 +35,10 @@ const Home = () => {
       setProfileDataLoaded(true);
     }
   }, [profileData]);
+
+  useEffect(() => {
+    console.log("home", profiles);
+  }, [profiles]);
 
   useEffect(() => {
     console.log(profileData);
@@ -74,10 +79,11 @@ const Home = () => {
   // }, [profileData])
 
   useEffect(() => {
-    // console.log("Profiles Left", profiles.length)
-    // console.log(profiles)
-    // if (profiles.length > 0) {
-    //   console.log(profiles[3].id)
+    console.log(profiles.cards);
+    // if (profiles.cards.length === 0) {
+    //   setInitializing(true);
+    // } else {
+    //   setInitializing(false);
     // }
   }, [profiles]);
 
@@ -92,18 +98,12 @@ const Home = () => {
   };
 
   const handleSwipeRight = (cardIndex) => {
-    // updateMatches({ type: 'swipe-right', removeCardIndex: cardIndex })
-    // if (profiles[cardIndex] !== undefined) {
-    //   firestore().collection('users').doc(user.email)
-    //     .update({
-    //       swipedRight: firestore.FieldValue.arrayUnion(profiles[cardIndex].id)
-    //     });
-    // }
+    SwipedRight(profileData.uuid, profiles.cards[cardIndex].uuid);
   };
 
   const handleTapCard = (cardIndex) => {
     navigation.navigate("ProfileModal", {
-      card: profiles[cardIndex],
+      card: profiles.cards[cardIndex],
       preventReloadingSounds: true,
     });
   };
@@ -128,7 +128,7 @@ const Home = () => {
           <Swiper
             cardVerticalMargin={30}
             containerStyle={styles.swiperContainer}
-            cards={profiles}
+            cards={profiles.cards}
             verticalSwipe={false}
             animateCardOpacity
             cardIndex={0}
