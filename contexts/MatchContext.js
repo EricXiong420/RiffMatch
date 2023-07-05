@@ -10,6 +10,7 @@ import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "./AuthContext";
 import {
   GetAllUsersUUID,
+  GetNumberOfConnections,
   GetUserMatches,
   GetUserProfilesFromUUIDs,
 } from "../api/matches";
@@ -24,6 +25,12 @@ function matchReducer(state, action) {
     case "set-cards": {
       return { ...state, cards: action.cards };
     }
+    case "set-pending": {
+      return { ...state, pending: action.pending };
+    }
+    case "set-connections": {
+      return { ...state, connections: action.connections };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -34,6 +41,8 @@ function MatchesProvider({ children }) {
   const [profiles, updateMatches] = useReducer(matchReducer, {
     uuids: [],
     cards: [],
+    pending: [],
+    connections: 0,
   });
   const [retrieved, setRetrieved] = useState(false);
   const value = { profiles, updateMatches };
@@ -47,6 +56,9 @@ function MatchesProvider({ children }) {
 
   useEffect(() => {
     getRandomProfiles();
+    GetNumberOfConnections(profileData.uuid, (c) => {
+      updateMatches({ type: "set-connections", connections: c });
+    });
   }, [profiles.uuids]);
 
   const updateUUIDsList = () => {

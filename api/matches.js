@@ -57,6 +57,16 @@ export const GetUserProfilesFromUUIDs = async (uuids, callback) => {
   Promise.all(batches).then((content) => callback(content.flat()));
 };
 
+export const GetNumberOfConnections = (userUUID, callback) => {
+  firestore()
+    .collection("matches")
+    .doc(userUUID)
+    .get()
+    .then((document) => {
+      callback(document._data?.connections.length);
+    });
+};
+
 export const SwipedRight = (myUserUUID, theirUserUUID) => {
   firestore()
     .collection("matches")

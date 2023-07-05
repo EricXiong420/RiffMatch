@@ -26,11 +26,13 @@ import ProfileGenres from "../Profile/ProfileGenres";
 import { AcceptConnection, RejectConnection } from "../../api/matches";
 import { useAuth } from "../../contexts/AuthContext";
 import { createChatroom } from "../../api/messages";
+import { useMatches } from "../../contexts/MatchContext";
 
 const ProfileModalScreen = ({ route, navigation }) => {
   const { card, acceptReject } = route.params;
   const { firstName, lastName, id, introduction } = card;
   const { user, profileData, setProfileData } = useAuth();
+  const { profiles, updateMatches } = useMatches();
   const [profileImage, setProfileImage] = useState(null);
 
   const GetProfileIMG = async () => {
@@ -49,6 +51,10 @@ const ProfileModalScreen = ({ route, navigation }) => {
 
   const Reject = () => {
     RejectConnection(profileData.uuid, card.uuid);
+    updateMatches({
+      type: "set-pending",
+      pending: profiles.pending.filter((p) => p.uuid != card.uuid),
+    });
     navigation.goBack();
   };
 
