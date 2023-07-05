@@ -22,11 +22,13 @@ import ProfilePhotos from "./ProfilePhotos";
 import ProfileGenres from "./ProfileGenres";
 import ProfileSounds from "./ProfileSounds";
 import { useNavigation } from "@react-navigation/native";
+import { useMatches } from "../../contexts/MatchContext";
 
 const ProfileScreen = () => {
   const { user, profileImage, profileData } = useAuth();
+  const { profiles } = useMatches();
   const navigation = useNavigation();
-
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -57,7 +59,7 @@ const ProfileScreen = () => {
               <Text style={styles.name}>
                 {profileData.firstName} {profileData.lastName}
               </Text>
-              <Text style={styles.connectionStats}>NA Connections</Text>
+              <Text style={styles.connectionStats}>{profiles.connections} Connections</Text>
             </View>
           </View>
         </View>
@@ -66,10 +68,17 @@ const ProfileScreen = () => {
         <ProfileIntroduction profileData={profileData}></ProfileIntroduction>
 
         {/* My Images */}
-        <ProfilePhotos showHeader isOwn={true} profileData={profileData}></ProfilePhotos>
+        <ProfilePhotos
+          showHeader
+          isOwn={true}
+          profileData={profileData}
+        ></ProfilePhotos>
 
         {/* Instruments */}
-        <ProfileInstruments showHeader profileData={profileData}></ProfileInstruments>
+        <ProfileInstruments
+          showHeader
+          profileData={profileData}
+        ></ProfileInstruments>
 
         {/* Genres */}
         <ProfileGenres showHeader profileData={profileData}></ProfileGenres>

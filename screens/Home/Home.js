@@ -20,6 +20,7 @@ import Logo from "../../assets/login/logo.png";
 import ProfileCard from "./ProfileCard";
 import TrackPlayer from "react-native-track-player";
 import { useMatches } from "../../contexts/MatchContext";
+import { SwipedLeft, SwipedRight } from "../../api/matches";
 
 const Home = () => {
   const navigation = useNavigation();
@@ -34,76 +35,24 @@ const Home = () => {
       setProfileDataLoaded(true);
     }
   }, [profileData]);
-
+  
   useEffect(() => {
-    console.log(profileData);
     if (profileData === undefined || Object.keys(profileData).length === 0) {
       navigation.navigate("CreateProfileBasic");
     }
-    //   if (Object.keys(profileData).length !== 0) {
-    //     const seenProfiles = profileData.swipedLeft.concat(profileData.swipedRight, ["test"]);
-    //     firestore().collection('users')
-    //       .where(firestore.FieldPath.documentId(), 'not-in', seenProfiles)
-    //       .get().then(collection => {
-    //         setInitializing(false);
-    //         setProfiles(collection.docs
-    //           .filter(doc => doc.id !== user.email)
-    //           .map(doc => ({
-    //             id: doc.id,
-    //             ...doc.data()
-    //           })));
-    //       })
-    //   }
   }, [profileDataLoaded]);
 
-  // useEffect(() => {
-  //   if (Object.keys(profileData).length !== 0) {
-  //     const seenProfiles = profileData.swipedLeft.concat(profileData.swipedRight, ["test"]);
-  //     firestore().collection('users')
-  //       .where(firestore.FieldPath.documentId(), 'not-in', seenProfiles)
-  //       .get().then(collection => {
-  //         setInitializing(false);
-  //         setProfiles(collection.docs
-  //           .filter(doc => doc.id !== user.email)
-  //           .map(doc => ({
-  //             id: doc.id,
-  //             ...doc.data()
-  //           })));
-  //       })
-  //   }
-  // }, [profileData])
-
-  useEffect(() => {
-    // console.log("Profiles Left", profiles.length)
-    // console.log(profiles)
-    // if (profiles.length > 0) {
-    //   console.log(profiles[3].id)
-    // }
-  }, [profiles]);
-
   const handleSwipeLeft = (cardIndex) => {
-    // updateMatches({ type: 'swipe-left', removeCardIndex: cardIndex })
-    // if (profiles[cardIndex] !== undefined) {
-    //   firestore().collection('users').doc(user.email)
-    //     .update({
-    //       swipedLeft: firestore.FieldValue.arrayUnion(profiles[cardIndex].id)
-    //     });
-    // }
+    SwipedLeft(profileData.uuid, profiles.cards[cardIndex].uuid);
   };
 
   const handleSwipeRight = (cardIndex) => {
-    // updateMatches({ type: 'swipe-right', removeCardIndex: cardIndex })
-    // if (profiles[cardIndex] !== undefined) {
-    //   firestore().collection('users').doc(user.email)
-    //     .update({
-    //       swipedRight: firestore.FieldValue.arrayUnion(profiles[cardIndex].id)
-    //     });
-    // }
+    SwipedRight(profileData.uuid, profiles.cards[cardIndex].uuid);
   };
 
   const handleTapCard = (cardIndex) => {
     navigation.navigate("ProfileModal", {
-      card: profiles[cardIndex],
+      card: profiles.cards[cardIndex],
       preventReloadingSounds: true,
     });
   };
@@ -128,7 +77,7 @@ const Home = () => {
           <Swiper
             cardVerticalMargin={30}
             containerStyle={styles.swiperContainer}
-            cards={profiles}
+            cards={profiles.cards}
             verticalSwipe={false}
             animateCardOpacity
             cardIndex={0}
