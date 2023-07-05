@@ -1,6 +1,6 @@
 {
   "name": "riffmatch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Cheng-Yu Dong and Eric Xiong",
   "scripts": {
     "start": "expo start --dev-client",
