@@ -49,16 +49,18 @@ function MatchesProvider({ children }) {
   const { user, profileData } = useAuth();
 
   useEffect(() => {
-    if (profileData.uuid) {
+    if (user && profileData.uuid) {
       updateUUIDsList();
     }
   }, [profileData]);
 
   useEffect(() => {
-    getRandomProfiles();
-    GetNumberOfConnections(profileData.uuid, (c) => {
-      updateMatches({ type: "set-connections", connections: c });
-    });
+    if (user) {
+      getRandomProfiles();
+      GetNumberOfConnections(profileData.uuid, (c) => {
+        updateMatches({ type: "set-connections", connections: c });
+      });
+    }
   }, [profiles.uuids]);
 
   const updateUUIDsList = () => {

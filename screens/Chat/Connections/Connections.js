@@ -17,22 +17,24 @@ import { useMatches } from "../../../contexts/MatchContext";
 
 const Connections = () => {
   const { profiles, updateMatches } = useMatches();
-  const { profileData } = useAuth();
+  const { user, profileData } = useAuth();
   const { pending } = profiles;
 
   useEffect(() => {
-    const subscriber = firestore()
-      .collection("matches")
-      .where(firestore.FieldPath.documentId(), "==", profileData.uuid)
-      .onSnapshot((snapshot) => {
-        GetUserMatchesProfiles(profileData.uuid, (p) => {
-          updateMatches({ type: "set-pending", pending: p });
-          console.log(profiles);
+    if (user) {
+      const subscriber = firestore()
+        .collection("matches")
+        .where(firestore.FieldPath.documentId(), "==", profileData.uuid)
+        .onSnapshot((snapshot) => {
+          GetUserMatchesProfiles(profileData.uuid, (p) => {
+            updateMatches({ type: "set-pending", pending: p });
+            console.log(profiles);
+          });
         });
-      });
 
-    // Stop listening for updates when no longer required
-    return () => subscriber();
+      // Stop listening for updates when no longer required
+      return () => subscriber();
+    }
   }, [profileData]);
 
   return (
