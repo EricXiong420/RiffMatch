@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     padding: 15,
     backgroundColor: "white",
-    // height: "100%"
+    minHeight: "100%",
   },
   loginInput: {
     marginBottom: 15,

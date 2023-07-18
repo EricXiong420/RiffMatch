@@ -28,6 +28,10 @@ const LoginPortal = () => {
                 <TextInput autoCapitalize='none' value={email} onChangeText={setEmail} placeholder='Email' textContentType='emailAddress' style={styles.loginInput}></TextInput>
                 <TextInput autoCapitalize='none' secureTextEntry={true} value={password} onChangeText={setPassword} placeholder='Password' textContentType='password' style={styles.loginInput}></TextInput>
 
+                <View style={styles.buttonGroup}>
+                    <Pressable style={{flex: 1}} onPress={() => navigation.navigate("ForgotPassword")}>
+                        <Text style={styles.fpBtnText}>Forgot Password?</Text>
+                    </Pressable>
                 {loading === true 
                 ? <ActivityIndicator /> 
                 : <Pressable onPress={() => handleLogin(email, password)}
@@ -38,6 +42,8 @@ const LoginPortal = () => {
                     <Text style={incompleteForm ? styles.invalidLoginButtonText : styles.loginButtonText}>Login</Text>
                 </Pressable>
                 }
+                </View>
+                
                 <Text style={styles.errMsg}>{errMsg}</Text>
                 <Text style={styles.otherSignInText}>- OR -</Text>
                 <View style={styles.socialLogins}>
@@ -58,7 +64,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         padding: 15,
         backgroundColor: "white",
-        height: "100%"
+        minHeight: "100%",
     },
     backButton: {
         marginTop: 10
@@ -84,13 +90,14 @@ const styles = StyleSheet.create({
     },
     loginButton: {
         marginTop: 5,
-        textAlign: 'right'
+        textAlign: 'right',
+        alignSelf: 'flex-end'
     },
     loginButtonText: {
         textAlign: 'right',
         fontFamily: "CormorantGaramond-Bold",
         fontSize: 25,
-        textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
     },
     invalidLoginButtonText: {
         textAlign: 'right',
@@ -137,5 +144,15 @@ const styles = StyleSheet.create({
     googleSignin: {
         width: 30,
         height: 30,
+    },
+    buttonGroup: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    fpBtnText: {
+        textAlign: 'left',
+        fontFamily: "CormorantGaramond-Bold",
+        fontSize: 15,
+        textDecorationLine: 'underline'
     }
 })
