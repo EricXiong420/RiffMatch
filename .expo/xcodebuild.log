@@ -3679,7 +3679,6 @@ PhaseScriptExecution Create\ Symlinks\ to\ Header\ Folders /Users/chengyu/Librar
     export variant\=normal
     /bin/sh -c /Users/chengyu/Library/Developer/Xcode/DerivedData/RiffMatch-cxidhftipmjhptdqthzjvdrwaleq/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/gRPC-Core.build/Script-46EB2E00047D60.sh
 
-warning: Run script build phase 'Create Symlinks to Header Folders' will be run during every build because it does not specify any outputs. To address this warning, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'gRPC-C++' from project 'Pods')
 PhaseScriptExecution Create\ Symlinks\ to\ Header\ Folders /Users/chengyu/Library/Developer/Xcode/DerivedData/RiffMatch-cxidhftipmjhptdqthzjvdrwaleq/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/gRPC-C++.build/Script-46EB2E0003D650.sh (in target 'gRPC-C++' from project 'Pods')
     cd /Users/chengyu/Documents/GitHub/RiffMatch/ios/Pods
     export ACTION\=build
@@ -5543,5 +5542,6 @@ Validate /Users/chengyu/Library/Developer/Xcode/DerivedData/RiffMatch-cxidhftipm
 warning: Run script build phase 'Create Symlinks to Header Folders' will be run during every build because it does not specify any outputs. To address this warning, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'React-Codegen' from project 'Pods')
 warning: Run script build phase 'Create Symlinks to Header Folders' will be run during every build because it does not specify any outputs. To address this warning, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'BoringSSL-GRPC' from project 'Pods')
 warning: Run script build phase 'Create Symlinks to Header Folders' will be run during every build because it does not specify any outputs. To address this warning, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'gRPC-Core' from project 'Pods')
+warning: Run script build phase 'Create Symlinks to Header Folders' will be run during every build because it does not specify any outputs. To address this warning, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'gRPC-C++' from project 'Pods')
 ** BUILD SUCCEEDED **
 
