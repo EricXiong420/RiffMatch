@@ -33,6 +33,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CreateProfileGenres from "./screens/Login/CreateProfileGenres";
 import CreateProfileIntroduction from "./screens/Login/CreateProfileIntroduction";
 import CreateProfileSounds from "./screens/Login/CreateProfileSounds";
+import ForgotPassword from "./screens/Login/ForgotPassword";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -176,6 +177,11 @@ export default function App() {
                   <Stack.Screen
                     name="LoginPortal"
                     component={LoginPortal}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="ForgotPassword"
+                    component={ForgotPassword}
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen
