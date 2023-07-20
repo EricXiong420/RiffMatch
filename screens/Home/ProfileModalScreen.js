@@ -11,13 +11,6 @@ import { useState, useEffect } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Chip from "../Misc/Chip";
 import Divider from "../Misc/Divider";
-import TrackPlayer, {
-  usePlaybackState,
-  useTrackPlayerEvents,
-  State,
-  Event,
-} from "react-native-track-player";
-import AudioPlayer from "./AudioPlayer";
 import Sound from "./Sound";
 import { getProfileImage } from "../../api/profile";
 import ProfileInstruments from "../Profile/ProfileInstruments";
@@ -29,7 +22,7 @@ import { createChatroom } from "../../api/messages";
 import { useMatches } from "../../contexts/MatchContext";
 
 const ProfileModalScreen = ({ route, navigation }) => {
-  const { card, acceptReject } = route.params;
+  const { card, acceptReject, swipeRef } = route.params;
   const { firstName, lastName, id, introduction } = card;
   const { user, profileData, setProfileData } = useAuth();
   const { profiles, updateMatches } = useMatches();
@@ -129,6 +122,30 @@ const ProfileModalScreen = ({ route, navigation }) => {
           </Text>
         )}
       </View>
+      {acceptReject ? null : (
+        <View style={styles.buttons}>
+        <Pressable style={styles.swipeLeftButton} onPress={() => {
+          swipeRef.current.swipeLeft();
+          navigation.goBack();
+        }}>
+          <Ionicons
+            name={"close-outline"}
+            size={24}
+            color={"#912c2c"}
+          />
+        </Pressable>
+        <Pressable style={styles.swipeRightButton} onPress={() => {
+          swipeRef.current.swipeRight();
+          navigation.goBack();
+        }}>
+          <Ionicons
+            name={"musical-notes-outline"}
+            size={26}
+            color={"#23782b"}
+          />
+        </Pressable>
+      </View>
+      )}
     </ScrollView>
   );
 };
@@ -262,4 +279,27 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
   },
+  swipeRightButton: {
+    backgroundColor: "#9fff80",
+    borderRadius: 70,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 50,
+    height: 50
+  },
+  swipeLeftButton: {
+    backgroundColor: "#f54747",
+    borderRadius: 70,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingLeft: 2.5,
+    paddingTop: 2.5,
+    width: 50,
+    height: 50
+  },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    height: 200
+  }
 });

@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, View, Text, FlatList, Image, Button, Alert } fro
 import { useState, useEffect } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useAuth } from '../../../contexts/AuthContext';
-import SoundArt from "../../../assets/sound.png"
+import { DeletableSound } from '../../Home/Sound';
 import DocumentPicker, {
     DirectoryPickerResponse,
     DocumentPickerResponse,
@@ -35,7 +35,7 @@ const ProfileEditSounds = ({ route, navigation }) => {
         <FlatList
             style={styles.soundsContainer}
             data={profileData.sounds}
-            renderItem={({ item }) => <Sound sound={item}></Sound>}
+            renderItem={({ item, index }) => <DeletableSound sound={item} trackIndex={index}></DeletableSound>}
             keyExtractor={item => item.uuid}
         />
 
@@ -55,33 +55,6 @@ const ProfileEditSounds = ({ route, navigation }) => {
             }}
         />
     </View>
-}
-
-const Sound = ({ sound }) => {
-    const { user } = useAuth();
-
-    const deleteSound = () => {
-        Alert.alert('Delete Sound', 'Are you sure you want to delete this?', [
-            {
-                text: 'Cancel',
-                style: 'cancel',
-            },
-            {
-                text: 'OK', onPress: () => {
-                    deleteSoundFromDB(user.email, sound)
-
-                }
-            },
-        ]);
-    }
-
-    return <Pressable>
-        <Text style={styles.soundName}>{sound.name}</Text>
-        <View style={styles.soundItem}>
-            <Image style={styles.soundImage} source={SoundArt}></Image>
-            <Ionicons onPress={() => deleteSound()} style={styles.deleteButton} name="trash-outline"></Ionicons>
-        </View>
-    </Pressable>
 }
 
 export default ProfileEditSounds

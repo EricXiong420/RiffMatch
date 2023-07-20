@@ -6,7 +6,7 @@ import {
   Pressable,
   FlatList,
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/core";
 import firestore from "@react-native-firebase/firestore";
@@ -30,6 +30,7 @@ const Home = () => {
   const [profileDataLoaded, setProfileDataLoaded] = useState(false);
 
   const { user, profileData, firstTimeUser, handleSignout } = useAuth();
+  const swipeRef = useRef(null);
   useEffect(() => {
     if (profileData !== undefined && !profileDataLoaded) {
       setProfileDataLoaded(true);
@@ -53,6 +54,7 @@ const Home = () => {
   const handleTapCard = (cardIndex) => {
     navigation.navigate("ProfileModal", {
       card: profiles.cards[cardIndex],
+      swipeRef: swipeRef,
       preventReloadingSounds: true,
     });
   };
@@ -75,6 +77,7 @@ const Home = () => {
         {/* Cards */}
         <View style={{ flex: 9 }}>
           <Swiper
+            ref={swipeRef}
             cardVerticalMargin={30}
             containerStyle={styles.swiperContainer}
             cards={profiles.cards}
@@ -103,13 +106,10 @@ const Home = () => {
                 element: (
                   <View style={styles.swipeRight}>
                     <Ionicons
-                      name={"musical-notes-outline"}
-                      size={46}
-                      color={"#404040"}
+                      name={"musical-notes"}
+                      size={27}
+                      color={"#9fff80"}
                     />
-                    <Text style={{ fontWeight: "bold", fontSize: 14 }}>
-                      CONNECT
-                    </Text>
                   </View>
                 ),
                 title: "",
@@ -135,6 +135,22 @@ const Home = () => {
             }}
           />
         </View>
+        <View style={styles.buttons}>
+          <Pressable style={styles.swipeLeftButton} onPress={() => swipeRef.current.swipeLeft()}>
+            <Ionicons
+              name={"close-outline"}
+              size={24}
+              color={"#912c2c"}
+            />
+          </Pressable>
+          <Pressable style={styles.swipeRightButton} onPress={() => swipeRef.current.swipeRight()}>
+            <Ionicons
+              name={"musical-notes-outline"}
+              size={26}
+              color={"#23782b"}
+            />
+          </Pressable>
+        </View>
 
         {/* End of cards */}
       </SafeAreaView>
@@ -156,10 +172,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-around",
     alignItems: "center",
-    justifyContent: "space-around",
-    alignItems: "center",
     columnGap: 35,
-    backgroundColor: "#fff",
     backgroundColor: "#fff",
     marginTop: -50,
     paddingTop: 50,
@@ -173,21 +186,42 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   swipeRight: {
-    backgroundColor: "#9fff80",
-    borderRadius: 90,
-    padding: 9,
+    borderColor: "#9fff80",
+    borderWidth: 3,
+    borderRadius: 60,
+    margin: 6,
     alignItems: "center",
-    alignItems: "center",
-    width: 90,
-    height: 90,
+    justifyContent: "center",
+    width: 40,
+    height: 40,
   },
   card: {
-    height: "60%",
-    backgroundColor: "#fff",
     height: "60%",
     backgroundColor: "#fff",
     gap: 10,
     borderRadius: 40,
     padding: 10,
   },
+  swipeRightButton: {
+    backgroundColor: "#9fff80",
+    borderRadius: 70,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 50,
+    height: 50
+  },
+  swipeLeftButton: {
+    backgroundColor: "#f54747",
+    borderRadius: 70,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingLeft: 2.5,
+    paddingTop: 2.5,
+    width: 50,
+    height: 50
+  },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "space-evenly"
+  }
 });

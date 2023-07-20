@@ -3,10 +3,6 @@ import { useState, useEffect } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Chip from '../Misc/Chip';
 import Divider from '../Misc/Divider';
-import TrackPlayer, { useProgress, useTrackPlayerEvents, State, Event } from 'react-native-track-player';
-import { Slider } from '@rneui/themed';
-import AudioPlayer from './AudioPlayer';
-import SoundPlayer from 'react-native-sound-player'
 import Sound from './Sound';
 import { getUserPhotoLink, getUserSoundLink } from '../../api/profile';
 

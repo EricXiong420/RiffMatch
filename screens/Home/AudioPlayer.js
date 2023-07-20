@@ -70,11 +70,13 @@ const AudioPlayer = ({ track, theme }) => {
   return (
     <View style={styles.sounds}>
       <Pressable onPress={handlePlaySound}>
-        <Ionicons name={playing ? 'pause-circle-outline' : 'play-circle-outline'} size={35} color={theme && theme === 'light' ? '#000' : '#fff'} />
+        <Ionicons name={playing ? 'pause-circle-outline' : 'play-circle-outline'} size={35} color={theme === 'light' ? '#000' : '#fff'} />
       </Pressable>
-      {!focused && <Text style={styles.trackName}>{track.title}</Text>}
+      {!focused && <Text style={[styles.trackName, theme === 'light' ? styles.light : styles.dark]}>{track.title}</Text>}
       {focused && (<>
-        <Text style={[styles.playtime, { marginHorizontal: 3 }]}>{formatSecondsToTime(position)}</Text>
+        <Text style={[styles.playtime, 
+          { marginHorizontal: 3 }, 
+          theme === 'light' ? styles.light : styles.dark]}>{formatSecondsToTime(position)}</Text>
         <Slider
           animateTransitions
           animationConfig={{ useNativeDriver: false }}
@@ -94,7 +96,9 @@ const AudioPlayer = ({ track, theme }) => {
           trackStyle={{ height: 2, borderRadius: 20 }}
           value={position}
         />
-        <Text style={[styles.playtime, { marginHorizontal: 8 }]}>{formatSecondsToTime(duration)}</Text></>)
+        <Text style={[styles.playtime, 
+          { marginLeft: 8 },
+          theme === 'light' ? styles.light : styles.dark]}>{formatSecondsToTime(duration)}</Text></>)
       }
     </View>
   )
@@ -104,24 +108,27 @@ export default AudioPlayer;
 
 const styles = StyleSheet.create({
   sounds: {
-    width: '100%',
+    width: '90%',
     flexDirection: "row",
     alignItems: 'center',
   },
   slider: {
-    width: '55%',
+    width: '60%',
     height: 35
   },
   playtime: {
     width: '10%',
     fontSize: 9,
-    color: 'white'
   },
   trackName: {
-    color: 'white',
     fontSize: 15,
     fontWeight: 'bold',
     marginLeft: 10
-
+  },
+  dark: {
+    color: '#fff'
+  },
+  light: {
+    color: '#000'
   }
 })

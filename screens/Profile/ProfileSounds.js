@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
-import SoundArt from "../../assets/sound.png"
+import Sound from '../Home/Sound';
 
 const ProfileSounds = () => {
     const { user, profileData } = useAuth()
@@ -15,18 +15,12 @@ const ProfileSounds = () => {
             <Text style={styles.editButton} onPress={() => navigation.navigate('EditSounds')}><Ionicons name="create-outline"></Ionicons> Edit</Text>
 
         </View>
-        {profileData?.sounds?.map(sound => <Sound key={sound.uuid} sound={sound}></Sound>)}
+        {profileData?.sounds?.map((sound, index) => <Sound key={sound.uuid} sound={sound} trackIndex={index} theme="light" ></Sound>)
+        }
     </View>
 }
 
 export default ProfileSounds
-
-const Sound = ({ sound }) => {
-    return <Pressable>
-        <Text style={styles.soundName}>{sound.name}</Text>
-        <Image style={styles.soundImage} source={SoundArt}></Image>
-    </Pressable>
-}
 
 const styles = StyleSheet.create({
     sectionTitle: {

@@ -26,6 +26,7 @@ import ProfileEditInstruments from "./screens/Profile/Edit/ProfileEditInstrument
 import ProfileEditGenres from "./screens/Profile/Edit/ProfileEditGenres";
 import ProfileEditSounds from "./screens/Profile/Edit/ProfileEditSounds";
 import ProfileModalScreen from "./screens/Home/ProfileModalScreen";
+import ProfileFilterScreen from "./screens/Home/ProfileFilterScreen";
 import SettingsScreen from "./screens/Settings/SettingsScreen";
 import { MatchesProvider } from "./contexts/MatchContext";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -90,6 +91,11 @@ export default function App() {
         <HomeStack.Screen
           name="ProfileModal"
           component={ProfileModalScreen}
+          options={{ presentation: "modal" }}
+        />
+        <HomeStack.Screen
+          name="ProfileFilter"
+          component={ProfileFilterScreen}
           options={{ presentation: "modal" }}
         />
       </HomeStack.Navigator>

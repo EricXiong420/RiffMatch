@@ -11,7 +11,8 @@ import DocumentPicker, {
 } from 'react-native-document-picker'
 import { useAuth } from '../../contexts/AuthContext';
 import Sound from '../Home/Sound';
-import { addSoundToDB, deleteSoundFromDB } from '../../api/profile';
+import { DeletableSound } from '../Home/Sound';
+import { addSoundToDB } from '../../api/profile';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CreateProfileSounds = () => {
@@ -64,31 +65,6 @@ const CreateProfileSounds = () => {
     </SafeAreaView>
 
     
-}
-
-const DeletableSound = ({ sound, trackIndex }) => {
-    const deleteSound = () => {
-        Alert.alert('Delete Sound', 'Are you sure you want to delete this?', [
-            {
-                text: 'Cancel',
-                style: 'cancel',
-            },
-            {
-                text: 'OK', onPress: () => {
-                    deleteSoundFromDB(user.email, sound)
-
-                }
-            },
-        ]);
-    }
-
-    return <Pressable>
-        <Text style={styles.soundName}>{sound.name}</Text>
-        <View style={styles.soundItem}>
-            <Sound sound={sound} trackIndex={trackIndex} theme={'light'} />
-            <Ionicons onPress={() => deleteSound()} style={styles.deleteButton} name="trash-outline"></Ionicons>
-        </View>
-    </Pressable>
 }
 
 export default CreateProfileSounds
