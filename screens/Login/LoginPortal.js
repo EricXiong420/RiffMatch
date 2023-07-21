@@ -25,8 +25,8 @@ const LoginPortal = () => {
                 <Image source={Logo} style={styles.logo}></Image>
 
                 <Text style={styles.welcomeText}>Welcome Back!</Text>
-                <TextInput autoCapitalize='none' value={email} onChangeText={setEmail} placeholder='Email' textContentType='emailAddress' style={styles.loginInput}></TextInput>
-                <TextInput autoCapitalize='none' secureTextEntry={true} value={password} onChangeText={setPassword} placeholder='Password' textContentType='password' style={styles.loginInput}></TextInput>
+                <TextInput testID='loginEmailInput' autoCapitalize='none' value={email} onChangeText={setEmail} placeholder='Email' textContentType='emailAddress' style={styles.loginInput}></TextInput>
+                <TextInput testID='loginPasswordInput' autoCapitalize='none' secureTextEntry={true} value={password} onChangeText={setPassword} placeholder='Password' textContentType='password' style={styles.loginInput}></TextInput>
 
                 <View style={styles.buttonGroup}>
                     <Pressable style={{flex: 1}} onPress={() => navigation.navigate("ForgotPassword")}>
@@ -34,7 +34,7 @@ const LoginPortal = () => {
                     </Pressable>
                 {loading === true 
                 ? <ActivityIndicator /> 
-                : <Pressable onPress={() => handleLogin(email, password)}
+                : <Pressable testID='loginButton' onPress={() => handleLogin(email, password)}
                     disabled={incompleteForm}
                     style={({pressed}) => [{
                         opacity: pressed ? 0.4 : 1
@@ -44,7 +44,7 @@ const LoginPortal = () => {
                 }
                 </View>
                 
-                <Text style={styles.errMsg}>{errMsg}</Text>
+                <Text testID='loginErrorText' style={styles.errMsg}>{errMsg}</Text>
                 <Text style={styles.otherSignInText}>- OR -</Text>
                 <View style={styles.socialLogins}>
                     <GoogleButton />
