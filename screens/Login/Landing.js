@@ -1,10 +1,8 @@
-import { StyleSheet, View, KeyboardAvoidingView, Image, Pressable } from 'react-native'
+import { StyleSheet, View, KeyboardAvoidingView, Image, Pressable, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react'
-import { Text } from '@ui-kitten/components'
 import LandingImage from "../../assets/login/landing-art.png"
 import Logo from "../../assets/login/logo.png"
-import auth from '@react-native-firebase/auth';
 
 const Landing = () => {
     const navigation = useNavigation();
